@@ -6,13 +6,13 @@ const assert = require("assert");
 const initDbConnection = require('../utils/mongoConnection');
 
 // userInfo: {username, firstname, lastname, email, password}
-// returns: {errror, response}
+// returns: {succeeded, message}
 const createNewUser = async (userInfo) => {
 
     try {
         // Initialize db connection
         const connection = await initDbConnection();
-        const usersFromDb = await connection.db.collection("users").find().toArray();
+        const usersFromDb = await connection.findAll('users');
 
         // Check if username or email is already in use
         const userByUsername = usersFromDb.find(user => user.username === userInfo.username.toLowerCase());
@@ -36,8 +36,8 @@ const createNewUser = async (userInfo) => {
         }
 
         // Insert new user to db
-        const insert = await connection.db.collection("users").insertOne(newUser);
-        connection.client.close();
+        const insert = await connection.insertItem('users', newUser);
+        connection.closeConnection();
 
         // Verify that new user is added
         assert.strictEqual(1, insert.insertedCount);
@@ -47,6 +47,23 @@ const createNewUser = async (userInfo) => {
         return { succeeded: false, message: "Failed to create user."};
     }
 };
+
+const getUserByUsername = async (username) => {
+    try {
+        // Initialize db connection
+        const connection = await initDbConnection();
+        const userFromDb = connection.db.collection("users").findOne({ _id }, (err, result) => {
+            result
+              ? res.status(200).json({ status: 200, _id, data: result })
+              : res.status(404).json({ status: 404, _id, data: "Not Found" });
+            client.close();
+        });
+
+
+    } catch (error) {
+
+    }
+}
 
 module.exports = {
     createNewUser

@@ -14,7 +14,7 @@ router.get("/api/login", (req, res) => {
 });
 
 router.post("/api/register", async (req, res) => {
-    console.log(req.body)
+   
     // Validate all required fields are not null/undefined
     if(!isUserInfoValid(req.body))
         return res.status(400).json({ message: "Please provide all necessary information."});
@@ -30,9 +30,9 @@ router.post("/api/register", async (req, res) => {
     // Create new user
     const newUser = await createNewUser(req.body);
     if(newUser.succeeded) {
-        res.status(201).send();
+        res.status(201).send(newUser);
     } else {
-        res.status(400).json({ message: newUser.message});
+        res.status(400).json(newUser);
     }
 });
 
