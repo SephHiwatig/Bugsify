@@ -3,8 +3,13 @@
 */
 
 const router = require("express").Router();
-const jwt = require('jsonwebtoken');
-const { createNewUser, getUserByUsername, matchPassword } = require('../lib/user');
+const { 
+    createNewUser, 
+    getUserByUsername, 
+    matchPassword, 
+    createTokenForUser,
+    authenticateToken
+} = require('../lib/user');
 const { isPasswordValid, isEmailValid, isUserInfoValid } = require('../utils/inputValidators');
 
 
@@ -24,8 +29,9 @@ router.post("/api/login", async (req, res) => {
     }
 
     // Verify that password matches
-    if(matchPassword(req.body.password, result.user.password)) {
-        return res.status(200).json({ message: "success", user: result.user});
+    if(await matchPassword(req.body.password, result.user.password)) {
+        const accessToken = createTokenForUser(result.user);
+        return res.status(200).json({ message: "success", accessToken });
     }
 
     return res.status(401).json({ message: "Invalid username or password."});
@@ -53,6 +59,11 @@ router.post("/api/register", async (req, res) => {
         res.status(400).json(newUser);
     }
 
+});
+
+router.get('/api/test', authenticateToken, (req, res) => {
+    console.log(req.user);
+    res.send('OK');
 });
 
 module.exports = router;
