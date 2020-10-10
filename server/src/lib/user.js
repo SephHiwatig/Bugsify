@@ -48,23 +48,29 @@ const createNewUser = async (userInfo) => {
     }
 };
 
+// returns { error, message, status, user }
 const getUserByUsername = async (username) => {
     try {
-        // Initialize db connection
+        // Connect to database and get user by username
         const connection = await initDbConnection();
-        const userFromDb = connection.db.collection("users").findOne({ _id }, (err, result) => {
-            result
-              ? res.status(200).json({ status: 200, _id, data: result })
-              : res.status(404).json({ status: 404, _id, data: "Not Found" });
-            client.close();
-        });
+        const user = await connection.findByField('users', 'username', username);
+        connection.closeConnection();
 
+        // check if user exists
+        if(!user) return {error: true, message: "Not found", status: 404, user };
 
+        return { error: false, message: "Ok", status: 200, user };
     } catch (error) {
-
+        throw { error: true, message: "Connection failed", status: 409, user: undefined };
     }
 }
 
+const matchPassword = async (inputPassword, storedPassword) => {
+    return bcrypt.compare(inputPassword, storedPassword);
+};
+
 module.exports = {
-    createNewUser
+    createNewUser,
+    getUserByUsername,
+    matchPassword
 }

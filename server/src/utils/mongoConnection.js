@@ -22,8 +22,7 @@ const initDbConnection = async () => {
         // Return the interface of db connection
         return { 
             db,
-            client,
-            findAll: _findAll(db),
+            findAll: _findAll(db), 
             findByField: _findByField(db),
             insertItem: _insertItem(db),
             closeConnection: _closeConnection(client)
@@ -35,7 +34,7 @@ const initDbConnection = async () => {
 };
 
 // Private functions, to be curried to provide interface
-const _findAll = (db) => {
+const _findAll = (db) => { 
     return async function(collection) {
         const usersFromDb = await db.collection(collection).find().toArray();
         return usersFromDb;

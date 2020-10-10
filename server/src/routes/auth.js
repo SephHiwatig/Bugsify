@@ -4,13 +4,31 @@
 
 const router = require("express").Router();
 const jwt = require('jsonwebtoken');
-const { createNewUser } = require('../lib/user');
+const { createNewUser, getUserByUsername, matchPassword } = require('../lib/user');
 const { isPasswordValid, isEmailValid, isUserInfoValid } = require('../utils/inputValidators');
 
 
 // Endpoints
-router.get("/api/login", (req, res) => {
-    res.send("User logged in.")
+router.post("/api/login", async (req, res) => {
+
+    // Check that userinfo(username, password) is valid
+    if(!isUserInfoValid(req.body))
+        return res.status(400).json({ message: "Invalid username or password."});
+    
+    // Get user from database
+    const result = await getUserByUsername(req.body.username);
+
+    // check for errors
+    if(result.error) {
+        return res.status(result.status).send({ message: result.message });
+    }
+
+    // Verify that password matches
+    if(matchPassword(req.body.password, result.user.password)) {
+        return res.status(200).json({ message: "success", user: result.user});
+    }
+
+    return res.status(401).json({ message: "Invalid username or password."});
 });
 
 router.post("/api/register", async (req, res) => {
@@ -34,6 +52,7 @@ router.post("/api/register", async (req, res) => {
     } else {
         res.status(400).json(newUser);
     }
+
 });
 
 module.exports = router;
