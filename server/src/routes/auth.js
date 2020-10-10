@@ -7,8 +7,7 @@ const {
     createNewUser, 
     getUserByUsername, 
     matchPassword, 
-    createTokenForUser,
-    authenticateToken
+    createTokenForUser
 } = require('../lib/user');
 const { isPasswordValid, isEmailValid, isUserInfoValid } = require('../utils/inputValidators');
 
@@ -59,11 +58,6 @@ router.post("/api/register", async (req, res) => {
         res.status(400).json(newUser);
     }
 
-});
-
-router.get('/api/test', authenticateToken, (req, res) => {
-    console.log(req.user);
-    res.send('OK');
 });
 
 module.exports = router;
