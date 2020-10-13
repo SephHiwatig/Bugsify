@@ -3,12 +3,8 @@
 */
 
 const router = require("express").Router();
-const { 
-    createNewUser, 
-    getUserByUsername, 
-    matchPassword, 
-    createTokenForUser
-} = require('../lib/user');
+const { createNewUser, getUserByUsername } = require('../lib/user');
+const { matchPassword, createTokenForUser } = require('../utils/jwt'); 
 const { isPasswordValid, isEmailValid, isUserInfoValid } = require('../utils/inputValidators');
 
 
