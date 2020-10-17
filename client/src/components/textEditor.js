@@ -10,6 +10,7 @@ function onChange(newValue) {
 
 const style = {
     width: '100%',
+    height: '100%'
 }
 
 const TextEditor = () => {
@@ -23,7 +24,7 @@ const TextEditor = () => {
     highlightActiveLine={true}
     value={`function onLoad(editor) {
         console.log("i've loaded");
-    }`}
+}`}
     setOptions={{
         enableBasicAutocompletion: true,
         enableLiveAutocompletion: true,

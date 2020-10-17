@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Question from './question';
 import TextEditor from './textEditor';
+import Console from './console';
 
 const Kata = () => {
     return (
@@ -11,10 +12,12 @@ const Kata = () => {
         </QuestionWrapper>
         <SolutionWrapper>
             <EditorWrapper>
+                <EditorTitle>Solution</EditorTitle>
                 <TextEditor />
             </EditorWrapper>
             <ConsoleWrapper>
-                CONSOLE GOES HERE
+                <EditorTitle>Output</EditorTitle>
+                <Console/>
             </ConsoleWrapper>
         </SolutionWrapper>
     </Wrapper>);
@@ -40,13 +43,15 @@ const SolutionWrapper = styled.div`
 const EditorWrapper = styled.div`
     flex: 1;
     background-color: var(--secondary-color);
-    margin-bottom: 8px;
+    margin-bottom: 24px;
+`;
+
+const EditorTitle = styled.span`
     padding: 8px;
 `;
 
 const ConsoleWrapper = styled.div`
     background-color: var(--secondary-color);
-    padding: 8px;
 `;
 
 export default Kata;
