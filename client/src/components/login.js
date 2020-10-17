@@ -61,8 +61,6 @@ const InputWrapper = styled.div`
 `;
 
 const SignUpLink = styled.span`
-    color: var(--main-font-color);
-
     & a {
         color: var(--ui-theme-color);
     }

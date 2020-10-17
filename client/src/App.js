@@ -14,6 +14,7 @@ const GlobalStyles = createGlobalStyle`
     --secondary-color: #262729;
     --ui-theme-color: #bb432c;
     --main-font-color: #f8f9fa;
+    color: var(--main-font-color);
   }
 `
 
@@ -22,13 +23,17 @@ function App() {
     <>
       <GlobalStyles />
       <Main>
-        {false && <Content>
-          <Navbar></Navbar>
-          <Kata></Kata>
-        </Content>}
-        {true && <Content>
+        {true && <ContentWrapper>
+          <Content>
+            <Navbar></Navbar>
+            <Kata></Kata>
+          </Content>
+        </ContentWrapper>}
+        {false && <ContentWrapper>
+          <Content>
           <Register></Register>
-        </Content>}
+          </Content>
+        </ContentWrapper>}
         <Footer></Footer>
       </Main>
     </>);
@@ -41,9 +46,14 @@ const Main = styled.div`
   background-color: var(--main-bg-color);
 `;
 
-const Content = styled.div`
+const ContentWrapper = styled.div`
   flex: 1;
+  display: flex;
+  align-items: stretch;
 `;
 
+const Content = styled.div`
+  flex:1;
+`;
 
 export default App;

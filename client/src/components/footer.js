@@ -6,8 +6,8 @@ const Footer = () => {
         <FooterList>
             <FooterItem>&copy; Joseph Hiwatig</FooterItem>
             <FooterItem>hiwatigjoseph@gmail.com</FooterItem>
-            <FooterItem><a href="https://www.linkedin.com/in/joseph-hiwatig/" target="_blank">LinkedIn</a></FooterItem>
-            <FooterItem><a href="https://www.linkedin.com/in/joseph-hiwatig/" target="_blank">Portfolio</a></FooterItem>
+            <FooterItem><a href="https://www.linkedin.com/in/joseph-hiwatig/" target="_blank" rel="noopener noreferrer">LinkedIn</a></FooterItem>
+            <FooterItem><a href="https://www.linkedin.com/in/joseph-hiwatig/" target="_blank" rel="noopener noreferrer">Portfolio</a></FooterItem>
         </FooterList>
     </Wrapper>;
 };
