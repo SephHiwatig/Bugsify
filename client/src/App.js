@@ -15,6 +15,7 @@ const GlobalStyles = createGlobalStyle`
     --ui-theme-color: #bb432c;
     --main-font-color: #f8f9fa;
     color: var(--main-font-color);
+    font-family: 'Oswald', sans-serif;
   }
 `
 
