@@ -54,11 +54,11 @@ const getUserByUsername = async (username) => {
     try {
         // Connect to database and get user by username
         const connection = await initDbConnection();
-        const user = await connection.findByField('users', 'username', username);
+        const user = await connection.findByField('users', 'username', username.toLowerCase());
         connection.closeConnection();
 
         // check if user exists
-        if(!user) return {error: true, message: "Not found", status: 404, user };
+        if(!user) return {error: true, message: "Invalid Username or Password", status: 404, user };
 
         return { error: false, message: "Ok", status: 200, user };
     } catch (error) {
