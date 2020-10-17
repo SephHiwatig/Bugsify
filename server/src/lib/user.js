@@ -42,7 +42,7 @@ const createNewUser = async (userInfo) => {
         // Verify that new user is added
         assert.strictEqual(1, insert.insertedCount);
 
-        return { succeeded: true, message: "New user created."};
+        return { succeeded: true, message: "Ok"};
     } catch (error) {
         console.log(error);
         return { succeeded: false, message: "Failed to create user."};

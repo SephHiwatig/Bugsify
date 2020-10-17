@@ -9,6 +9,9 @@ import { BsFillExclamationTriangleFill } from "react-icons/bs";
 import { BsLayoutSidebarInsetReverse } from "react-icons/bs";
 import Button from './extras/button';
 import { baseApi } from '../environment';
+import {
+    Link
+  } from "react-router-dom";
 
 import IconInput from './extras/iconinput';
 
@@ -21,6 +24,7 @@ const Register = () => {
         password: ""
     });
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState(false);
 
     const register = async (value) => {
         // Check that all fields has input
@@ -51,10 +55,11 @@ const Register = () => {
             const response = await data.json();
             console.log('ok', response);
             setError("");
+            setSuccess(true);
         } else {
             const response = await data.json();
-            if(response.message)
-                setError(response.message);
+            setError(response.message);
+            setSuccess(false);
         }
     }
 
@@ -63,6 +68,9 @@ const Register = () => {
             <Logo src={logo} alt="logo" />
             {error && <InputWrapper>
             <Warning><BsFillExclamationTriangleFill/>&nbsp;{error}</Warning>
+            </InputWrapper>}
+            {success && <InputWrapper>
+            <Success>Your account has been created.&nbsp;<Link to="/login">Log in.</Link> </Success>
             </InputWrapper>}
             <InputWrapper>
                 <IconInput placeholder="Username" type="text" change={(event) => {
@@ -165,6 +173,22 @@ const Warning = styled.div`
     justify-content: center;
     word-wrap: break-word;
     max-width: 100%;
+`;
+
+const Success = styled.div`
+    border: 3px solid #c3e6cb;
+    background-color: #d4edda;
+    color: #000;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-wrap: break-word;
+    max-width: 100%;
+
+    & a {
+        color: #155724;
+    }
 `;
 
 const PasswordConstraints = styled.ul`
