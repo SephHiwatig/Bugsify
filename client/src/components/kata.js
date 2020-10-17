@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Question from './question';
+import TextEditor from './textEditor';
 
 const Kata = () => {
     return (
@@ -10,7 +11,7 @@ const Kata = () => {
         </QuestionWrapper>
         <SolutionWrapper>
             <EditorWrapper>
-                EDITOR GOES HERE
+                <TextEditor />
             </EditorWrapper>
             <ConsoleWrapper>
                 CONSOLE GOES HERE
