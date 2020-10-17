@@ -1,14 +1,17 @@
 import React from 'react';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
+import Kata from './components/kata';
 import styled from 'styled-components';
 
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
   html {
-    --main-bg-color: #262729;
-    --secondary-bg-color: #424242;
+    --main-bg-color: #424242;
+    --secondary-bg-color: #262729;
+    --ui-color: #1d1d1f;
+    --ui-theme-color: #bb432c;
     --main-font-color: #f8f9fa;
   }
 `
@@ -20,7 +23,7 @@ function App() {
       <Main>
         <Navbar></Navbar>
         <Content>
-          <p>I am the content</p>
+          <Kata></Kata>
         </Content>
         <Footer></Footer>
       </Main>
