@@ -4,6 +4,9 @@ import logo from '../assets/logo.png';
 import { BsPersonFill } from "react-icons/bs";
 import { BsFillLockFill } from "react-icons/bs";
 import Button from './extras/button';
+import {
+    Link
+  } from "react-router-dom";
 
 import IconInput from './extras/iconinput';
 
@@ -26,7 +29,7 @@ const Login = () => {
             </InputWrapper>
             <InputWrapper>
                 <SignUpLink>
-                    Not a member? <a href="#">Signup</a>
+                    Not a member? <Link to="/register">Sign up</Link>
                 </SignUpLink>
             </InputWrapper>
         </LoginForm>

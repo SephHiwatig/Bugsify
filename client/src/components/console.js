@@ -7,13 +7,13 @@ const Console = () => {
     return <Wrapper>
         <Terminal> 
             <OutputList>
-                <OutputItem>Success</OutputItem>
-                <OutputItem>Success</OutputItem>
-                <OutputItem>Success</OutputItem>
-                <OutputItem>Success</OutputItem>
-                <OutputItem>Success</OutputItem>
-                <OutputItem>Success</OutputItem>
                 <OutputItem>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et tristique tellus, ut egestas nibh. Duis consectetur purus tellus, vitae fermentum magna faucibus a. Praesent hendrerit, arcu at accumsan auctor, mi nunc faucibus quam, feugiat posuere tortor ante et mi. Aliquam varius porttitor aliquet. Sed blandit nunc quis dolor vulputate tempus. In tristique tellus eu orci ultrices, quis iaculis neque vestibulum. Aliquam id malesuada est. Aenean porttitor nulla a turpis posuere tempor ac id nibh. Phasellus in ex faucibus, efficitur dui a, commodo nibh. Vestibulum gravida luctus accumsan. Morbi malesua</OutputItem>
+                <OutputItem>Success</OutputItem>
+                <OutputItem>Success</OutputItem>
+                <OutputItem>Success</OutputItem>
+                <OutputItem>Success</OutputItem>
+                <OutputItem>Success</OutputItem>
+                <OutputItem>Success</OutputItem>
             </OutputList>
         </Terminal>
         <ButtonWrapper>
@@ -63,7 +63,7 @@ const OutputList = styled.ul`
 `
 
 const OutputItem = styled.li`
-    margin-left: 8px;
+    margin-left: 16px;
 `;
 
 export default Console;

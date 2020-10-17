@@ -6,6 +6,13 @@ import Login from './components/login';
 import Register from './components/register';
 import styled from 'styled-components';
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
@@ -17,24 +24,42 @@ const GlobalStyles = createGlobalStyle`
     color: var(--main-font-color);
     font-family: 'Oswald', sans-serif;
   }
-`
+`;
 
 function App() {
   return (
     <>
       <GlobalStyles />
       <Main>
-        {true && <ContentWrapper>
-          <Content>
-            <Navbar></Navbar>
-            <Kata></Kata>
-          </Content>
-        </ContentWrapper>}
-        {false && <ContentWrapper>
-          <Content>
-          <Register></Register>
-          </Content>
-        </ContentWrapper>}
+
+        <Router>
+          <Switch>
+            <Route path="/login">
+              <ContentWrapper>
+                <Content>
+                <Login></Login>
+                </Content>
+              </ContentWrapper>
+            </Route>
+            <Route path="/register">
+              <ContentWrapper>
+                <Content>
+                  <Register></Register>
+                </Content>
+              </ContentWrapper>
+            </Route>
+            <Route path="/">
+              <ContentWrapper>
+                <Content>
+                  <Navbar></Navbar>
+                  <Kata></Kata>
+                </Content>
+              </ContentWrapper>
+            </Route>
+          </Switch>
+        </Router>
+
+
         <Footer></Footer>
       </Main>
     </>);

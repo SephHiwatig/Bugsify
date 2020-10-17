@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
 import Button from './extras/button';
+import {
+    Link
+  } from "react-router-dom";
 
 const NavBar = () => {
     return <Wrapper>
@@ -9,8 +12,12 @@ const NavBar = () => {
             <Logo src={logo} alt="logo" />
         </LogoWrapper>
         <NavExtras>
-            <Button title={"Sign in"}></Button>
-            <Button title={"Sign up"}></Button>
+            <Link to="/login">
+                <Button title={"Log in"}></Button>
+            </Link>
+            <Link to="/register">
+                <Button title={"Sign up"}></Button>
+            </Link>
         </NavExtras>
 
     </Wrapper>

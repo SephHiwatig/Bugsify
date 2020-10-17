@@ -22,8 +22,8 @@ const TextEditor = () => {
     editorProps={{ $blockScrolling: true }}
     fontSize={14}
     highlightActiveLine={true}
-    value={`function onLoad(editor) {
-        console.log("i've loaded");
+    value={`function solve(args) {
+        // Write your code here
 }`}
     setOptions={{
         enableBasicAutocompletion: true,
