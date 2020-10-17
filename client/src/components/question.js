@@ -60,7 +60,7 @@ const InfoItem = styled.li`
     align-items: center;
 `;
 
-const Description = styled.p`
+const Description = styled.div`
     margin: 0;
 `;
 

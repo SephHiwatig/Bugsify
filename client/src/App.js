@@ -10,7 +10,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Redirect 
 } from "react-router-dom";
 
 import { createGlobalStyle } from 'styled-components';
@@ -27,6 +27,8 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 function App() {
+  const auth = true;
+
   return (
     <>
       <GlobalStyles />
@@ -48,13 +50,16 @@ function App() {
                 </Content>
               </ContentWrapper>
             </Route>
-            <Route path="/">
-              <ContentWrapper>
+            <Route path="/protected" render={(props) => (
+              auth ? (
+                <ContentWrapper>
                 <Content>
                   <Navbar></Navbar>
                   <Kata></Kata>
                 </Content>
               </ContentWrapper>
+              ) : <Redirect to='/login' />
+            )}>
             </Route>
           </Switch>
         </Router>
