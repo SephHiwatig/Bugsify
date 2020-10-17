@@ -8,6 +8,7 @@ import { BsLayoutSidebarInset } from "react-icons/bs";
 import { BsFillExclamationTriangleFill } from "react-icons/bs";
 import { BsLayoutSidebarInsetReverse } from "react-icons/bs";
 import Button from './extras/button';
+import { baseApi } from '../environment';
 
 import IconInput from './extras/iconinput';
 
@@ -21,16 +22,40 @@ const Register = () => {
     });
     const [error, setError] = useState("");
 
-    function register(value) {
+    const register = async (value) => {
         // Check that all fields has input
-        const keys = Object.keys(formValues);
+        const keys = Object.keys(value);
+        let isInvalid = false;
         keys.forEach(key => {
-            if(!formValues[key]) {
+            if(!value[key]) {
                 setError("All fields are required");
-                return;
+                isInvalid = true;
             }
         })
-        console.log(value);
+        if(isInvalid) return;
+        
+        //register user
+        const data = await fetch(
+          baseApi + "register",
+          {
+            method: "POST",
+            body: JSON.stringify(value),
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            }
+          }
+        );
+    
+        if (data.ok) {
+            const response = await data.json();
+            console.log('ok', response);
+            setError("");
+        } else {
+            const response = await data.json();
+            if(response.message)
+                setError(response.message);
+        }
     }
 
     return <Wrapper>
@@ -89,6 +114,11 @@ const Register = () => {
                     <BsFillLockFill/>
                 </IconInput>
             </InputWrapper>
+            <PasswordConstraints>
+                <li>Minimum of 8 characters</li>
+                <li>Must contain at least 1 uppercase, lowecase and digit</li>
+                <li>Must not contain spaces</li>
+            </PasswordConstraints>
             <InputWrapper>
                 <Button type="button" title="Register" click={register.bind(null, formValues)}/>
             </InputWrapper>
@@ -106,7 +136,7 @@ const Wrapper = styled.div`
 const RegisterForm = styled.form`
     background-color: var(--secondary-color);
     border-radius: 15px;
-    padding: 32px;
+    padding: 16px 32px 32px 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -133,6 +163,15 @@ const Warning = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    word-wrap: break-word;
+    max-width: 100%;
 `;
+
+const PasswordConstraints = styled.ul`
+    font-size: 10px;
+    color: #aaa;
+    padding-left: 30px;
+    width: 100%;
+`
 
 export default Register;

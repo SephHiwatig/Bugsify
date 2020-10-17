@@ -1,6 +1,7 @@
 /**
  * User data access layer
  */
+const bcrypt = require('bcrypt');
 const assert = require("assert");
 const initDbConnection = require('../utils/mongoConnection');
 
@@ -43,6 +44,7 @@ const createNewUser = async (userInfo) => {
 
         return { succeeded: true, message: "New user created."};
     } catch (error) {
+        console.log(error);
         return { succeeded: false, message: "Failed to create user."};
     }
 };

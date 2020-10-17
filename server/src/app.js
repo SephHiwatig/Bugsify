@@ -21,5 +21,5 @@ app.use(function (req, res, next) {
 .use(require("./routes/auth"))
 
 .listen(4200, () => {
-    console.log('Server is now listening on port 3000.')
+    console.log('Server is now listening on port 4200.')
 });
