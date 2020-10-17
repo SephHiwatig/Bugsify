@@ -26,7 +26,15 @@ router.post("/api/login", async (req, res) => {
     // Verify that password matches
     if(await matchPassword(req.body.password, result.user.password)) {
         const accessToken = createTokenForUser(result.user);
-        return res.status(200).json({ message: "success", accessToken });
+        const userToReturn = {
+            _id: result.user._id,
+            firstname: result.user.firstname,
+            lastname: result.user.lastname,
+            level: result.user.level,
+            exp: result.user.exp,
+            role: result.user.role
+        };
+        return res.status(200).json({ message: "success", accessToken, user: userToReturn });
     }
 
     return res.status(401).json({ message: "Invalid username or password."});
