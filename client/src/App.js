@@ -3,6 +3,7 @@ import Navbar from './components/navbar';
 import Footer from './components/footer';
 import Kata from './components/kata';
 import Login from './components/login';
+import Register from './components/register';
 import styled from 'styled-components';
 
 import { createGlobalStyle } from 'styled-components';
@@ -21,12 +22,12 @@ function App() {
     <>
       <GlobalStyles />
       <Main>
-        {true && <Content>
+        {false && <Content>
           <Navbar></Navbar>
           <Kata></Kata>
         </Content>}
-        {false && <Content>
-          <Login></Login>
+        {true && <Content>
+          <Register></Register>
         </Content>}
         <Footer></Footer>
       </Main>
