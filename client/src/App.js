@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
 import Kata from './components/kata';
+import Login from './components/login';
 import styled from 'styled-components';
 
 import { createGlobalStyle } from 'styled-components';
@@ -9,8 +10,7 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyles = createGlobalStyle`
   html {
     --main-bg-color: #424242;
-    --secondary-bg-color: #262729;
-    --ui-color: #1d1d1f;
+    --secondary-color: #262729;
     --ui-theme-color: #bb432c;
     --main-font-color: #f8f9fa;
   }
@@ -21,10 +21,13 @@ function App() {
     <>
       <GlobalStyles />
       <Main>
-        <Navbar></Navbar>
-        <Content>
+        {true && <Content>
+          <Navbar></Navbar>
           <Kata></Kata>
-        </Content>
+        </Content>}
+        {false && <Content>
+          <Login></Login>
+        </Content>}
         <Footer></Footer>
       </Main>
     </>);

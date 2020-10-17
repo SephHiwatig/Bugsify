@@ -18,7 +18,7 @@ const NavBar = () => {
 
 const Wrapper = styled.div`
     display: flex;
-    background-color: var(--secondary-bg-color);
+    background-color: var(--secondary-color);
     padding: 8px 16px;
     color: var(--main-font-color);
 `;
