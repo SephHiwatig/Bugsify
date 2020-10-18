@@ -27,23 +27,34 @@ const Wrapper = styled.div`
     display: flex;
     padding: 16px;
     height: 83%;
+    flex-direction: column;
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+    }
 `;
 
 const QuestionWrapper = styled.div`
     flex: 1;
-    margin-right: 8px;
+    margin: 4px;
 `;
 
 const SolutionWrapper = styled.div`
     flex: 1;
     display: flex;
     flex-direction: column;
+    margin: 4px;
 `;
 
 const EditorWrapper = styled.div`
     flex: 1;
     background-color: var(--secondary-color);
     margin-bottom: 24px;
+    min-height: 200px;
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+    }
 `;
 
 const EditorTitle = styled.span`
