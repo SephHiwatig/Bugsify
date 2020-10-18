@@ -8,6 +8,7 @@ import {
 import { useSelector } from "react-redux";
 import userPlaceholder from '../assets/user.jpg';
 import { AiOutlineLogout } from "react-icons/ai";
+import ButtonWrapper from './extras/buttonWrapper';
 
 const NavBar = () => {
     const userInfo = useSelector((state) => state.auth);
@@ -19,7 +20,9 @@ const NavBar = () => {
 
     return <Wrapper>
         <LogoWrapper>
-            <Logo src={logo} alt="logo" />
+            <ButtonWrapper type="button">
+                <Logo src={logo} alt="logo" />
+            </ButtonWrapper>
         </LogoWrapper>
         <NavExtras>
             {!userInfo.isAuthenticated && <>
@@ -37,8 +40,8 @@ const NavBar = () => {
                 </NameWrapper>
                 <Avatar src={userPlaceholder} alt="user picture" />
                 <MenuDropDown>
-                    <li>View profile</li>
-                    <li>Log out&nbsp;<AiOutlineLogout/></li>
+                    <li><ButtonWrapper type="button" title="View profile" /></li>
+                    <li><ButtonWrapper type="button" title="Log out" /></li>
                 </MenuDropDown>
             </InfoWrapper>
             <InfoWrapper>Lvl&nbsp;<span>{userInfo.user.level}</span></InfoWrapper>
@@ -63,7 +66,6 @@ const LogoWrapper = styled.div`
 
 const Logo = styled.img`
     width: 80px;
-    cursor: pointer;
 `;
 
 const NavExtras = styled.div`
@@ -121,6 +123,7 @@ const MenuDropDown = styled.ul`
         display: flex;
         align-items: center;
         justify-content: space-between;
+        text-align: left;
     }
 
     & li:hover {
