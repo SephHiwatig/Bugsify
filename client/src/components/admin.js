@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import TextEditor from './textEditor';
+import { EditorState } from 'draft-js';
+import {stateToHTML} from 'draft-js-export-html';
 
 const AdminPanel = () => {
+    const [editorState, setEditorState] = useState(() =>
+        EditorState.createEmpty(),
+    );
+
     return <Wrapper>
         <LeftWrapper>
             <TextEditorWrapper>
-                Editor Goes Here
+                <TextEditor change={setEditorState}/>
             </TextEditorWrapper>
             <FormWrapper>
                 Form Goes Here
+                <button type="button" >Test</button>
             </FormWrapper>
         </LeftWrapper>
         <RightWrapper>
-            <ToolBar>Tool bar</ToolBar>
+            <ToolBar >Tool bar</ToolBar>
             <TableWrapper></TableWrapper>
         </RightWrapper>
     </Wrapper>;
@@ -62,7 +70,7 @@ const ToolBar = styled.div`
 
 const TableWrapper = styled.div`
     flex: 1;
-    background-color: #fff;
+    // background-color: #fff;
 `;
 
 export default AdminPanel;
