@@ -5,17 +5,24 @@ import Button from './extras/button';
 import {
     Link
   } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import userPlaceholder from '../assets/user.jpg';
-import { AiOutlineLogout } from "react-icons/ai";
 import ButtonWrapper from './extras/buttonWrapper';
+import { userLoggedOut } from '../redux/actions/authActions';
 
 const NavBar = () => {
+    const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.auth);
     
     function generateFullname(firstname, lastname) {
         return firstname.charAt(0).toUpperCase() + firstname.substring(1) + ' ' +
             lastname.charAt(0).toUpperCase() + lastname.substring(1);
+    }
+
+    function logOut() {
+        localStorage.clear();
+        dispatch(userLoggedOut());
+        // Make sure to replace UI with Sample Questions
     }
 
     return <Wrapper>
@@ -25,14 +32,14 @@ const NavBar = () => {
             </ButtonWrapper>
         </LogoWrapper>
         <NavExtras>
-            {!userInfo.isAuthenticated && <>
+            {!userInfo.isAuthenticated && <InfoWrapper>
             <Link to="/login">
                 <Button title={"Log in"}></Button>
             </Link>
             <Link to="/register">
                 <Button title={"Sign up"}></Button>
             </Link>
-            </>}
+            </InfoWrapper>}
             {userInfo.isAuthenticated && <>
             <InfoWrapper className="profile-section">
                 <NameWrapper>
@@ -41,7 +48,7 @@ const NavBar = () => {
                 <Avatar src={userPlaceholder} alt="user picture" />
                 <MenuDropDown>
                     <li><ButtonWrapper type="button" title="View profile" /></li>
-                    <li><ButtonWrapper type="button" title="Log out" /></li>
+                    <li><ButtonWrapper type="button" title="Log out" click={logOut}/></li>
                 </MenuDropDown>
             </InfoWrapper>
             <InfoWrapper>Lvl&nbsp;<span>{userInfo.user.level}</span></InfoWrapper>

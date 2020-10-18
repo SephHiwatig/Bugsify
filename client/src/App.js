@@ -7,7 +7,7 @@ import Register from './components/register';
 import styled from 'styled-components';
 import { baseApi } from './environment';
 import { useDispatch, useSelector } from "react-redux";
-import { userLoggedIn } from './redux/actions/authActions';
+import { userLoggedOut } from './redux/actions/authActions';
 
 import {
   BrowserRouter as Router,
@@ -50,7 +50,7 @@ function App() {
       // dispatch(userLoggedIn(accessToken, user, true));
     })
     .catch(error => {
-      console.log("ERROR", error)
+      dispatch(userLoggedOut());
     });
   };
 
