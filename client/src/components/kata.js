@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Question from './question';
-import TextEditor from './textEditor';
+import CodeEditor from './codeEditor';
 import Console from './console';
 
 const Kata = () => {
@@ -13,7 +13,7 @@ const Kata = () => {
         <SolutionWrapper>
             <EditorWrapper>
                 <EditorTitle>Solution</EditorTitle>
-                <TextEditor />
+                <CodeEditor />
             </EditorWrapper>
             <ConsoleWrapper>
                 <EditorTitle>Output</EditorTitle>

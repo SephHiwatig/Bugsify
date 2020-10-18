@@ -4,6 +4,7 @@ import Footer from './components/footer';
 import Kata from './components/kata';
 import Login from './components/login';
 import Register from './components/register';
+import AdminPenl from './components/admin';
 import styled from 'styled-components';
 import { baseApi } from './environment';
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +18,7 @@ import {
 } from "react-router-dom";
 
 import { createGlobalStyle } from 'styled-components';
+import AdminPanel from './components/admin';
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -32,6 +34,7 @@ const GlobalStyles = createGlobalStyle`
 function App() {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
+  const isAdmin = useSelector((state) => state.auth.user.role) === "admin";
 
   const verifyToken = async (accessToken) => {
     const data = fetch(
@@ -88,6 +91,16 @@ function App() {
               </ContentWrapper>
             )}>
             </Route>
+            <Route path="/admin" render={(props) => (
+              !isAuth || !isAdmin ? <Redirect to="/" /> : 
+              <ContentWrapper>
+                <Content>
+                  <Navbar></Navbar>
+                  <AdminPanel></AdminPanel>
+                </Content>
+              </ContentWrapper>
+            )}>
+            </Route>
             <Route path="/" render={(props) => (
               (
                 <ContentWrapper>
@@ -118,7 +131,6 @@ const Main = styled.div`
 const ContentWrapper = styled.div`
   flex: 1;
   display: flex;
-  align-items: stretch;
 `;
 
 const Content = styled.div`
