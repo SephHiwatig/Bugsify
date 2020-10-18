@@ -25,7 +25,7 @@ const Login = () => {
 
     const login = async (value) => {
         
-        //register user
+        //login user
         const data = await fetch(
           baseApi + "login",
           {
@@ -40,6 +40,9 @@ const Login = () => {
     
         if (data.ok) {
             const {accessToken, user} = await data.json();
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('isAuthenticated', true);
+            localStorage.setItem('user', JSON.stringify(user));
             setError("");
             dispatch(userLoggedIn(accessToken, user, true));
             history.push('/protected')

@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
 import Kata from './components/kata';
 import Login from './components/login';
 import Register from './components/register';
 import styled from 'styled-components';
+import { baseApi } from './environment';
+import { useDispatch, useSelector } from "react-redux";
+import { userLoggedIn } from './redux/actions/authActions';
 
 import {
   BrowserRouter as Router,
@@ -27,7 +30,38 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 function App() {
-  const auth = true;
+  const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
+
+  const verifyToken = async (accessToken) => {
+    const data = fetch(
+      baseApi + "verify/accesstoken",
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken
+        }
+      }
+    ).then(data => data.json())
+    .then(data => {
+      // const {accessToken, user} = data;
+      // dispatch(userLoggedIn(accessToken, user, true));
+    })
+    .catch(error => {
+      console.log("ERROR", error)
+    });
+  };
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if(accessToken) {
+      verifyToken(accessToken);
+    }
+  }, [])
+
+  
 
   return (
     <>
@@ -36,29 +70,33 @@ function App() {
 
         <Router>
           <Switch>
-            <Route path="/login">
+            <Route path="/login" render={(props) => (
+              isAuth ? <Redirect to="/protected" /> : 
               <ContentWrapper>
                 <Content>
                 <Login></Login>
                 </Content>
               </ContentWrapper>
+            )}>
             </Route>
-            <Route path="/register">
+            <Route path="/register" render={(props) => (
+              isAuth ? <Redirect to="/protected" /> : 
               <ContentWrapper>
                 <Content>
                   <Register></Register>
                 </Content>
               </ContentWrapper>
+            )}>
             </Route>
-            <Route path="/protected" render={(props) => (
-              auth ? (
+            <Route path="/" render={(props) => (
+              (
                 <ContentWrapper>
                 <Content>
                   <Navbar></Navbar>
                   <Kata></Kata>
                 </Content>
               </ContentWrapper>
-              ) : <Redirect to='/login' />
+              )
             )}>
             </Route>
           </Switch>

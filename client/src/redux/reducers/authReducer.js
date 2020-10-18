@@ -1,4 +1,4 @@
-import { USER_REGISTERED, USER_LOOGED_IN } from '../actions/actionTypes';
+import { LOGGED_IN, LOGGED_OUT } from '../actions/actionTypes';
 
 const initialState = {
     accessToken: "",
@@ -15,12 +15,7 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
-        case USER_REGISTERED: {
-            return {
-                ...state,
-            }
-        }
-        case USER_LOOGED_IN: {
+        case LOGGED_IN: {
             return {
                 ...state,
                 accessToken: action.payLoad.accessToken,
@@ -33,6 +28,20 @@ const authReducer = (state = initialState, action) => {
                     level: action.payLoad.user.level,
                     exp: action.payLoad.user.exp,
                     role: action.payLoad.user.role
+                }
+            }
+        }
+        case LOGGED_OUT: {
+            return {
+                accessToken: "",
+                isAuthenticated: false,
+                user: {
+                    _id: null,
+                    firstname: "",
+                    lastname: "",
+                    level: null,
+                    exp: null,
+                    role: ""
                 }
             }
         }

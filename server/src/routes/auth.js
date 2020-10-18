@@ -4,7 +4,7 @@
 
 const router = require("express").Router();
 const { createNewUser, getUserByUsername } = require('../lib/user');
-const { matchPassword, createTokenForUser } = require('../utils/jwt'); 
+const { matchPassword, createTokenForUser, authenticateToken } = require('../utils/jwt'); 
 const { isPasswordValid, isEmailValid, isUserInfoValid } = require('../utils/inputValidators');
 
 
@@ -62,6 +62,32 @@ router.post("/api/register", async (req, res) => {
         res.status(400).json(newUser);
     }
 
+});
+
+router.get("/api/verify/accesstoken", authenticateToken, async (req, res) => {
+    
+    // Get user from database
+    const result = await getUserByUsername(req.user.username);
+
+    // check for errors
+    if(result.error) {
+        return res.status(result.status).send({ message: result.message });
+    }
+
+    const userToReturn = {
+        _id: result.user._id,
+        firstname: result.user.firstname,
+        lastname: result.user.lastname,
+        level: result.user.level,
+        exp: result.user.exp,
+        role: result.user.role
+    };
+    
+    // Get token from header - "Bearer token...."
+    const authHeader = req.headers['authorization'];
+    const accessToken = authHeader && authHeader.split(' ')[1];
+
+    return res.status(200).json({ message: "success", accessToken, user: userToReturn });
 });
 
 module.exports = router;
