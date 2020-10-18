@@ -9,8 +9,10 @@ import { useSelector, useDispatch } from "react-redux";
 import userPlaceholder from '../assets/user.jpg';
 import ButtonWrapper from './extras/buttonWrapper';
 import { userLoggedOut } from '../redux/actions/authActions';
+import { useHistory } from "react-router-dom";
 
 const NavBar = () => {
+    const history = useHistory();
     const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.auth);
     
@@ -27,7 +29,7 @@ const NavBar = () => {
 
     return <Wrapper>
         <LogoWrapper>
-            <ButtonWrapper type="button">
+            <ButtonWrapper type="button" click={() => { history.push('/protected') }}>
                 <Logo src={logo} alt="logo" />
             </ButtonWrapper>
         </LogoWrapper>
