@@ -2,12 +2,40 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import TextEditor from './textEditor';
 import { EditorState } from 'draft-js';
-import {stateToHTML} from 'draft-js-export-html';
+import { stateToHTML } from 'draft-js-export-html';
+import IconInput from './extras/iconinput';
+import { BsArrowLeftRight, BsFillTrashFill } from "react-icons/bs";
+import Button from './extras/button';
+import SecondaryButton from './extras/secondaryButton';
 
 const AdminPanel = () => {
     const [editorState, setEditorState] = useState(() =>
         EditorState.createEmpty(),
     );
+
+    const [tests, setTests] = useState([createTestInput(0)]);
+
+
+    function createTestInput(key) {
+        return <Tests key={key}>
+            <IconInput type="text" placeholder="input"><BsArrowLeftRight/></IconInput>
+            <IconInput type="text" placeholder="output"><BsArrowLeftRight/></IconInput>
+            <Button type="button" click={deleteTest.bind(null, key)}><BsFillTrashFill/></Button>
+            </Tests>;
+    }
+
+    function addTestInput(key) {
+        let tempKey = key;
+        const keys = tests.map(el => parseInt(el.key));
+        while(keys.includes(tempKey)) {
+            tempKey++;
+        }
+        setTests(current => [...current, createTestInput(tempKey)]);
+    }
+
+    function deleteTest(index) {
+        setTests(current => current.filter(el => el.key != index));
+    }
 
     return <Wrapper>
         <LeftWrapper>
@@ -15,8 +43,12 @@ const AdminPanel = () => {
                 <TextEditor change={setEditorState}/>
             </TextEditorWrapper>
             <FormWrapper>
-                Form Goes Here
-                <button type="button" >Test</button>
+                <TestWrapper>
+                    {tests.map( (element, index) => {
+                        return element;
+                    })}
+                </TestWrapper>
+                <SecondaryButton type="button" click={addTestInput.bind(null, tests.length)} title="Add Test"></SecondaryButton>
             </FormWrapper>
         </LeftWrapper>
         <RightWrapper>
@@ -71,6 +103,17 @@ const ToolBar = styled.div`
 const TableWrapper = styled.div`
     flex: 1;
     // background-color: #fff;
+`;
+
+const TestWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const Tests = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
 `;
 
 export default AdminPanel;
