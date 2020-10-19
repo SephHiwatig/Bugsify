@@ -16,7 +16,6 @@ const AdminPanel = () => {
         EditorState.createEmpty(),
     );
     const [dropDownValue, setDropdownValue] = useState("");
-    const [test, setTest] = useState("");
 
     const [tests, setTests] = useState([createTestInput(0), createTestInput(1), createTestInput(2)]);
 
@@ -56,7 +55,7 @@ const AdminPanel = () => {
                     <DropDown options={["Easy", "Normal", "Hard"]} value={dropDownValue} select={setDropdownValue}><BsFillStarFill /></DropDown>
                 </TestWrapper>
                 <TestWrapper>
-                    <TextArea placeholder="Starting template" change={setTest} rows={5}><BsCardHeading /></TextArea>
+                    <TextArea placeholder="Starting template" rows={5}><BsCardHeading /></TextArea>
                 </TestWrapper>
                 <TestWrapper>
                     <CheckBox id="sample" ><span>Sample Question</span></CheckBox>
@@ -68,7 +67,6 @@ const AdminPanel = () => {
                     })}
                 </TestWrapper>
                 <SecondaryButton type="button" click={addTestInput.bind(null, tests.length)} title="Add Test"></SecondaryButton>
-                <SecondaryButton type="button" click={() => { console.log(test) }} title="Add Test"></SecondaryButton>
             </FormWrapper>
         </LeftWrapper>
         <RightWrapper>
