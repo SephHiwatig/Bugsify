@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import logo from '../assets/logo.png';
+import logo from '../../assets/logo.png';
 import { BsPersonFill } from "react-icons/bs";
 import { BsFillLockFill } from "react-icons/bs";
 import { BsFillExclamationTriangleFill } from "react-icons/bs";
-import Button from './extras/button';
+import Button from '../extras/button';
 import {
     Link
-  } from "react-router-dom";
-import { baseApi } from '../environment';
-import IconInput from './extras/iconinput';
+} from "react-router-dom";
+import { baseApi } from '../../environment';
+import IconInput from '../extras/iconinput';
 import { useDispatch } from "react-redux";
-import { userLoggedIn } from '../redux/actions/authActions';
+import { userLoggedIn } from '../../redux/actions/authActions';
 import { useHistory } from "react-router-dom";
 
 const Login = () => {
@@ -24,22 +24,22 @@ const Login = () => {
     const [error, setError] = useState("");
 
     const login = async (value) => {
-        
+
         //login user
         const data = await fetch(
-          baseApi + "login",
-          {
-            method: "POST",
-            body: JSON.stringify(value),
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
+            baseApi + "login",
+            {
+                method: "POST",
+                body: JSON.stringify(value),
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                }
             }
-          }
         );
-    
+
         if (data.ok) {
-            const {accessToken, user} = await data.json();
+            const { accessToken, user } = await data.json();
             localStorage.setItem('accessToken', accessToken);
             localStorage.setItem('isAuthenticated', true);
             localStorage.setItem('user', JSON.stringify(user));
@@ -56,7 +56,7 @@ const Login = () => {
         <LoginForm>
             <Logo src={logo} alt="logo" />
             {error && <InputWrapper>
-            <Warning><BsFillExclamationTriangleFill/>&nbsp;{error}</Warning>
+                <Warning><BsFillExclamationTriangleFill />&nbsp;{error}</Warning>
             </InputWrapper>}
             <InputWrapper>
                 <IconInput placeholder="Username" type="text" change={(event) => {
@@ -65,7 +65,7 @@ const Login = () => {
                         username: event.target.value
                     })
                 }}>
-                    <BsPersonFill/>
+                    <BsPersonFill />
                 </IconInput>
             </InputWrapper>
             <InputWrapper>
@@ -75,11 +75,11 @@ const Login = () => {
                         password: event.target.value
                     })
                 }}>
-                    <BsFillLockFill/>
+                    <BsFillLockFill />
                 </IconInput>
             </InputWrapper>
             <InputWrapper>
-                <Button title="Log in" click={login.bind(null, formValues)} type="button"/>
+                <Button title="Log in" click={login.bind(null, formValues)} type="button" />
             </InputWrapper>
             <InputWrapper>
                 <SignUpLink>

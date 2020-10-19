@@ -6,21 +6,21 @@ import Console from './console';
 
 const Kata = () => {
     return (
-    <Wrapper>
-        <QuestionWrapper>
-            <Question />
-        </QuestionWrapper>
-        <SolutionWrapper>
-            <EditorWrapper>
-                <EditorTitle>Solution</EditorTitle>
-                <CodeEditor />
-            </EditorWrapper>
-            <ConsoleWrapper>
-                <EditorTitle>Output</EditorTitle>
-                <Console/>
-            </ConsoleWrapper>
-        </SolutionWrapper>
-    </Wrapper>);
+        <Wrapper>
+            <QuestionWrapper>
+                <Question />
+            </QuestionWrapper>
+            <SolutionWrapper>
+                <EditorWrapper>
+                    <EditorTitle>Solution</EditorTitle>
+                    <CodeEditor />
+                </EditorWrapper>
+                <ConsoleWrapper>
+                    <EditorTitle>Output</EditorTitle>
+                    <Console />
+                </ConsoleWrapper>
+            </SolutionWrapper>
+        </Wrapper>);
 };
 
 const Wrapper = styled.div`

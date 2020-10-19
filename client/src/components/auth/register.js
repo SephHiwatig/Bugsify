@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import logo from '../assets/logo.png';
+import logo from '../../assets/logo.png';
 import { BsPersonFill } from "react-icons/bs";
 import { BsFillLockFill } from "react-icons/bs";
 import { BsFillEnvelopeFill } from "react-icons/bs";
 import { BsLayoutSidebarInset } from "react-icons/bs";
 import { BsFillExclamationTriangleFill } from "react-icons/bs";
 import { BsLayoutSidebarInsetReverse } from "react-icons/bs";
-import Button from './extras/button';
-import { baseApi } from '../environment';
+import Button from '../extras/button';
+import { baseApi } from '../../environment';
 import {
     Link
-  } from "react-router-dom";
+} from "react-router-dom";
 
-import IconInput from './extras/iconinput';
+import IconInput from '../extras/iconinput';
 
 const Register = () => {
     const [formValues, setFormValues] = useState({
@@ -31,26 +31,26 @@ const Register = () => {
         const keys = Object.keys(value);
         let isInvalid = false;
         keys.forEach(key => {
-            if(!value[key]) {
+            if (!value[key]) {
                 setError("All fields are required");
                 isInvalid = true;
             }
         })
-        if(isInvalid) return;
-        
+        if (isInvalid) return;
+
         //register user
         const data = await fetch(
-          baseApi + "register",
-          {
-            method: "POST",
-            body: JSON.stringify(value),
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
+            baseApi + "register",
+            {
+                method: "POST",
+                body: JSON.stringify(value),
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                }
             }
-          }
         );
-    
+
         if (data.ok) {
             const response = await data.json();
             console.log('ok', response);
@@ -67,10 +67,10 @@ const Register = () => {
         <RegisterForm>
             <Logo src={logo} alt="logo" />
             {error && <InputWrapper>
-            <Warning><BsFillExclamationTriangleFill/>&nbsp;{error}</Warning>
+                <Warning><BsFillExclamationTriangleFill />&nbsp;{error}</Warning>
             </InputWrapper>}
             {success && <InputWrapper>
-            <Success>Your account has been created.&nbsp;<Link to="/login">Log in.</Link> </Success>
+                <Success>Your account has been created.&nbsp;<Link to="/login">Log in.</Link> </Success>
             </InputWrapper>}
             <InputWrapper>
                 <IconInput placeholder="Username" type="text" change={(event) => {
@@ -79,7 +79,7 @@ const Register = () => {
                         username: event.target.value
                     })
                 }}>
-                    <BsPersonFill/>
+                    <BsPersonFill />
                 </IconInput>
             </InputWrapper>
             <InputWrapper>
@@ -89,7 +89,7 @@ const Register = () => {
                         firstname: event.target.value
                     })
                 }}>
-                    <BsLayoutSidebarInset/>
+                    <BsLayoutSidebarInset />
                 </IconInput>
             </InputWrapper>
             <InputWrapper>
@@ -99,7 +99,7 @@ const Register = () => {
                         lastname: event.target.value
                     })
                 }}>
-                    <BsLayoutSidebarInsetReverse/>
+                    <BsLayoutSidebarInsetReverse />
                 </IconInput>
             </InputWrapper>
             <InputWrapper>
@@ -109,7 +109,7 @@ const Register = () => {
                         email: event.target.value
                     })
                 }}>
-                    <BsFillEnvelopeFill/>
+                    <BsFillEnvelopeFill />
                 </IconInput>
             </InputWrapper>
             <InputWrapper>
@@ -119,7 +119,7 @@ const Register = () => {
                         password: event.target.value
                     })
                 }}>
-                    <BsFillLockFill/>
+                    <BsFillLockFill />
                 </IconInput>
             </InputWrapper>
             <PasswordConstraints>
@@ -128,7 +128,7 @@ const Register = () => {
                 <li>Must not contain spaces</li>
             </PasswordConstraints>
             <InputWrapper>
-                <Button type="button" title="Register" click={register.bind(null, formValues)}/>
+                <Button type="button" title="Register" click={register.bind(null, formValues)} />
             </InputWrapper>
         </RegisterForm>
     </Wrapper>;

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
-import Kata from './components/kata';
-import Login from './components/login';
-import Register from './components/register';
-import AdminPenl from './components/admin';
+import Kata from './components/kata/kata';
+import Login from './components/auth/login';
+import Register from './components/auth/register';
+import AdminPanel from './components/admin/admin';
 import styled from 'styled-components';
 import { baseApi } from './environment';
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +18,6 @@ import {
 } from "react-router-dom";
 
 import { createGlobalStyle } from 'styled-components';
-import AdminPanel from './components/admin';
 
 const GlobalStyles = createGlobalStyle`
   html {

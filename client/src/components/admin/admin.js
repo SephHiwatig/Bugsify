@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import TextEditor from './textEditor';
 import { EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
-import IconInput from './extras/iconinput';
+import IconInput from '../extras/iconinput';
 import { BsArrowLeftRight, BsFillTrashFill, BsCardHeading, BsFillStarFill } from "react-icons/bs";
-import Button from './extras/button';
-import SecondaryButton from './extras/secondaryButton';
-import DropDown from './extras/dropdown';
-import TextArea from './extras/textArea';
+import Button from '../extras/button';
+import SecondaryButton from '../extras/secondaryButton';
+import DropDown from '../extras/dropdown';
+import TextArea from '../extras/textArea';
 
 const AdminPanel = () => {
     const [editorState, setEditorState] = useState(() =>
