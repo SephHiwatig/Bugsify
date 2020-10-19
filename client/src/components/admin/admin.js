@@ -4,12 +4,13 @@ import TextEditor from './textEditor';
 import { EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import IconInput from '../extras/iconinput';
-import { BsArrowLeftRight, BsFillTrashFill, BsCardHeading, BsFillStarFill } from "react-icons/bs";
+import { BsArrowLeftRight, BsFillTrashFill, BsCardHeading, BsFillStarFill, BsFileEarmarkPlus } from "react-icons/bs";
 import Button from '../extras/button';
 import SecondaryButton from '../extras/secondaryButton';
 import DropDown from '../extras/dropdown';
 import TextArea from '../extras/textArea';
 import CheckBox from '../extras/checkbox';
+import ButtonWrapper from '../extras/buttonWrapper';
 
 const AdminPanel = () => {
     const [editorState, setEditorState] = useState(() =>
@@ -44,9 +45,7 @@ const AdminPanel = () => {
 
     return <Wrapper>
         <LeftWrapper>
-            <TextEditorWrapper>
-                <TextEditor change={setEditorState} />
-            </TextEditorWrapper>
+            <TextEditor change={setEditorState} />
             <FormWrapper>
                 <TestWrapper>
                     <IconInput type="text" placeholder="Title"><BsCardHeading /></IconInput>
@@ -68,6 +67,9 @@ const AdminPanel = () => {
                 </TestWrapper>
                 <SecondaryButton type="button" click={addTestInput.bind(null, tests.length)} title="Add Test"></SecondaryButton>
             </FormWrapper>
+            <FormFooter>
+                <ButtonWrapper type="button" title="Add Problem"><BsFileEarmarkPlus /> </ButtonWrapper>
+            </FormFooter>
         </LeftWrapper>
         <RightWrapper>
             <ToolBar >Tool bar</ToolBar>
@@ -78,7 +80,7 @@ const AdminPanel = () => {
 
 const Wrapper = styled.div`
     padding: 16px;
-    height: 83%;
+    min-height: 83%;
     display: flex;
     flex-direction: column-reverse;
 
@@ -90,7 +92,7 @@ const Wrapper = styled.div`
 const LeftWrapper = styled.div`
     padding: 8px;
     margin: 2px;
-    height: 100%;
+    min-height: 100%;
     flex: 1;
     background-color: var(--secondary-color);
     display: flex;
@@ -100,19 +102,37 @@ const LeftWrapper = styled.div`
 const RightWrapper = styled.div`
     padding: 8px;
     margin: 2px;
-    height: 100%;
+    min-height: 100%;
     flex: 1;
     background-color: var(--secondary-color);
     display: flex;
     flex-direction: column;
 `
-const TextEditorWrapper = styled.div`
- 
-`;
 
 const FormWrapper = styled.div`
     flex: 1;
     margin-top: 8px;
+`;
+
+const FormFooter = styled.div`
+margin-top: 8px;
+    justify-content: center;
+    border: 1px solid #007300;
+    padding: 4px;
+    border-radius: 4px;
+    text-align: center;
+    color: #007300;
+
+    &:hover {
+        background-color: #007300;
+        color: #000;
+        transition: background-color .3s ease-in-out;
+    }
+
+    &:active {
+        transform: scale(0.9);
+        transition: transform .2s ease-in-out
+    }
 `;
 
 const ToolBar = styled.div`
