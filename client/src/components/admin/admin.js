@@ -9,6 +9,7 @@ import Button from '../extras/button';
 import SecondaryButton from '../extras/secondaryButton';
 import DropDown from '../extras/dropdown';
 import TextArea from '../extras/textArea';
+import CheckBox from '../extras/checkbox';
 
 const AdminPanel = () => {
     const [editorState, setEditorState] = useState(() =>
@@ -56,6 +57,9 @@ const AdminPanel = () => {
                 </TestWrapper>
                 <TestWrapper>
                     <TextArea placeholder="Starting template" change={setTest} rows={5}><BsCardHeading /></TextArea>
+                </TestWrapper>
+                <TestWrapper>
+                    <CheckBox id="sample" ><span>Sample Question</span></CheckBox>
                 </TestWrapper>
                 <TestWrapper>
                     <h3>Tests</h3>
