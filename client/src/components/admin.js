@@ -8,12 +8,14 @@ import { BsArrowLeftRight, BsFillTrashFill, BsCardHeading, BsFillStarFill } from
 import Button from './extras/button';
 import SecondaryButton from './extras/secondaryButton';
 import DropDown from './extras/dropdown';
+import TextArea from './extras/textArea';
 
 const AdminPanel = () => {
     const [editorState, setEditorState] = useState(() =>
         EditorState.createEmpty(),
     );
     const [dropDownValue, setDropdownValue] = useState("");
+    const [test, setTest] = useState("");
 
     const [tests, setTests] = useState([createTestInput(0), createTestInput(1), createTestInput(2)]);
 
@@ -53,7 +55,7 @@ const AdminPanel = () => {
                     <DropDown options={["Easy", "Normal", "Hard"]} value={dropDownValue} select={setDropdownValue}><BsFillStarFill /></DropDown>
                 </TestWrapper>
                 <TestWrapper>
-                    <IconInput type="text" placeholder="Title"><BsCardHeading /></IconInput>
+                    <TextArea placeholder="Starting template" change={setTest} rows={5}><BsCardHeading /></TextArea>
                 </TestWrapper>
                 <TestWrapper>
                     <h3>Tests</h3>
@@ -62,6 +64,7 @@ const AdminPanel = () => {
                     })}
                 </TestWrapper>
                 <SecondaryButton type="button" click={addTestInput.bind(null, tests.length)} title="Add Test"></SecondaryButton>
+                <SecondaryButton type="button" click={() => { console.log(test) }} title="Add Test"></SecondaryButton>
             </FormWrapper>
         </LeftWrapper>
         <RightWrapper>
