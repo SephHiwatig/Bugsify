@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({title, click, type, children}) => {
-return <Btn onClick={click} type={type}>{title}{children ? " " : null}{children}</Btn>
+const Button = ({ title, click, type, children }) => {
+    return <Btn onClick={click} type={type}>{title}{children ? " " : null}{children}</Btn>
 };
 
 const Btn = styled.button`

@@ -14,7 +14,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect 
+  Redirect
 } from "react-router-dom";
 
 import { createGlobalStyle } from 'styled-components';
@@ -48,23 +48,23 @@ function App() {
         }
       }
     ).then(data => data.json())
-    .then(data => {
-      // const {accessToken, user} = data;
-      // dispatch(userLoggedIn(accessToken, user, true));
-    })
-    .catch(error => {
-      dispatch(userLoggedOut());
-    });
+      .then(data => {
+        // const {accessToken, user} = data;
+        // dispatch(userLoggedIn(accessToken, user, true));
+      })
+      .catch(error => {
+        dispatch(userLoggedOut());
+      });
   };
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
-    if(accessToken) {
+    if (accessToken) {
       verifyToken(accessToken);
     }
   }, [])
 
-  
+
 
   return (
     <>
@@ -74,41 +74,41 @@ function App() {
         <Router>
           <Switch>
             <Route path="/login" render={(props) => (
-              isAuth ? <Redirect to="/protected" /> : 
-              <ContentWrapper>
-                <Content>
-                <Login></Login>
-                </Content>
-              </ContentWrapper>
+              isAuth ? <Redirect to="/protected" /> :
+                <ContentWrapper>
+                  <Content>
+                    <Login></Login>
+                  </Content>
+                </ContentWrapper>
             )}>
             </Route>
             <Route path="/register" render={(props) => (
-              isAuth ? <Redirect to="/protected" /> : 
-              <ContentWrapper>
-                <Content>
-                  <Register></Register>
-                </Content>
-              </ContentWrapper>
+              isAuth ? <Redirect to="/protected" /> :
+                <ContentWrapper>
+                  <Content>
+                    <Register></Register>
+                  </Content>
+                </ContentWrapper>
             )}>
             </Route>
             <Route path="/admin" render={(props) => (
-              !isAuth || !isAdmin ? <Redirect to="/" /> : 
-              <ContentWrapper>
-                <Content>
-                  <Navbar></Navbar>
-                  <AdminPanel></AdminPanel>
-                </Content>
-              </ContentWrapper>
+              false ? <Redirect to="/" /> :
+                <ContentWrapper>
+                  <Content>
+                    <Navbar></Navbar>
+                    <AdminPanel></AdminPanel>
+                  </Content>
+                </ContentWrapper>
             )}>
             </Route>
             <Route path="/" render={(props) => (
               (
                 <ContentWrapper>
-                <Content>
-                  <Navbar></Navbar>
-                  <Kata></Kata>
-                </Content>
-              </ContentWrapper>
+                  <Content>
+                    <Navbar></Navbar>
+                    <Kata></Kata>
+                  </Content>
+                </ContentWrapper>
               )
             )}>
             </Route>

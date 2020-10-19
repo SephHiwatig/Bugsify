@@ -4,33 +4,36 @@ import TextEditor from './textEditor';
 import { EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import IconInput from './extras/iconinput';
-import { BsArrowLeftRight, BsFillTrashFill } from "react-icons/bs";
+import { BsArrowLeftRight, BsFillTrashFill, BsCardHeading, BsFillStarFill } from "react-icons/bs";
 import Button from './extras/button';
 import SecondaryButton from './extras/secondaryButton';
+import DropDown from './extras/dropdown';
 
 const AdminPanel = () => {
     const [editorState, setEditorState] = useState(() =>
         EditorState.createEmpty(),
     );
+    const [dropDownValue, setDropdownValue] = useState("");
 
-    const [tests, setTests] = useState([createTestInput(0)]);
+    const [tests, setTests] = useState([createTestInput(0), createTestInput(1), createTestInput(2)]);
 
 
-    function createTestInput(key) {
+    function createTestInput(key, showButton) {
         return <Tests key={key}>
-            <IconInput type="text" placeholder="input"><BsArrowLeftRight/></IconInput>
-            <IconInput type="text" placeholder="output"><BsArrowLeftRight/></IconInput>
-            <Button type="button" click={deleteTest.bind(null, key)}><BsFillTrashFill/></Button>
-            </Tests>;
+            <IconInput type="text" placeholder="Input"><BsArrowLeftRight /></IconInput>
+            <IconInput type="text" placeholder="Output"><BsArrowLeftRight /></IconInput>
+            {showButton && <Button type="button" click={deleteTest.bind(null, key)}><BsFillTrashFill /></Button>}
+            {!showButton && <div style={{ visibility: "hidden" }}><Button type="button"><BsFillTrashFill /></Button></div>}
+        </Tests>;
     }
 
     function addTestInput(key) {
         let tempKey = key;
         const keys = tests.map(el => parseInt(el.key));
-        while(keys.includes(tempKey)) {
+        while (keys.includes(tempKey)) {
             tempKey++;
         }
-        setTests(current => [...current, createTestInput(tempKey)]);
+        setTests(current => [...current, createTestInput(tempKey, true)]);
     }
 
     function deleteTest(index) {
@@ -40,11 +43,21 @@ const AdminPanel = () => {
     return <Wrapper>
         <LeftWrapper>
             <TextEditorWrapper>
-                <TextEditor change={setEditorState}/>
+                <TextEditor change={setEditorState} />
             </TextEditorWrapper>
             <FormWrapper>
                 <TestWrapper>
-                    {tests.map( (element, index) => {
+                    <IconInput type="text" placeholder="Title"><BsCardHeading /></IconInput>
+                </TestWrapper>
+                <TestWrapper>
+                    <DropDown options={["Easy", "Normal", "Hard"]} value={dropDownValue} select={setDropdownValue}><BsFillStarFill /></DropDown>
+                </TestWrapper>
+                <TestWrapper>
+                    <IconInput type="text" placeholder="Title"><BsCardHeading /></IconInput>
+                </TestWrapper>
+                <TestWrapper>
+                    <h3>Tests</h3>
+                    {tests.map((element, index) => {
                         return element;
                     })}
                 </TestWrapper>
@@ -89,11 +102,12 @@ const RightWrapper = styled.div`
     flex-direction: column;
 `
 const TextEditorWrapper = styled.div`
-    flex: 1;
+ 
 `;
 
 const FormWrapper = styled.div`
     flex: 1;
+    margin-top: 8px;
 `;
 
 const ToolBar = styled.div`
@@ -108,12 +122,30 @@ const TableWrapper = styled.div`
 const TestWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    margin-bottom: 8px;
+
+    & h3 {
+        margin: 0 0 8px 0;
+    }
 `;
 
 const Tests = styled.div`
     display: flex;
-    justify-content: space-between;
     margin-bottom: 4px;
+    flex-direction: column;
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 8px;
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+        justify-content: space-between;
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    & div {
+        margin-bottom: 4px;
+    }
 `;
 
 export default AdminPanel;

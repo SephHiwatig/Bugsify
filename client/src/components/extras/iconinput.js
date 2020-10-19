@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const IconInput = ({children, placeholder, type, change}) => {
+const IconInput = ({ children, placeholder, type, change }) => {
     return <InputWrapper>
         <Label>
             {children}
         </Label>
-        <Input placeholder={placeholder} type={type} onChange={change}/>
+        <Input placeholder={placeholder} type={type} onChange={change} />
     </InputWrapper>;
 };
 
@@ -29,6 +29,7 @@ const Input = styled.input`
     border: none;
     outline: none;
     color: var(--main-font-color) !important;
+    width: 100%;
 `;
 
 export default IconInput;
