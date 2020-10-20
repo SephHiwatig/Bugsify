@@ -26,7 +26,7 @@ const Kata = () => {
 const Wrapper = styled.div`
     display: flex;
     padding: 16px;
-    height: 83%;
+    min-height: 83%;
     flex-direction: column;
 
     @media (min-width: 768px) {
@@ -37,6 +37,7 @@ const Wrapper = styled.div`
 const QuestionWrapper = styled.div`
     flex: 1;
     margin: 4px;
+    min-height: 100%;
 `;
 
 const SolutionWrapper = styled.div`
@@ -44,6 +45,7 @@ const SolutionWrapper = styled.div`
     display: flex;
     flex-direction: column;
     margin: 4px;
+    min-height: 100%;
 `;
 
 const EditorWrapper = styled.div`

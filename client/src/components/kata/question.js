@@ -9,7 +9,7 @@ const Question = () => {
             <Info>
                 <InfoItem>Difficulty: Easy</InfoItem>
                 <InfoItem>Answers: 523</InfoItem>
-                <InfoItem><AiFillLike/>: 100</InfoItem>
+                <InfoItem><AiFillLike />: 100</InfoItem>
             </Info>
             <Description>
                 <p>This time we want to write calculations using functions and get the results. Let's have a look at some examples:</p>
