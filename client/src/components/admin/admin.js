@@ -72,8 +72,51 @@ const AdminPanel = () => {
             </FormFooter>
         </LeftWrapper>
         <RightWrapper>
-            <ToolBar >Tool bar</ToolBar>
-            <TableWrapper></TableWrapper>
+            <TableWrapper>
+                <KataTable>
+                    <thead>
+                        <tr>
+                            <th className="table-col">Difficulty</th>
+                            <th className="table-col">Title</th>
+                            <th className="table-col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td className="table-col">Easy</td>
+                            <td className="table-col">Pig latin</td>
+                            <td>
+                                <Button type="button"><BsFillTrashFill /></Button>
+                                <Button type="button"><BsFillTrashFill /></Button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="table-col">Easy</td>
+                            <td className="table-col">Pig latin</td>
+                            <td>
+                                <Button type="button"><BsFillTrashFill /></Button>
+                                <Button type="button"><BsFillTrashFill /></Button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="table-col">Easy</td>
+                            <td className="table-col">Pig latin</td>
+                            <td>
+                                <Button type="button"><BsFillTrashFill /></Button>
+                                <Button type="button"><BsFillTrashFill /></Button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="table-col">Easy</td>
+                            <td className="table-col">Pig latin</td>
+                            <td>
+                                <Button type="button"><BsFillTrashFill /></Button>
+                                <Button type="button"><BsFillTrashFill /></Button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </KataTable>
+            </TableWrapper>
         </RightWrapper>
     </Wrapper>;
 }
@@ -135,13 +178,28 @@ margin-top: 8px;
     }
 `;
 
-const ToolBar = styled.div`
-
-`;
-
 const TableWrapper = styled.div`
     flex: 1;
     // background-color: #fff;
+`;
+
+const KataTable = styled.table`
+    width: 100%;
+    text-align: center;
+    border-collapse:collapse;
+
+    & th.table-col {
+        background-color: var(--ui-theme-color);
+    }
+
+    & tr:nth-child(even) {
+        background-color: #adb5bd;
+        color: #000;
+    }
+
+    & td,th {
+        padding: 4px;
+    }
 `;
 
 const TestWrapper = styled.div`
