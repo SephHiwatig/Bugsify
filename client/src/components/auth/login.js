@@ -45,7 +45,7 @@ const Login = () => {
             localStorage.setItem('user', JSON.stringify(user));
             setError("");
             dispatch(userLoggedIn(accessToken, user, true));
-            history.push('/protected')
+            history.push('/')
         } else {
             const response = await data.json();
             setError(response.message);

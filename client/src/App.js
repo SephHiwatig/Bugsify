@@ -36,7 +36,7 @@ function App() {
   const isAdmin = useSelector((state) => state.auth.user.role) === "admin";
 
   const verifyToken = async (accessToken) => {
-    const data = fetch(
+    fetch(
       baseApi + "verify/accesstoken",
       {
         method: "GET",
