@@ -10,7 +10,8 @@ import {
     BsCardHeading,
     BsFillStarFill,
     BsFileEarmarkPlus,
-    BsPencil
+    BsPencil,
+    BsSearch
 } from "react-icons/bs";
 import Button from '../extras/button';
 import SecondaryButton from '../extras/secondaryButton';
@@ -82,16 +83,15 @@ const AdminPanel = () => {
             </FormFooter>
         </LeftWrapper>
         <RightWrapper>
-            <ToolBar>
-                Toolbar goes here
-            </ToolBar>
             <TableWrapper>
                 <KataTable>
                     <thead>
                         <tr>
                             <th className="table-col">Difficulty</th>
                             <th className="table-col">Title</th>
-                            <th className="table-col"></th>
+                            <th className="table-col">
+                                <IconInput type="text" placeholder="Search"><BsSearch /></IconInput>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -225,13 +225,12 @@ margin-top: 8px;
 
 const TableWrapper = styled.div`
     flex: 1;
-    // background-color: #fff;
     margin: 8px 0;
 `;
 
-const ToolBar = styled.div`
-    border:1px solid #fff;
-`;
+// const ToolBar = styled.div`
+//     border:1px solid #fff;
+// `;
 
 const KataTable = styled.table`
     width: 100%;
