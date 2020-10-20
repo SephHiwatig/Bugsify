@@ -20,6 +20,7 @@ import CheckBox from '../extras/checkbox';
 import ButtonWrapper from '../extras/buttonWrapper';
 import InfoButton from '../extras/infoButton';
 import WarningButton from '../extras/warningButton';
+import Paginator from './paginator';
 
 const AdminPanel = () => {
     const [editorState, setEditorState] = useState(() =>
@@ -130,7 +131,7 @@ const AdminPanel = () => {
                 </KataTable>
             </TableWrapper>
             <PagingWrapper>
-                Paging Goes Here
+                <Paginator />
             </PagingWrapper>
         </RightWrapper>
     </Wrapper>;
@@ -252,7 +253,7 @@ const KataTable = styled.table`
 `;
 
 const PagingWrapper = styled.div`
-    border:1px solid #fff;
+    
 `;
 
 export default AdminPanel;
