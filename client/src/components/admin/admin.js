@@ -4,13 +4,22 @@ import TextEditor from './textEditor';
 import { EditorState } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import IconInput from '../extras/iconinput';
-import { BsArrowLeftRight, BsFillTrashFill, BsCardHeading, BsFillStarFill, BsFileEarmarkPlus } from "react-icons/bs";
+import {
+    BsArrowLeftRight,
+    BsFillTrashFill,
+    BsCardHeading,
+    BsFillStarFill,
+    BsFileEarmarkPlus,
+    BsPencil
+} from "react-icons/bs";
 import Button from '../extras/button';
 import SecondaryButton from '../extras/secondaryButton';
 import DropDown from '../extras/dropdown';
 import TextArea from '../extras/textArea';
 import CheckBox from '../extras/checkbox';
 import ButtonWrapper from '../extras/buttonWrapper';
+import InfoButton from '../extras/infoButton';
+import WarningButton from '../extras/warningButton';
 
 const AdminPanel = () => {
     const [editorState, setEditorState] = useState(() =>
@@ -72,6 +81,9 @@ const AdminPanel = () => {
             </FormFooter>
         </LeftWrapper>
         <RightWrapper>
+            <ToolBar>
+                Toolbar goes here
+            </ToolBar>
             <TableWrapper>
                 <KataTable>
                     <thead>
@@ -86,37 +98,40 @@ const AdminPanel = () => {
                             <td className="table-col">Easy</td>
                             <td className="table-col">Pig latin</td>
                             <td>
-                                <Button type="button"><BsFillTrashFill /></Button>
-                                <Button type="button"><BsFillTrashFill /></Button>
+                                <InfoButton type="button"><BsPencil /></InfoButton>
+                                <WarningButton type="button"><BsFillTrashFill /></WarningButton>
                             </td>
                         </tr>
                         <tr>
                             <td className="table-col">Easy</td>
                             <td className="table-col">Pig latin</td>
                             <td>
-                                <Button type="button"><BsFillTrashFill /></Button>
-                                <Button type="button"><BsFillTrashFill /></Button>
+                                <InfoButton type="button"><BsPencil /></InfoButton>
+                                <WarningButton type="button"><BsFillTrashFill /></WarningButton>
                             </td>
                         </tr>
                         <tr>
                             <td className="table-col">Easy</td>
                             <td className="table-col">Pig latin</td>
                             <td>
-                                <Button type="button"><BsFillTrashFill /></Button>
-                                <Button type="button"><BsFillTrashFill /></Button>
+                                <InfoButton type="button"><BsPencil /></InfoButton>
+                                <WarningButton type="button"><BsFillTrashFill /></WarningButton>
                             </td>
                         </tr>
                         <tr>
                             <td className="table-col">Easy</td>
                             <td className="table-col">Pig latin</td>
                             <td>
-                                <Button type="button"><BsFillTrashFill /></Button>
-                                <Button type="button"><BsFillTrashFill /></Button>
+                                <InfoButton type="button"><BsPencil /></InfoButton>
+                                <WarningButton type="button"><BsFillTrashFill /></WarningButton>
                             </td>
                         </tr>
                     </tbody>
                 </KataTable>
             </TableWrapper>
+            <PagingWrapper>
+                Paging Goes Here
+            </PagingWrapper>
         </RightWrapper>
     </Wrapper>;
 }
@@ -157,51 +172,6 @@ const FormWrapper = styled.div`
     margin-top: 8px;
 `;
 
-const FormFooter = styled.div`
-margin-top: 8px;
-    justify-content: center;
-    border: 1px solid #007300;
-    padding: 4px;
-    border-radius: 4px;
-    text-align: center;
-    color: #007300;
-
-    &:hover {
-        background-color: #007300;
-        color: #000;
-        transition: background-color .3s ease-in-out;
-    }
-
-    &:active {
-        transform: scale(0.9);
-        transition: transform .2s ease-in-out
-    }
-`;
-
-const TableWrapper = styled.div`
-    flex: 1;
-    // background-color: #fff;
-`;
-
-const KataTable = styled.table`
-    width: 100%;
-    text-align: center;
-    border-collapse:collapse;
-
-    & th.table-col {
-        background-color: var(--ui-theme-color);
-    }
-
-    & tr:nth-child(even) {
-        background-color: #adb5bd;
-        color: #000;
-    }
-
-    & td,th {
-        padding: 4px;
-    }
-`;
-
 const TestWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -229,6 +199,60 @@ const Tests = styled.div`
     & div {
         margin-bottom: 4px;
     }
+`;
+
+const FormFooter = styled.div`
+margin-top: 8px;
+    justify-content: center;
+    border: 1px solid #007300;
+    padding: 4px;
+    border-radius: 4px;
+    text-align: center;
+    color: #007300;
+
+    &:hover {
+        background-color: #007300;
+        color: #000;
+        transition: background-color .3s ease-in-out;
+    }
+
+    &:active {
+        transform: scale(0.9);
+        transition: transform .2s ease-in-out
+    }
+`;
+
+const TableWrapper = styled.div`
+    flex: 1;
+    // background-color: #fff;
+    margin: 8px 0;
+`;
+
+const ToolBar = styled.div`
+    border:1px solid #fff;
+`;
+
+const KataTable = styled.table`
+    width: 100%;
+    text-align: center;
+    border-collapse:collapse;
+
+    & th.table-col {
+        background-color: var(--ui-theme-color);
+    }
+
+    & tr:nth-child(even) {
+        background-color: #adb5bd;
+        color: #000;
+    }
+
+    & td,th {
+        padding: 4px;
+    }
+`;
+
+const PagingWrapper = styled.div`
+    border:1px solid #fff;
 `;
 
 export default AdminPanel;
