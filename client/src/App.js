@@ -52,6 +52,7 @@ function App() {
         // dispatch(userLoggedIn(accessToken, user, true));
       })
       .catch(error => {
+        localStorage.clear();
         dispatch(userLoggedOut());
       });
   };
@@ -91,7 +92,7 @@ function App() {
             )}>
             </Route>
             <Route path="/admin" render={(props) => (
-              false ? <Redirect to="/" /> :
+              !isAuth || !isAdmin ? <Redirect to="/" /> :
                 <ContentWrapper>
                   <Content>
                     <Navbar></Navbar>
