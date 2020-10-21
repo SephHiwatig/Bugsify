@@ -6,11 +6,9 @@ import { stateToHTML } from 'draft-js-export-html';
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty() };
 
     this.focus = () => this.refs.editor.focus();
     this.onChange = (editorState) => {
-      this.setState({ editorState });
       const valueToHtml = stateToHTML(editorState.getCurrentContent());
       this.props.change({
         ...this.props.kata,
@@ -38,10 +36,10 @@ class TextEditor extends React.Component {
     if (e.keyCode === 9 /* TAB */) {
       const newEditorState = RichUtils.onTab(
         e,
-        this.state.editorState,
+        this.props.editorState,
         4, /* maxDepth */
       );
-      if (newEditorState !== this.state.editorState) {
+      if (newEditorState !== this.props.editorState) {
         this.onChange(newEditorState);
       }
       return;
@@ -52,7 +50,7 @@ class TextEditor extends React.Component {
   _toggleBlockType(blockType) {
     this.onChange(
       RichUtils.toggleBlockType(
-        this.state.editorState,
+        this.props.editorState,
         blockType
       )
     );
@@ -61,14 +59,14 @@ class TextEditor extends React.Component {
   _toggleInlineStyle(inlineStyle) {
     this.onChange(
       RichUtils.toggleInlineStyle(
-        this.state.editorState,
+        this.props.editorState,
         inlineStyle
       )
     );
   }
 
   render() {
-    const { editorState } = this.state;
+    const editorState = this.props.editorState;
 
     // If the user changes block type before entering any text, we can
     // either style the placeholder or hide it. Let's just hide it now.

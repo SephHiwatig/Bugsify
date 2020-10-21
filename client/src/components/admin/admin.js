@@ -85,6 +85,7 @@ const AdminPanel = () => {
 
     function addKata() {
         console.log(kata);
+        console.log(stateToHTML(kata.editorState.getCurrentContent()))
     }
 
     function editKata() {
@@ -113,7 +114,7 @@ const AdminPanel = () => {
     }
     return <Wrapper>
         <LeftWrapper>
-            <TextEditor change={setKata} kata={kata} trigger={kata.editorState} />
+            <TextEditor change={setKata} kata={kata} trigger={kata.editorState} editorState={kata.editorState}/>
             <FormWrapper>
                 <TestWrapper>
                     <IconInput type="text" placeholder="Title" value={kata.title}
