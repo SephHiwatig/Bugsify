@@ -66,6 +66,9 @@ const Wrapper = styled.div`
     background-color: var(--secondary-color);
     color: var(--main-font-color);
     align-items: stretch;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
 `;
 
 const LogoWrapper = styled.div`
