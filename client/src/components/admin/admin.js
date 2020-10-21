@@ -24,14 +24,21 @@ import WarningButton from '../extras/warningButton';
 import Paginator from './paginator';
 
 const AdminPanel = () => {
-    const [editorState, setEditorState] = useState(() =>
-        EditorState.createEmpty(),
-    );
-    const [dropDownValue, setDropdownValue] = useState("");
-
+    // Component states
     const [tests, setTests] = useState([createTestInput(0), createTestInput(1), createTestInput(2)]);
+    const [kata, setKata] = useState({
+        _id: null,
+        difficulty: "",
+        description: "",
+        tests: [],
+        isSampleKata: false,
+        title: "",
+        solutionTemplate: "",
+        editorState: null
+    });
 
 
+    // Component functions
     function createTestInput(key, showButton) {
         return <Tests key={key}>
             <IconInput type="text" placeholder="Input"><BsArrowLeftRight /></IconInput>
@@ -54,21 +61,53 @@ const AdminPanel = () => {
         setTests(current => current.filter(el => el.key != index));
     }
 
+    function addKata() {
+        console.log(kata);
+    }
+
+    function updateSavedKata() {
+        
+    }
+
+    function updateKataState(eventValue, state, field, setter) {
+            const newState = { ...state };
+            newState[field] = eventValue;
+            setter(newState);
+    }
+
+    function updateDropdown(option) {
+        const newState = { ...kata };
+        newState["difficulty"] = option;
+        setKata(newState);
+    }
     return <Wrapper>
         <LeftWrapper>
-            <TextEditor change={setEditorState} />
+            <TextEditor change={setKata} kata={kata} trigger={kata.editorState}/>
             <FormWrapper>
                 <TestWrapper>
-                    <IconInput type="text" placeholder="Title"><BsCardHeading /></IconInput>
+                    <IconInput type="text" placeholder="Title"
+                        change={(event) => {
+                            updateKataState(event.target.value, kata, "title", setKata)
+                        }}><BsCardHeading />
+                    </IconInput>
                 </TestWrapper>
                 <TestWrapper>
-                    <DropDown options={["Easy", "Normal", "Hard"]} value={dropDownValue} select={setDropdownValue}><BsFillStarFill /></DropDown>
+                    <DropDown options={["Easy", "Normal", "Hard"]} value={kata.difficulty} 
+                        select={updateDropdown}><BsFillStarFill />
+                    </DropDown>
                 </TestWrapper>
                 <TestWrapper>
-                    <TextArea placeholder="Starting template" rows={5}><BsCardHeading /></TextArea>
+                    <TextArea placeholder="Starting template" rows={5} 
+                        change={(event) => {
+                            updateKataState(event.target.value, kata, "solutionTemplate", setKata)
+                        }}><BsCardHeading /></TextArea>
                 </TestWrapper>
                 <TestWrapper>
-                    <CheckBox id="sample" ><span>Sample Question</span></CheckBox>
+                    <CheckBox id="sample" change={(event) => {
+                            updateKataState(event.target.checked, kata, "isSampleKata", setKata)
+                        }} checked={kata.isSampleKata}>
+                            <span>Sample Question</span>
+                        </CheckBox>
                 </TestWrapper>
                 <TestWrapper>
                     <h3>Tests</h3>
@@ -79,7 +118,7 @@ const AdminPanel = () => {
                 <SecondaryButton type="button" click={addTestInput.bind(null, tests.length)} title="Add Test"></SecondaryButton>
             </FormWrapper>
             <FormFooter>
-                <ButtonWrapper type="button" title="Add Problem"><BsFileEarmarkPlus /> </ButtonWrapper>
+                <ButtonWrapper type="button" title="Add Problem" click={addKata}><BsFileEarmarkPlus /> </ButtonWrapper>
             </FormFooter>
         </LeftWrapper>
         <RightWrapper>
@@ -137,6 +176,7 @@ const AdminPanel = () => {
     </Wrapper>;
 }
 
+// Component styles
 const Wrapper = styled.div`
     padding: 16px;
     min-height: 83%;

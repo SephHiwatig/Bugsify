@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const CheckBox = ({ children, change, id }) => {
+const CheckBox = ({ children, change, id, checked }) => {
     return <InputWrapper>
         <Label htmlFor={id}>
             {children}
         </Label>
-        <Input id={id} type="checkbox" />
+        <Input id={id} type="checkbox" onChange={change} checked={checked}/>
     </InputWrapper>;
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Editor, EditorState, RichUtils, getDefaultKeyBinding } from 'draft-js';
 import '../../../node_modules/draft-js/dist/Draft.css';
+import { stateToHTML } from 'draft-js-export-html';
 
 class TextEditor extends React.Component {
   constructor(props) {
@@ -10,7 +11,12 @@ class TextEditor extends React.Component {
     this.focus = () => this.refs.editor.focus();
     this.onChange = (editorState) => {
       this.setState({ editorState });
-      this.props.change(editorState);
+      const valueToHtml = stateToHTML(editorState.getCurrentContent());
+      this.props.change({
+        ...this.props.kata,
+        description: valueToHtml,
+        editorState: editorState
+      });
     };
 
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
@@ -59,10 +65,6 @@ class TextEditor extends React.Component {
         inlineStyle
       )
     );
-  }
-
-  getSate() {
-    return this.state;
   }
 
   render() {

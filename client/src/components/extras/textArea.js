@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const TextArea = ({ placeholder, change, rows }) => {
+const TextArea = ({ placeholder, change, rows, kata }) => {
     return <InputWrapper>
-        <Area placeholder={placeholder} onChange={e => change(e.target.value)} rows={rows} />
+        <Area placeholder={placeholder} 
+            onChange={change} 
+            rows={rows} />
     </InputWrapper>;
 };
 
