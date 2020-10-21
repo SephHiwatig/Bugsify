@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const IconInput = ({ children, placeholder, type, change }) => {
+const IconInput = ({ children, placeholder, type, change, value }) => {
     return <InputWrapper>
         <Label>
             {children}
         </Label>
-        <Input placeholder={placeholder} type={type} onChange={change} />
+        <Input placeholder={placeholder} type={type} onChange={change} value={value} />
     </InputWrapper>;
 };
 

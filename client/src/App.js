@@ -92,7 +92,7 @@ function App() {
             )}>
             </Route>
             <Route path="/admin" render={(props) => (
-              !isAuth || !isAdmin ? <Redirect to="/" /> :
+              false ? <Redirect to="/" /> :
                 <ContentWrapper>
                   <Content>
                     <Navbar></Navbar>

@@ -25,54 +25,85 @@ import Paginator from './paginator';
 
 const AdminPanel = () => {
     // Component states
-    const [tests, setTests] = useState([createTestInput(0), createTestInput(1), createTestInput(2)]);
     const [kata, setKata] = useState({
         _id: null,
         difficulty: "",
         description: "",
-        tests: [],
+        tests: [["", ""], ["", ""], ["", ""]],
         isSampleKata: false,
         title: "",
         solutionTemplate: "",
-        editorState: null
+        editorState: EditorState.createEmpty()
     });
 
 
     // Component functions
-    function createTestInput(key, showButton) {
-        return <Tests key={key}>
-            <IconInput type="text" placeholder="Input"><BsArrowLeftRight /></IconInput>
-            <IconInput type="text" placeholder="Output"><BsArrowLeftRight /></IconInput>
-            {showButton && <Button type="button" click={deleteTest.bind(null, key)}><BsFillTrashFill /></Button>}
+    function createTestInput(showButton, index) {
+        return <Tests key={index}>
+            <IconInput type="text" placeholder="Input" value={kata.tests[index][0]} change={(e) => {
+                const newTests = kata.tests.map((items, innerIndex) => {
+                    if (innerIndex == index) {
+                        return [e.target.value, items[1]];
+                    }
+                    return [...items];
+                })
+                setKata(current => ({
+                    ...current,
+                    tests: newTests
+                }))
+            }}><BsArrowLeftRight /></IconInput>
+            <IconInput type="text" placeholder="Output" value={kata.tests[index][1]} change={(e) => {
+                const newTests = kata.tests.map((items, innerIndex) => {
+                    if (innerIndex == index) {
+                        return [items[0], e.target.value];
+                    }
+                    return [...items];
+                })
+                setKata(current => ({
+                    ...current,
+                    tests: newTests
+                }))
+            }}><BsArrowLeftRight /></IconInput>
+            {showButton && <Button type="button" click={deleteTest.bind(null, index)}><BsFillTrashFill /></Button>}
             {!showButton && <div style={{ visibility: "hidden" }}><Button type="button"><BsFillTrashFill /></Button></div>}
         </Tests>;
     }
 
-    function addTestInput(key) {
-        let tempKey = key;
-        const keys = tests.map(el => parseInt(el.key));
-        while (keys.includes(tempKey)) {
-            tempKey++;
-        }
-        setTests(current => [...current, createTestInput(tempKey, true)]);
+    function addTestInput() {
+        setKata(current => ({
+            ...current,
+            tests: [...current.tests, ["", ""]]
+        }))
     }
 
     function deleteTest(index) {
-        setTests(current => current.filter(el => el.key != index));
+        setKata(current => ({
+            ...current,
+            tests: current.tests.filter(item => current.tests.indexOf(item) != index)
+        }))
     }
 
     function addKata() {
         console.log(kata);
     }
 
-    function updateSavedKata() {
-        
+    function editKata() {
+        setKata({
+            _id: null,
+            difficulty: "Hard",
+            description: "Sample descript",
+            tests: [[1, 2], [3, 4], [5, 6], [1, 2], [3, 4], [5, 6]],
+            isSampleKata: true,
+            title: "Sample title",
+            solutionTemplate: "function solve() {}",
+            editorState: EditorState.createEmpty()
+        })
     }
 
     function updateKataState(eventValue, state, field, setter) {
-            const newState = { ...state };
-            newState[field] = eventValue;
-            setter(newState);
+        const newState = { ...state };
+        newState[field] = eventValue;
+        setter(newState);
     }
 
     function updateDropdown(option) {
@@ -82,40 +113,40 @@ const AdminPanel = () => {
     }
     return <Wrapper>
         <LeftWrapper>
-            <TextEditor change={setKata} kata={kata} trigger={kata.editorState}/>
+            <TextEditor change={setKata} kata={kata} trigger={kata.editorState} />
             <FormWrapper>
                 <TestWrapper>
-                    <IconInput type="text" placeholder="Title"
+                    <IconInput type="text" placeholder="Title" value={kata.title}
                         change={(event) => {
                             updateKataState(event.target.value, kata, "title", setKata)
                         }}><BsCardHeading />
                     </IconInput>
                 </TestWrapper>
                 <TestWrapper>
-                    <DropDown options={["Easy", "Normal", "Hard"]} value={kata.difficulty} 
+                    <DropDown options={["Easy", "Normal", "Hard"]} value={kata.difficulty}
                         select={updateDropdown}><BsFillStarFill />
                     </DropDown>
                 </TestWrapper>
                 <TestWrapper>
-                    <TextArea placeholder="Starting template" rows={5} 
+                    <TextArea placeholder="Starting template" rows={5} value={kata.solutionTemplate}
                         change={(event) => {
                             updateKataState(event.target.value, kata, "solutionTemplate", setKata)
                         }}><BsCardHeading /></TextArea>
                 </TestWrapper>
                 <TestWrapper>
                     <CheckBox id="sample" change={(event) => {
-                            updateKataState(event.target.checked, kata, "isSampleKata", setKata)
-                        }} checked={kata.isSampleKata}>
-                            <span>Sample Question</span>
-                        </CheckBox>
+                        updateKataState(event.target.checked, kata, "isSampleKata", setKata)
+                    }} checked={kata.isSampleKata}>
+                        <span>Sample Question</span>
+                    </CheckBox>
                 </TestWrapper>
                 <TestWrapper>
                     <h3>Tests</h3>
-                    {tests.map((element, index) => {
-                        return element;
+                    {kata.tests.map((values, index) => {
+                        return createTestInput(index > 2, index);
                     })}
                 </TestWrapper>
-                <SecondaryButton type="button" click={addTestInput.bind(null, tests.length)} title="Add Test"></SecondaryButton>
+                <SecondaryButton type="button" click={addTestInput} title="Add Test"></SecondaryButton>
             </FormWrapper>
             <FormFooter>
                 <ButtonWrapper type="button" title="Add Problem" click={addKata}><BsFileEarmarkPlus /> </ButtonWrapper>
@@ -138,7 +169,7 @@ const AdminPanel = () => {
                             <td className="table-col">Easy</td>
                             <td className="table-col">Pig latin</td>
                             <td>
-                                <InfoButton type="button"><BsPencil /></InfoButton>
+                                <InfoButton type="button" click={editKata}><BsPencil /></InfoButton>
                                 <WarningButton type="button"><BsFillTrashFill /></WarningButton>
                             </td>
                         </tr>
@@ -267,10 +298,6 @@ const TableWrapper = styled.div`
     flex: 1;
     margin: 8px 0;
 `;
-
-// const ToolBar = styled.div`
-//     border:1px solid #fff;
-// `;
 
 const KataTable = styled.table`
     width: 100%;
