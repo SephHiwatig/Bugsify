@@ -19,6 +19,7 @@ app.use(function (req, res, next) {
 .use(bodyParser.json())
 .use(cors())
 .use(require("./routes/auth"))
+.use(require("./routes/admin"))
 
 .listen(4200, () => {
     console.log('Server is now listening on port 4200.')

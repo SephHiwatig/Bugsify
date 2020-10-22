@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import TextEditor from './textEditor';
 import { EditorState } from 'draft-js';
-import { stateToHTML } from 'draft-js-export-html';
 import IconInput from '../extras/iconinput';
 import {
     BsArrowLeftRight,
@@ -22,8 +21,12 @@ import ButtonWrapper from '../extras/buttonWrapper';
 import InfoButton from '../extras/infoButton';
 import WarningButton from '../extras/warningButton';
 import Paginator from './paginator';
+import { produce } from 'immer';
+import { baseApi } from '../../environment';
+import { useSelector } from "react-redux";
 
 const AdminPanel = () => {
+    const accessToken = useSelector(state => state.auth.accessToken);
     // Component states
     const [kata, setKata] = useState({
         _id: null,
@@ -83,22 +86,39 @@ const AdminPanel = () => {
         }))
     }
 
-    function addKata() {
-        console.log(kata);
-        console.log(stateToHTML(kata.editorState.getCurrentContent()))
+    async function addKata() {
+        const data = await fetch(
+            baseApi + "admin/test",
+            {
+                method: "POST",
+                body: JSON.stringify(kata),
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + accessToken
+                }
+            }
+        );
+
+        if(data.ok) {
+            const res = await data.json();
+            console.log(res);
+        } else {
+            console.log("Error");
+        }
     }
 
     function editKata() {
-        setKata({
-            _id: null,
-            difficulty: "Hard",
-            description: "Sample descript",
-            tests: [[1, 2], [3, 4], [5, 6], [1, 2], [3, 4], [5, 6]],
-            isSampleKata: true,
-            title: "Sample title",
-            solutionTemplate: "function solve() {}",
-            editorState: EditorState.createEmpty()
-        })
+        setKata(produce(kata, draftState => {
+            draftState._id = null;
+            draftState.difficulty = "Hard";
+            draftState.description = "Sample Descript";
+            draftState.tests = [[1, 2], [3, 4], [5, 6], [1, 2], [3, 4], [5, 6]];
+            draftState.isSampleKata = true;
+            draftState.title = "Sample title";
+            draftState.solutionTemplate = "function sove() {}";
+            draftState.editorState = kata.editorState
+        }));
     }
 
     function updateKataState(eventValue, state, field, setter) {
