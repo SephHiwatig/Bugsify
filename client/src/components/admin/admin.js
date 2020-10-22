@@ -24,6 +24,7 @@ import Paginator from './paginator';
 import { produce } from 'immer';
 import { baseApi } from '../../environment';
 import { useSelector } from "react-redux";
+import {convertFromRaw, convertToRaw} from 'draft-js';
 
 const AdminPanel = () => {
     const accessToken = useSelector(state => state.auth.accessToken);
@@ -87,11 +88,14 @@ const AdminPanel = () => {
     }
 
     async function addKata() {
+        const myKata = produce(kata, draftState => {
+            draftState.editorState = convertToRaw(kata.editorState.getCurrentContent());
+        })
         const data = await fetch(
-            baseApi + "admin/test",
+            baseApi + "admin/add-kata",
             {
                 method: "POST",
-                body: JSON.stringify(kata),
+                body: JSON.stringify(myKata),
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
@@ -108,17 +112,36 @@ const AdminPanel = () => {
         }
     }
 
-    function editKata() {
-        setKata(produce(kata, draftState => {
-            draftState._id = null;
-            draftState.difficulty = "Hard";
-            draftState.description = "Sample Descript";
-            draftState.tests = [[1, 2], [3, 4], [5, 6], [1, 2], [3, 4], [5, 6]];
-            draftState.isSampleKata = true;
-            draftState.title = "Sample title";
-            draftState.solutionTemplate = "function sove() {}";
-            draftState.editorState = kata.editorState
-        }));
+    async function editKata() {
+
+        const data = await fetch(
+            baseApi + "admin/test",
+            {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + accessToken
+                }
+            }
+        );
+
+        if(data.ok) {
+            const res = await data.json();
+            setKata(produce(kata, draftState => {
+                draftState._id = null;
+                draftState.difficulty = "Hard";
+                draftState.description = "Sample Descript";
+                draftState.tests = [[1, 2], [3, 4], [5, 6], [1, 2], [3, 4], [5, 6]];
+                draftState.isSampleKata = true;
+                draftState.title = "Sample title";
+                draftState.solutionTemplate = "function sove() {}";
+                draftState.editorState = EditorState.createWithContent(convertFromRaw(res.editorState))
+            }));
+        } else {
+            console.log("Error");
+        }
+
     }
 
     function updateKataState(eventValue, state, field, setter) {

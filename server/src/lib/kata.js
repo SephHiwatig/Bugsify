@@ -20,6 +20,15 @@ const addNewKata = async (kata) => {
     }
 }
 
+const test = async () => {
+    const connection = await initDbConnection();
+    const katas = await connection.findAll('katas');
+    connection.closeConnection();
+
+    return katas;
+}
+
 module.exports = {
-    addNewKata
+    addNewKata,
+    test
 }
