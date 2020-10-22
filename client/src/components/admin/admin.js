@@ -11,7 +11,8 @@ import {
     BsFileEarmarkPlus,
     BsPencil,
     BsSearch,
-    BsFonts
+    BsFonts,
+    BsFillExclamationTriangleFill
 } from "react-icons/bs";
 import Button from '../extras/button';
 import SecondaryButton from '../extras/secondaryButton';
@@ -40,6 +41,7 @@ const AdminPanel = () => {
         solutionTemplate: "",
         editorState: EditorState.createEmpty()
     });
+    const [formInvalid, setFormInvalid] = useState(false);
 
 
     // Component functions
@@ -134,9 +136,10 @@ const AdminPanel = () => {
         });
 
         if(testError || editorError || generalError) {
-            // Add error logic here
+            setFormInvalid(true);
         } 
         else {
+            setFormInvalid(false);
             const data = await fetch(
             baseApi + "admin/add-kata",
             {
@@ -235,6 +238,9 @@ const AdminPanel = () => {
                     })}
                 </TestWrapper>
                 <SecondaryButton type="button" click={addTestInput} title="Add Test"></SecondaryButton>
+                {formInvalid && <TestWrapper>
+                    <Warning><BsFillExclamationTriangleFill />&nbsp;All fields are required.</Warning>
+                </TestWrapper>}
             </FormWrapper>
             <FormFooter>
                 <ButtonWrapper type="button" title="Add Problem" click={addKata}><BsFileEarmarkPlus /> </ButtonWrapper>
@@ -335,7 +341,7 @@ const FormWrapper = styled.div`
 const TestWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    margin-bottom: 8px;
+    margin: 4px 0;
 
     & h3 {
         margin: 0 0 8px 0;
@@ -409,6 +415,18 @@ const KataTable = styled.table`
 
 const PagingWrapper = styled.div`
     
+`;
+
+const Warning = styled.div`
+    border: 3px solid #fcca03;
+    background-color: #f9fc3a;
+    color: #000;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-wrap: break-word;
+    max-width: 100%;
 `;
 
 export default AdminPanel;
