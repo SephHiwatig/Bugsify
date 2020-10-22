@@ -10,7 +10,8 @@ import {
     BsFillStarFill,
     BsFileEarmarkPlus,
     BsPencil,
-    BsSearch
+    BsSearch,
+    BsFonts
 } from "react-icons/bs";
 import Button from '../extras/button';
 import SecondaryButton from '../extras/secondaryButton';
@@ -80,7 +81,7 @@ const AdminPanel = () => {
                         ...current,
                         tests: newTests
                     }))
-                }}><BsFillStarFill />
+                }}><BsFonts />
             </DropDown>
             {showButton && <Button type="button" click={deleteTest.bind(null, index)}><BsFillTrashFill /></Button>}
             {!showButton && <div style={{ visibility: "hidden" }}><Button type="button"><BsFillTrashFill /></Button></div>}
@@ -317,6 +318,7 @@ const Tests = styled.div`
     flex-direction: column;
     border-bottom: 1px solid #aaa;
     padding-bottom: 8px;
+    justify-content: space-between;
 
     @media (min-width: 768px) {
         flex-direction: row;
@@ -326,7 +328,7 @@ const Tests = styled.div`
     }
 
     & div {
-        margin-bottom: 4px;
+        margin: 0 2px 4px 2px;
     }
 `;
 
