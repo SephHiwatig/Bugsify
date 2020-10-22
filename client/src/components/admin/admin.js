@@ -107,23 +107,53 @@ const AdminPanel = () => {
         const newKata = produce(kata, draftState => {
             draftState.editorState = convertToRaw(kata.editorState.getCurrentContent());
         })
-        console.log(newKata);
-        // const data = await fetch(
-        //     baseApi + "admin/add-kata",
-        //     {
-        //         method: "POST",
-        //         body: JSON.stringify(newKata),
-        //         headers: {
-        //             Accept: "application/json",
-        //             "Content-Type": "application/json",
-        //             "Authorization": "Bearer " + accessToken
-        //         }
-        //     }
-        // );
 
-        // if(data.ok) {
-        //     const res = await data.json();
-        // }
+        // Validate that all fields are filled
+        const stateKeys = Object.keys(newKata);
+        let testError = false;
+        let editorError = true;
+        let generalError = false;
+
+        stateKeys.forEach(key => {
+            if(key === "tests") {
+                newKata[key].forEach(testInfo => {
+                    testInfo.forEach(info => {
+                        if(!info) testError = true;
+                    })
+                })
+            } else if (key === "editorState") {
+                newKata[key].blocks.forEach(block => {
+                    if(block.text !== "")
+                        editorError = false;
+                })
+            } else {
+
+                if(!newKata[key] && key !== "_id" && key != "isSampleKata")
+                    generalError = true;
+            }
+        });
+
+        if(testError || editorError || generalError) {
+            // Add error logic here
+        } 
+        else {
+            const data = await fetch(
+            baseApi + "admin/add-kata",
+            {
+                method: "POST",
+                body: JSON.stringify(newKata),
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + accessToken
+                }
+            }
+            );
+
+            if(data.ok) {
+                const res = await data.json();
+            }
+        }
     }
 
     async function editKata() {
