@@ -33,7 +33,7 @@ const AdminPanel = () => {
         _id: null,
         difficulty: "",
         description: "",
-        tests: [["", ""], ["", ""], ["", ""]],
+        tests: [["", "", ""], ["", "", ""], ["", "", ""]],
         isSampleKata: false,
         title: "",
         solutionTemplate: "",
@@ -47,7 +47,7 @@ const AdminPanel = () => {
             <IconInput type="text" placeholder="Input" value={kata.tests[index][0]} change={(e) => {
                 const newTests = kata.tests.map((items, innerIndex) => {
                     if (innerIndex == index) {
-                        return [e.target.value, items[1]];
+                        return [e.target.value, items[1], items[2]];
                     }
                     return [...items];
                 })
@@ -59,7 +59,7 @@ const AdminPanel = () => {
             <IconInput type="text" placeholder="Output" value={kata.tests[index][1]} change={(e) => {
                 const newTests = kata.tests.map((items, innerIndex) => {
                     if (innerIndex == index) {
-                        return [items[0], e.target.value];
+                        return [items[0], e.target.value, items[2]];
                     }
                     return [...items];
                 })
@@ -68,6 +68,20 @@ const AdminPanel = () => {
                     tests: newTests
                 }))
             }}><BsArrowLeftRight /></IconInput>
+            <DropDown options={["string", "number", "boolean"]} value={kata.tests[index][2]} placeholder="Type"
+                select={(e) => {
+                    const newTests = kata.tests.map((items, innerIndex) => {
+                        if (innerIndex == index) {
+                            return [items[0], items[1], e];
+                        }
+                        return [...items];
+                    })
+                    setKata(current => ({
+                        ...current,
+                        tests: newTests
+                    }))
+                }}><BsFillStarFill />
+            </DropDown>
             {showButton && <Button type="button" click={deleteTest.bind(null, index)}><BsFillTrashFill /></Button>}
             {!showButton && <div style={{ visibility: "hidden" }}><Button type="button"><BsFillTrashFill /></Button></div>}
         </Tests>;
@@ -88,28 +102,27 @@ const AdminPanel = () => {
     }
 
     async function addKata() {
-        const myKata = produce(kata, draftState => {
+        // Convert editorstate to raw before storing to db
+        const newKata = produce(kata, draftState => {
             draftState.editorState = convertToRaw(kata.editorState.getCurrentContent());
         })
-        const data = await fetch(
-            baseApi + "admin/add-kata",
-            {
-                method: "POST",
-                body: JSON.stringify(myKata),
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + accessToken
-                }
-            }
-        );
+        console.log(newKata);
+        // const data = await fetch(
+        //     baseApi + "admin/add-kata",
+        //     {
+        //         method: "POST",
+        //         body: JSON.stringify(newKata),
+        //         headers: {
+        //             Accept: "application/json",
+        //             "Content-Type": "application/json",
+        //             "Authorization": "Bearer " + accessToken
+        //         }
+        //     }
+        // );
 
-        if(data.ok) {
-            const res = await data.json();
-            console.log(res);
-        } else {
-            console.log("Error");
-        }
+        // if(data.ok) {
+        //     const res = await data.json();
+        // }
     }
 
     async function editKata() {
@@ -167,7 +180,7 @@ const AdminPanel = () => {
                     </IconInput>
                 </TestWrapper>
                 <TestWrapper>
-                    <DropDown options={["Easy", "Normal", "Hard"]} value={kata.difficulty}
+                    <DropDown options={["Easy", "Normal", "Hard"]} value={kata.difficulty} placeholder="Difficulty"
                         select={updateDropdown}><BsFillStarFill />
                     </DropDown>
                 </TestWrapper>

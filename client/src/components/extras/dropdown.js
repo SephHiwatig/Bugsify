@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import ButtonWrapper from './buttonWrapper';
 
-const Dropdown = ({ children, value, options, select }) => {
+const Dropdown = ({ children, value, options, select, placeholder }) => {
     return <InputWrapper>
         <Label>
             {children}
         </Label>
-        <Input readOnly placeholder="Difficulty" value={value}>
+        <Input readOnly placeholder={placeholder} value={value}>
 
         </Input>
         <OptionWrapper>
@@ -56,6 +56,7 @@ const OptionWrapper = styled.div`
     background-color: #2e4975;
     border-radius: 4px;
     display: none;
+    z-index: 99;
 
     &:active {
         display: block;
