@@ -12,8 +12,11 @@ router.post("/api/admin/add-kata", authenticateToken, async (req, res) => {
     if(req.user.role !== 'admin')
         return res.status(401).send('Unauthorized');
 
+    // Parse the tests output to its proper type
+    const kata = kataHandler.parseKataTestOutput(req.body);
+
     // Add the new kata
-    const result = await kataHandler.addNewKata(req.body);
+    const result = await kataHandler.addNewKata(kata);
 
     if(result.succeeded) {
         return res.status(201).json({message: "Ok"});

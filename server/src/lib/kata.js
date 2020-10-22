@@ -20,6 +20,26 @@ const addNewKata = async (kata) => {
     }
 }
 
+const parseKataTestOutput = (kata) => {
+    const temp = { ...kata };
+    temp.tests.forEach(items => {
+        switch(items[2]) {
+            case "number": {
+                items[1] = Number(items[1]);
+                break;
+            }
+            case "boolean": {
+                items[1] = items[1] === 'true';
+                break;
+            }
+            default:
+                break;
+        }
+    })
+
+    return kata;
+}
+
 const test = async () => {
     const connection = await initDbConnection();
     const katas = await connection.findAll('katas');
@@ -30,5 +50,6 @@ const test = async () => {
 
 module.exports = {
     addNewKata,
-    test
+    test,
+    parseKataTestOutput
 }
