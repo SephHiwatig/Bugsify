@@ -178,13 +178,13 @@ const AdminPanel = () => {
         if(data.ok) {
             const res = await data.json();
             setKata(produce(kata, draftState => {
-                draftState._id = null;
-                draftState.difficulty = "Hard";
-                draftState.description = "Sample Descript";
-                draftState.tests = [[1, 2], [3, 4], [5, 6], [1, 2], [3, 4], [5, 6]];
-                draftState.isSampleKata = true;
-                draftState.title = "Sample title";
-                draftState.solutionTemplate = "function sove() {}";
+                draftState._id = res._id;
+                draftState.difficulty = res.difficulty;
+                draftState.description = res.description;
+                draftState.tests = res.tests;
+                draftState.isSampleKata = res.isSampleKata;
+                draftState.title = res.title;
+                draftState.solutionTemplate = res.solutionTemplate;
                 draftState.editorState = EditorState.createWithContent(convertFromRaw(res.editorState))
             }));
         } else {
