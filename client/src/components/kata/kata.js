@@ -1,19 +1,66 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Question from './question';
 import CodeEditor from './codeEditor';
 import Console from './console';
+import { produce } from 'immer';
+import { baseApi } from '../../environment';
+import { EditorState } from 'draft-js';
+import {convertFromRaw} from 'draft-js';
 
 const Kata = () => {
+    const [kata, setKata] = useState({
+        _id: null,
+        difficulty: "",
+        description: "",
+        title: "",
+        solutionTemplate: "",
+        editorState: EditorState.createEmpty()
+    })
+
+    async function test() {
+        console.log('INSIDE TEST')
+        const data = await fetch(
+            baseApi + "admin/test",
+            {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+
+        if(data.ok) {
+            const res = await data.json();
+            console.log(res.editorState);
+            setKata(produce(kata, draftState => {
+                draftState._id = res._id;
+                draftState.difficulty = res.difficulty;
+                draftState.description = res.description;
+                draftState.title = res.title;
+                draftState.solutionTemplate = res.solutionTemplate;
+                draftState.editorState = EditorState.createWithContent(convertFromRaw(res.editorState));
+            }));
+        } else {
+            console.log("Error");
+        }
+    }
+
+
+    useEffect(() => {
+        test();
+    }, [])
+
     return (
         <Wrapper>
             <QuestionWrapper>
-                <Question />
+                <Question title={kata.title} state={kata.editorState}/>
             </QuestionWrapper>
             <SolutionWrapper>
                 <EditorWrapper>
                     <EditorTitle>Solution</EditorTitle>
-                    <CodeEditor />
+                    <CodeEditor template={kata.solutionTemplate}/>
                 </EditorWrapper>
                 <ConsoleWrapper>
                     <EditorTitle>Output</EditorTitle>

@@ -13,7 +13,7 @@ const style = {
     height: '100%'
 }
 
-const CodeEditor = () => {
+const CodeEditor = ({template}) => {
     return <AceEditor
     mode="javascript"
     theme="monokai"
@@ -22,9 +22,7 @@ const CodeEditor = () => {
     editorProps={{ $blockScrolling: true }}
     fontSize={14}
     highlightActiveLine={true}
-    value={`function solve(args) {
-        // Write your code here
-}`}
+    value={template}
     setOptions={{
         enableBasicAutocompletion: true,
         enableLiveAutocompletion: true,

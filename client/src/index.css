@@ -14,11 +14,25 @@ body {
   border-radius: 4px;
 }
 
+.RichEditor-root-2 {
+  font-size: 14px;
+  padding: 0px !important;
+  color: var(--main-font-color);
+  border-radius: 4px;
+  margin-top: 0 !important;
+  padding-top: 0;
+}
+
 .RichEditor-editor {
   border-top: 1px solid #ddd;
   cursor: text;
   font-size: 16px;
   margin-top: 10px;
+}
+
+.For-Display {
+  border-top: none !important;
+  margin-top: -15px !important;
 }
 
 .RichEditor-editor .public-DraftEditorPlaceholder-root,
@@ -68,4 +82,11 @@ body {
 
 .RichEditor-activeButton {
   color: #5890ff;
+}
+
+pre code {
+  background-color: "rgba(0, 0, 0, 0.05)";
+  font-family: '"Inconsolata", "Menlo", "Consolas", monospace';
+  font-size: 16;
+  padding: 2;
 }
