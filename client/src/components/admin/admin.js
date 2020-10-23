@@ -119,9 +119,11 @@ const AdminPanel = () => {
         stateKeys.forEach(key => {
             if(key === "tests") {
                 newKata[key].forEach(testInfo => {
-                    testInfo.forEach(info => {
-                        if(!info) testError = true;
-                    })
+                    if(!testInfo[2]) testError = true;
+                    // testInfo.forEach( (info, index) => {
+                    //     if(index !== 0)
+                    //         if(!info) testError = true;
+                    // })
                 })
             } else if (key === "editorState") {
                 newKata[key].blocks.forEach(block => {
