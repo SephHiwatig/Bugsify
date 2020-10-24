@@ -55,11 +55,11 @@ router.post("/api/register", async (req, res) => {
         return res.status(400).json({ message: "Please provide a valid email address."});
 
     // Create new user
-    const newUser = await createNewUser(req.body);
-    if(newUser.succeeded) {
-        res.status(201).send(newUser);
+    const result = await createNewUser(req.body);
+    if(result.succeeded) {
+        res.status(201).send(result);
     } else {
-        res.status(400).json(newUser);
+        res.status(400).json(result);
     }
 
 });
