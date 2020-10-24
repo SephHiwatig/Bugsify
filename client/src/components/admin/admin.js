@@ -43,6 +43,11 @@ const AdminPanel = () => {
     });
     const [formInvalid, setFormInvalid] = useState(false);
     const [kataList, setKataList] = useState([]);
+    const [pagingInfo, setPagingInfo] = useState({
+        pageNumber: 1,
+        pageSize: 10,
+        totalCount: 1
+    });
 
 
     // Form functions
@@ -175,9 +180,9 @@ const AdminPanel = () => {
     }
 
     // Table functions
-    async function getPagedKatas() {
+    async function getPagedKatas(pageSize = 10, pageNumber = 1) {
         const data = await fetch(
-            baseApi + 'admin/katas',
+            baseApi + 'admin/katas?pageSize=' + pageSize + '&pageNumber=' + pageNumber,
             {
                 method: "GET",
                 headers: {
@@ -190,7 +195,8 @@ const AdminPanel = () => {
 
         if(data.ok) {
             const response = await data.json();
-            setKataList(response);
+            setKataList(response.katas);
+            setPagingInfo(response.pagingInfo);
         }
     }
 
@@ -272,7 +278,7 @@ const AdminPanel = () => {
                     </thead>
                     <tbody>
                         {kataList.map(k => {
-                            return <tr>
+                            return <tr key={k._id}>
                                 <td className="table-col">{k.difficulty}</td>
                                 <td className="table-col">{k.title}</td>
                                 <td>
@@ -285,7 +291,7 @@ const AdminPanel = () => {
                 </KataTable>
             </TableWrapper>
             <PagingWrapper>
-                <Paginator />
+                <Paginator paging={pagingInfo} onpage={getPagedKatas}/>
             </PagingWrapper>
         </RightWrapper>
     </Wrapper>;

@@ -36,7 +36,19 @@ const getPagedKatas = async (pagingInfo) => {
         const allKatas = await connection.findAll('katas');
         connection.closeConnection();
 
-        return { succeeded: true, message: "Ok", katas: allKatas };
+        const totalCount = allKatas.length;
+        const skipAmount = (pagingInfo.pageNumber - 1) * pagingInfo.pageSize;
+        allKatas.splice(0, skipAmount);
+
+        const pagedKatas = allKatas.slice(0, pagingInfo.pageSize);
+
+        const pInfo = {
+            pageSize: pagingInfo.pageSize,
+            pageNumber: pagingInfo.pageNumber,
+            totalCount
+        }
+
+        return { succeeded: true, message: "Ok", katas: pagedKatas, pagingInfo: pInfo };
     } catch {
         return { succeeded: false, message: "Something went wrong.", katas: [] };
     }

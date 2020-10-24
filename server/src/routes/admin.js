@@ -32,9 +32,19 @@ router.get("/api/admin/katas", authenticateToken, async (req, res) => {
     if(req.user.role !== 'admin')
         return res.status(401).send('Unauthorized');
 
-    const { katas } = await kataHandler.getPagedKatas({});
+    // build paging object
+    const pagingInfo = {
+        pageSize: req.query.pageSize ? parseInt(req.query.pageSize) : 10,
+        pageNumber: req.query.pageNumber ? parseInt(req.query.pageNumber) : 1
+    };
 
-    res.status(200).json(katas);
+    const result = await kataHandler.getPagedKatas(pagingInfo);
+
+    if(result.succeeded) {
+        res.status(200).json({ katas: result.katas, pagingInfo: result.pagingInfo });
+    } else {
+        res.status(500).json({message: "Error"});
+    }
 })
 
 router.get("/api/admin/test", async (req, res) => {
