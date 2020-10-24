@@ -54,6 +54,26 @@ const getPagedKatas = async (pagingInfo) => {
     }
 };
 
+const searchKatas = async (keyWord) => {
+    try {
+        // Connect to database and insert the new Kata,
+        // Verify that new kata is added with assert
+        const connection = await initDbConnection();
+        const allKatas = await connection.findAll('katas');
+        connection.closeConnection();
+
+        if(!keyWord) {
+            return {succeeded: true, set: allKatas};
+        }
+
+        const newSet = allKatas.filter(kata => kata.title.toLowerCase().includes(keyWord.toLowerCase()));
+
+        return { succeeded: true, set: newSet };
+    } catch (err) {
+        return { succeeded: false, set: [] };
+    }
+}
+
 const parseKataTestOutput = (kata) => {
     const temp = { ...kata };
     temp.tests.forEach(items => {
@@ -85,6 +105,7 @@ const test = async () => {
 module.exports = {
     addNewKata,
     getPagedKatas,
+    searchKatas,
     test,
     parseKataTestOutput
 }
