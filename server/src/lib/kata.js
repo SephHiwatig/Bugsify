@@ -6,6 +6,12 @@ const initDbConnection = require('../utils/mongoConnection');
 
 const addNewKata = async (kata) => {
     try {
+        // Add extra fields to kata
+        kata.answers = [];
+        kata.likes = [];
+        kata.solutions = [];
+        kata.enabled = true;
+
         // Connect to database and insert the new Kata,
         // Verify that new kata is added with assert
         const connection = await initDbConnection();

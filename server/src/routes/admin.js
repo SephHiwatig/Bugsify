@@ -15,10 +15,6 @@ router.post("/api/admin/add-kata", authenticateToken, async (req, res) => {
     // Parse the tests output to its proper type
     const kata = kataHandler.parseKataTestOutput(req.body);
 
-    // Add answers and likes field to kata
-    kata.answers = [];
-    kata.likes = [];
-
     // Add the new kata
     const result = await kataHandler.addNewKata(kata);
 
@@ -34,7 +30,7 @@ router.get("/api/admin/test", async (req, res) => {
 
     const result = await kataHandler.test();
 
-    res.status(200).json(result[1]);
+    res.status(200).json(result[4]);
 
 });
 

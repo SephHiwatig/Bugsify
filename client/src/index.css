@@ -32,7 +32,7 @@ body {
 
 .For-Display {
   border-top: none !important;
-  margin-top: -15px !important;
+  /* margin-top: -15px !important; */
 }
 
 .RichEditor-editor .public-DraftEditorPlaceholder-root,
