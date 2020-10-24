@@ -29,9 +29,9 @@ const NavBar = () => {
 
     return <Wrapper>
         <LogoWrapper>
-            <ButtonWrapper type="button" click={() => { history.push('/protected') }}>
+            <button type="button" onClick={() => { history.push('/') }}>
                 <Logo src={logo} alt="logo" />
-            </ButtonWrapper>
+            </button>
         </LogoWrapper>
         <NavExtras>
             {!userInfo.isAuthenticated && <InfoWrapper>
@@ -69,11 +69,22 @@ const Wrapper = styled.div`
     position: -webkit-sticky;
     position: sticky;
     top: 0;
+    z-index: 99;
 `;
 
 const LogoWrapper = styled.div`
     padding: 8px 16px;
     flex: 1;
+
+    & button {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    & button:focus {
+        outline: none;
+    }
 `;
 
 const Logo = styled.img`
