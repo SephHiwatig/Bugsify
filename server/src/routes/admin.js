@@ -35,7 +35,8 @@ router.get("/api/admin/katas", authenticateToken, async (req, res) => {
     // build paging object
     const pagingInfo = {
         pageSize: req.query.pageSize ? parseInt(req.query.pageSize) : 10,
-        pageNumber: req.query.pageNumber ? parseInt(req.query.pageNumber) : 1
+        pageNumber: req.query.pageNumber ? parseInt(req.query.pageNumber) : 1,
+        filterState: req.query.filterState
     };
 
     const result = await kataHandler.getPagedKatas(pagingInfo);
@@ -53,12 +54,12 @@ router.get("/api/admin/search", authenticateToken, async (req, res) => {
     if(req.user.role !== 'admin')
         return res.status(401).send('Unauthorized');
 
-    var result = await kataHandler.searchKatas(req.query.key);
+    var result = await kataHandler.searchKatas(req.query.key, req.query.pageSize);
 
     if(result.succeeded) {
-        res.status(200).json(result.set);
+        res.status(200).json(result);
     } else {
-        res.status(500).json([]);
+        res.status(500).json(result);
     }
 });
 

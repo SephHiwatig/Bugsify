@@ -27,6 +27,7 @@ import { produce } from 'immer';
 import { baseApi } from '../../environment';
 import { useSelector } from "react-redux";
 import {convertFromRaw, convertToRaw} from 'draft-js';
+import { throttle } from 'lodash';
 
 const AdminPanel = () => {
     const accessToken = useSelector(state => state.auth.accessToken);
@@ -43,10 +44,12 @@ const AdminPanel = () => {
     });
     const [formInvalid, setFormInvalid] = useState(false);
     const [kataList, setKataList] = useState([]);
+    const PAGE_SIZE = 10;
     const [pagingInfo, setPagingInfo] = useState({
         pageNumber: 1,
-        pageSize: 10,
-        totalCount: 1
+        pageSize: PAGE_SIZE,
+        totalCount: 1,
+        filterState: ""
     });
 
 
@@ -180,10 +183,9 @@ const AdminPanel = () => {
     }
 
     // Table functions
-    const PAGE_SIZE = 10;
-    async function getPagedKatas(pageSize = PAGE_SIZE, pageNumber = 1) {
+    async function getPagedKatas(pageSize = PAGE_SIZE, pageNumber = 1, filterState = "") {
         const data = await fetch(
-            baseApi + 'admin/katas?pageSize=' + pageSize + '&pageNumber=' + pageNumber,
+            baseApi + 'admin/katas?pageSize=' + pageSize + '&pageNumber=' + pageNumber + '&filterState=' + filterState,
             {
                 method: "GET",
                 headers: {
@@ -200,6 +202,34 @@ const AdminPanel = () => {
             setPagingInfo(response.pagingInfo);
         }
     }
+
+    const searchKatas = async (key) => {
+        const data = await fetch(
+            baseApi + 'admin/search?key=' + key + '&pageSize=' + PAGE_SIZE,
+            {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + accessToken
+                }
+            }
+        )
+
+        if(data.ok) {
+            const response = await data.json();
+            console.log(response);
+            setKataList(response.katas);
+            setPagingInfo({
+                pageNumber: 1,
+                pageSize: PAGE_SIZE,
+                totalCount: response.totalCount,
+                filterState: key
+            });
+        }
+    }
+
+    const throttledSearchKatas = throttle(searchKatas, 500);
 
     function editKata(k) {
 
@@ -273,7 +303,10 @@ const AdminPanel = () => {
                             <th className="table-col">Difficulty</th>
                             <th className="table-col">Title</th>
                             <th className="table-col">
-                                <IconInput type="text" placeholder="Search"><BsSearch /></IconInput>
+                                <IconInput type="text" placeholder="Search" change={(event => {
+                                    const value = event.target.value;
+                                    throttledSearchKatas(value);
+                                })}><BsSearch /></IconInput>
                             </th>
                         </tr>
                     </thead>

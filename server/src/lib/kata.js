@@ -33,8 +33,13 @@ const getPagedKatas = async (pagingInfo) => {
         // Connect to database and insert the new Kata,
         // Verify that new kata is added with assert
         const connection = await initDbConnection();
-        const allKatas = await connection.findAll('katas');
+        let allKatas = await connection.findAll('katas');
         connection.closeConnection();
+
+        if(pagingInfo.filterState) {
+            allKatas = allKatas.filter(kata => 
+                kata.title.toLowerCase().includes(pagingInfo.filterState.toLowerCase()));
+        }
 
         const totalCount = allKatas.length;
         const skipAmount = (pagingInfo.pageNumber - 1) * pagingInfo.pageSize;
@@ -45,7 +50,8 @@ const getPagedKatas = async (pagingInfo) => {
         const pInfo = {
             pageSize: pagingInfo.pageSize,
             pageNumber: pagingInfo.pageNumber,
-            totalCount
+            totalCount,
+            filterState: pagingInfo.filterState
         }
 
         return { succeeded: true, message: "Ok", katas: pagedKatas, pagingInfo: pInfo };
@@ -54,23 +60,28 @@ const getPagedKatas = async (pagingInfo) => {
     }
 };
 
-const searchKatas = async (keyWord) => {
+const searchKatas = async (keyWord, pageSize) => {
     try {
         // Connect to database and insert the new Kata,
         // Verify that new kata is added with assert
         const connection = await initDbConnection();
-        const allKatas = await connection.findAll('katas');
+        let allKatas = await connection.findAll('katas');
         connection.closeConnection();
 
         if(!keyWord) {
-            return {succeeded: true, set: allKatas};
+            const allCount = allKatas.length;
+            allKatas = allKatas.slice(0, pageSize);
+            return {succeeded: true, katas: allKatas, totalCount: allCount};
         }
 
-        const newSet = allKatas.filter(kata => kata.title.toLowerCase().includes(keyWord.toLowerCase()));
+        let newSet = allKatas.filter(kata => kata.title.toLowerCase().includes(keyWord.toLowerCase()));
+        const filteredCount = newSet.length;
+        newSet = newSet.slice(0, pageSize);
 
-        return { succeeded: true, set: newSet };
+        return {succeeded: true, katas: newSet, totalCount: filteredCount};
     } catch (err) {
-        return { succeeded: false, set: [] };
+        console.log(err)
+        return { succeeded: false, katas: [], totalCount: 0 };
     }
 }
 
