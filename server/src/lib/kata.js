@@ -26,6 +26,22 @@ const addNewKata = async (kata) => {
     }
 }
 
+const getPagedKatas = async (pagingInfo) => {
+
+    try {
+
+        // Connect to database and insert the new Kata,
+        // Verify that new kata is added with assert
+        const connection = await initDbConnection();
+        const allKatas = await connection.findAll('katas');
+        connection.closeConnection();
+
+        return { succeeded: true, message: "Ok", katas: allKatas };
+    } catch {
+        return { succeeded: false, message: "Something went wrong.", katas: [] };
+    }
+};
+
 const parseKataTestOutput = (kata) => {
     const temp = { ...kata };
     temp.tests.forEach(items => {
@@ -56,6 +72,7 @@ const test = async () => {
 
 module.exports = {
     addNewKata,
+    getPagedKatas,
     test,
     parseKataTestOutput
 }

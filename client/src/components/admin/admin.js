@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import TextEditor from './textEditor';
 import { EditorState } from 'draft-js';
@@ -42,9 +42,10 @@ const AdminPanel = () => {
         editorState: EditorState.createEmpty()
     });
     const [formInvalid, setFormInvalid] = useState(false);
+    const [kataList, setKataList] = useState([]);
 
 
-    // Component functions
+    // Form functions
     function createTestInput(showButton, index) {
         return <Tests key={index}>
             <IconInput type="text" placeholder="Input" value={kata.tests[index][0]} change={(e) => {
@@ -161,38 +162,6 @@ const AdminPanel = () => {
         }
     }
 
-    async function editKata() {
-
-        const data = await fetch(
-            baseApi + "admin/test",
-            {
-                method: "GET",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + accessToken
-                }
-            }
-        );
-
-        if(data.ok) {
-            const res = await data.json();
-            setKata(produce(kata, draftState => {
-                draftState._id = res._id;
-                draftState.difficulty = res.difficulty;
-                draftState.description = res.description;
-                draftState.tests = res.tests;
-                draftState.isSampleKata = res.isSampleKata;
-                draftState.title = res.title;
-                draftState.solutionTemplate = res.solutionTemplate;
-                draftState.editorState = EditorState.createWithContent(convertFromRaw(res.editorState))
-            }));
-        } else {
-            console.log("Error");
-        }
-
-    }
-
     function updateKataState(eventValue, state, field, setter) {
         const newState = { ...state };
         newState[field] = eventValue;
@@ -204,6 +173,47 @@ const AdminPanel = () => {
         newState["difficulty"] = option;
         setKata(newState);
     }
+
+    // Table functions
+    async function getPagedKatas() {
+        const data = await fetch(
+            baseApi + 'admin/katas',
+            {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + accessToken
+                }
+            }
+        )
+
+        if(data.ok) {
+            const response = await data.json();
+            setKataList(response);
+        }
+    }
+
+    function editKata(k) {
+
+        setKata(produce(kata, draftState => {
+            draftState._id = k._id;
+            draftState.difficulty = k.difficulty;
+            draftState.description = k.description;
+            draftState.tests = k.tests;
+            draftState.isSampleKata = k.isSampleKata;
+            draftState.title = k.title;
+            draftState.solutionTemplate = k.solutionTemplate;
+            draftState.editorState = EditorState.createWithContent(convertFromRaw(k.editorState))
+        }));
+
+
+    }
+
+    useEffect(() => {
+        getPagedKatas();
+    }, []);
+
     return <Wrapper>
         <LeftWrapper>
             <TextEditor change={setKata} kata={kata} trigger={kata.editorState} editorState={kata.editorState}/>
@@ -261,38 +271,16 @@ const AdminPanel = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="table-col">Easy</td>
-                            <td className="table-col">Pig latin</td>
-                            <td>
-                                <InfoButton type="button" click={editKata}><BsPencil /></InfoButton>
-                                <WarningButton type="button"><BsFillTrashFill /></WarningButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="table-col">Easy</td>
-                            <td className="table-col">Pig latin</td>
-                            <td>
-                                <InfoButton type="button"><BsPencil /></InfoButton>
-                                <WarningButton type="button"><BsFillTrashFill /></WarningButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="table-col">Easy</td>
-                            <td className="table-col">Pig latin</td>
-                            <td>
-                                <InfoButton type="button"><BsPencil /></InfoButton>
-                                <WarningButton type="button"><BsFillTrashFill /></WarningButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="table-col">Easy</td>
-                            <td className="table-col">Pig latin</td>
-                            <td>
-                                <InfoButton type="button"><BsPencil /></InfoButton>
-                                <WarningButton type="button"><BsFillTrashFill /></WarningButton>
-                            </td>
-                        </tr>
+                        {kataList.map(k => {
+                            return <tr>
+                                <td className="table-col">{k.difficulty}</td>
+                                <td className="table-col">{k.title}</td>
+                                <td>
+                                    <InfoButton type="button" click={editKata.bind(null, k)}><BsPencil /></InfoButton>
+                                    <WarningButton type="button"><BsFillTrashFill /></WarningButton>
+                                </td>
+                            </tr>
+                        })}
                     </tbody>
                 </KataTable>
             </TableWrapper>
@@ -392,7 +380,6 @@ margin-top: 8px;
 `;
 
 const TableWrapper = styled.div`
-    flex: 1;
     margin: 8px 0;
 `;
 
