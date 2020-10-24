@@ -180,7 +180,8 @@ const AdminPanel = () => {
     }
 
     // Table functions
-    async function getPagedKatas(pageSize = 10, pageNumber = 1) {
+    const PAGE_SIZE = 10;
+    async function getPagedKatas(pageSize = PAGE_SIZE, pageNumber = 1) {
         const data = await fetch(
             baseApi + 'admin/katas?pageSize=' + pageSize + '&pageNumber=' + pageNumber,
             {

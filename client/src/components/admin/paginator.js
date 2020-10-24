@@ -9,9 +9,6 @@ import {
 import ButtonWrapper from '../extras/buttonWrapper';
 
 const Paginator = ({paging, onpage}) => {
-
-    const PAGE_SIZE = 10;
-
     const totalPages = Math.ceil(paging.totalCount / paging.pageSize);
 
     const firstPage = 1;
@@ -23,27 +20,27 @@ const Paginator = ({paging, onpage}) => {
 
     return <Wrapper>
         <Navigation>
-            <ButtonWrapper type="button" click={onpage.bind(null, PAGE_SIZE, firstPage)}><BsFillSkipBackwardFill /> </ButtonWrapper>
+            <ButtonWrapper type="button" click={onpage.bind(null, paging.pageSize, firstPage)}><BsFillSkipBackwardFill /> </ButtonWrapper>
         </Navigation>
         <Navigation>
-            <ButtonWrapper type="button" click={onpage.bind(null, PAGE_SIZE, previous)}><BsFillSkipStartFill /> </ButtonWrapper>
+            <ButtonWrapper type="button" click={onpage.bind(null, paging.pageSize, previous)}><BsFillSkipStartFill /> </ButtonWrapper>
         </Navigation>
 
         {previous !== paging.pageNumber && <Navigation>
-            <ButtonWrapper type="button" title={previous} click={onpage.bind(null, PAGE_SIZE, previous)}></ButtonWrapper>
+            <ButtonWrapper type="button" title={previous} click={onpage.bind(null, paging.pageSize, previous)}></ButtonWrapper>
         </Navigation>}
         <Navigation className="active-page">
             <ButtonWrapper type="button" title={paging.pageNumber}></ButtonWrapper>
         </Navigation>
         {next !== paging.pageNumber && <Navigation>
-            <ButtonWrapper type="button" title={next} click={onpage.bind(null, PAGE_SIZE, next)}></ButtonWrapper>
+            <ButtonWrapper type="button" title={next} click={onpage.bind(null, paging.pageSize, next)}></ButtonWrapper>
         </Navigation>}
 
         <Navigation>
-            <ButtonWrapper type="button" click={onpage.bind(null, PAGE_SIZE, next)}><BsFillSkipEndFill /> </ButtonWrapper>
+            <ButtonWrapper type="button" click={onpage.bind(null, paging.pageSize, next)}><BsFillSkipEndFill /> </ButtonWrapper>
         </Navigation>
         <Navigation>
-            <ButtonWrapper type="button" click={onpage.bind(null, PAGE_SIZE, lastPage)}><BsFillSkipForwardFill /> </ButtonWrapper>
+            <ButtonWrapper type="button" click={onpage.bind(null, paging.pageSize, lastPage)}><BsFillSkipForwardFill /> </ButtonWrapper>
         </Navigation>
     </Wrapper>;
 };
