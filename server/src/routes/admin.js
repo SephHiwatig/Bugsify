@@ -67,7 +67,7 @@ router.get("/api/admin/test", async (req, res) => {
 
     const result = await kataHandler.test();
 
-    res.status(200).json(result[4]);
+    res.status(200).json(result[3]);
 
 });
 

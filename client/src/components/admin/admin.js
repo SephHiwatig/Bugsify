@@ -12,7 +12,9 @@ import {
     BsPencil,
     BsSearch,
     BsFonts,
-    BsFillExclamationTriangleFill
+    BsFillExclamationTriangleFill,
+    BsPencilSquare,
+    BsArrow90DegLeft
 } from "react-icons/bs";
 import Button from '../extras/button';
 import SecondaryButton from '../extras/secondaryButton';
@@ -51,6 +53,7 @@ const AdminPanel = () => {
         totalCount: 1,
         filterState: ""
     });
+    const [editMode, setEditMode] = useState(false);
 
 
     // Form functions
@@ -129,10 +132,6 @@ const AdminPanel = () => {
             if(key === "tests") {
                 newKata[key].forEach(testInfo => {
                     if(!testInfo[2]) testError = true;
-                    // testInfo.forEach( (info, index) => {
-                    //     if(index !== 0)
-                    //         if(!info) testError = true;
-                    // })
                 })
             } else if (key === "editorState") {
                 newKata[key].blocks.forEach(block => {
@@ -243,8 +242,22 @@ const AdminPanel = () => {
             draftState.solutionTemplate = k.solutionTemplate;
             draftState.editorState = EditorState.createWithContent(convertFromRaw(k.editorState))
         }));
+        setEditMode(true);
+        setFormInvalid(false);
+    }
 
-
+    function cancelEditMode() {
+        setKata({
+            _id: null,
+            difficulty: "",
+            description: "",
+            tests: [["", "", ""], ["", "", ""], ["", "", ""]],
+            isSampleKata: false,
+            title: "",
+            solutionTemplate: "",
+            editorState: EditorState.createEmpty()
+        });
+        setEditMode(false);
     }
 
     useEffect(() => {
@@ -291,9 +304,17 @@ const AdminPanel = () => {
                     <Warning><BsFillExclamationTriangleFill />&nbsp;All fields are required.</Warning>
                 </TestWrapper>}
             </FormWrapper>
-            <FormFooter>
-                <ButtonWrapper type="button" title="Add Problem" click={addKata}><BsFileEarmarkPlus /> </ButtonWrapper>
-            </FormFooter>
+            {!editMode && <FormFooterAdd>
+                <ButtonWrapper type="button" title="Add Kata" click={addKata}><BsFileEarmarkPlus /> </ButtonWrapper>
+            </FormFooterAdd>}
+            {editMode && <FooterWrapper>
+                <FormFooterCancel>
+                    <ButtonWrapper type="button" title="Cancel" click={cancelEditMode}><BsArrow90DegLeft /> </ButtonWrapper>
+                </FormFooterCancel>
+                <FormFooterEdit>
+                    <ButtonWrapper type="button" title="Update Kata" click={addKata}><BsPencilSquare /> </ButtonWrapper>
+                </FormFooterEdit>
+            </FooterWrapper>}
         </LeftWrapper>
         <RightWrapper>
             <TableWrapper>
@@ -398,8 +419,8 @@ const Tests = styled.div`
     }
 `;
 
-const FormFooter = styled.div`
-margin-top: 8px;
+const FormFooterAdd = styled.div`
+    margin-top: 8px;
     justify-content: center;
     border: 1px solid #007300;
     padding: 4px;
@@ -409,7 +430,7 @@ margin-top: 8px;
 
     &:hover {
         background-color: #007300;
-        color: #000;
+        color: var(--main-font-color);
         transition: background-color .3s ease-in-out;
     }
 
@@ -417,6 +438,55 @@ margin-top: 8px;
         transform: scale(0.9);
         transition: transform .2s ease-in-out
     }
+`;
+
+const FormFooterEdit = styled.div`
+    margin: 8px 0 0 4px;
+    justify-content: center;
+    border: 1px solid #007300;
+    padding: 4px;
+    border-radius: 4px;
+    text-align: center;
+    color: #007300;
+    min-width: 120px;
+
+    &:hover {
+        background-color: #007300;
+        color: var(--main-font-color);
+        transition: background-color .3s ease-in-out;
+    }
+
+    &:active {
+        transform: scale(0.9);
+        transition: transform .2s ease-in-out
+    }
+`;
+
+const FormFooterCancel = styled.div`
+        margin: 8px 4px 0 0;
+        justify-content: center;
+        border: 1px solid var(--ui-theme-color);
+        padding: 4px;
+        border-radius: 4px;
+        text-align: center;
+        color: var(--ui-theme-color);
+        min-width: 120px;
+
+        &:hover {
+            background-color: var(--ui-theme-color);
+            color: var(--main-font-color);
+            transition: background-color .3s ease-in-out;
+        }
+
+        &:active {
+            transform: scale(0.9);
+            transition: transform .2s ease-in-out
+        }
+`;
+
+const FooterWrapper = styled.div`
+        display: flex;
+        justify-content: center;
 `;
 
 const TableWrapper = styled.div`
