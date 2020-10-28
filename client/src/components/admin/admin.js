@@ -83,7 +83,7 @@ const AdminPanel = () => {
                     tests: newTests
                 }))
             }}><BsArrowLeftRight /></IconInput>
-            <DropDown options={["string", "number", "boolean"]} value={kata.tests[index][2]} placeholder="Type"
+            <DropDown options={["string", "number", "boolean"]} value={kata.tests[index][2]} placeholder="Output Type"
                 select={(e) => {
                     const newTests = kata.tests.map((items, innerIndex) => {
                         if (innerIndex == index) {
@@ -167,6 +167,10 @@ const AdminPanel = () => {
                 const res = await data.json();
             }
         }
+    }
+
+    function updateKata() {
+        console.log(kata);
     }
 
     function updateKataState(eventValue, state, field, setter) {
@@ -312,7 +316,7 @@ const AdminPanel = () => {
                     <ButtonWrapper type="button" title="Cancel" click={cancelEditMode}><BsArrow90DegLeft /> </ButtonWrapper>
                 </FormFooterCancel>
                 <FormFooterEdit>
-                    <ButtonWrapper type="button" title="Update Kata" click={addKata}><BsPencilSquare /> </ButtonWrapper>
+                    <ButtonWrapper type="button" title="Update Kata" click={updateKata}><BsPencilSquare /> </ButtonWrapper>
                 </FormFooterEdit>
             </FooterWrapper>}
         </LeftWrapper>
