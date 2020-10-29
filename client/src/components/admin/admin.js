@@ -55,6 +55,11 @@ const AdminPanel = () => {
         filterState: ""
     });
     const [editMode, setEditMode] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [kataToDisable, setKataToDisable] = useState({
+        _id: "",
+        title: ""
+    });
 
 
     // Form functions
@@ -231,6 +236,20 @@ const AdminPanel = () => {
         setKata(newState);
     }
 
+    function cancelEditMode() {
+        setKata({
+            _id: null,
+            difficulty: "",
+            description: "",
+            tests: [["", "", ""], ["", "", ""], ["", "", ""]],
+            isSampleKata: false,
+            title: "",
+            solutionTemplate: "",
+            editorState: EditorState.createEmpty()
+        });
+        setEditMode(false);
+    }
+
     // Table functions
     async function getPagedKatas(pageSize = PAGE_SIZE, pageNumber = 1, filterState = "") {
         const data = await fetch(
@@ -296,18 +315,12 @@ const AdminPanel = () => {
         setFormInvalid(false);
     }
 
-    function cancelEditMode() {
-        setKata({
-            _id: null,
-            difficulty: "",
-            description: "",
-            tests: [["", "", ""], ["", "", ""], ["", "", ""]],
-            isSampleKata: false,
-            title: "",
-            solutionTemplate: "",
-            editorState: EditorState.createEmpty()
-        });
-        setEditMode(false);
+    function cancelDisableKata() {
+        setKataToDisable({
+            _id: "",
+            title: ""
+        })
+        setOpenDialog(false);
     }
 
     useEffect(() => {
@@ -388,7 +401,10 @@ const AdminPanel = () => {
                                 <td className="table-col">{k.title}</td>
                                 <td>
                                     <InfoButton type="button" click={editKata.bind(null, k)}><BsPencil /></InfoButton>
-                                    <WarningButton type="button"><BsFillTrashFill /></WarningButton>
+                                    <WarningButton type="button" click={() => { 
+                                        setOpenDialog(true);
+                                        setKataToDisable({ _id: k._id, title: k.title});
+                                    }}><BsFillTrashFill /></WarningButton>
                                 </td>
                             </tr>
                         })}
@@ -399,7 +415,7 @@ const AdminPanel = () => {
                 <Paginator paging={pagingInfo} onpage={getPagedKatas}/>
             </PagingWrapper>
         </RightWrapper>
-        <ConfirmDialog/>
+        {openDialog && <ConfirmDialog header={"Disable " + kataToDisable.title + "?"} cancel={cancelDisableKata}/> }
     </Wrapper>;
 }
 

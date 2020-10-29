@@ -5,19 +5,19 @@ import Button from './button';
 import SecondaryButton from './secondaryButton';
 import { BsXSquare } from "react-icons/bs";
 
-const ConfirmDialog = () => {
+const ConfirmDialog = ({header, cancel}) => {
     return <Wrapper>
         <Dialog>
             <Header>
                 <div>
-                    Disable kata?
+                    {header}
                 </div>
                 <div>
-                <ButtonWrapper type="button" ><BsXSquare/> </ButtonWrapper>
+                    <ButtonWrapper type="button" click={cancel} ><BsXSquare/> </ButtonWrapper>
                 </div>
             </Header>
             <Body>
-                <Button title="Cancel"></Button>
+                <Button title="Cancel" click={cancel}></Button>
                 <SecondaryButton title="Disable"></SecondaryButton>
             </Body>
         </Dialog>
@@ -50,6 +50,10 @@ const Header = styled.div`
     padding: 8px;
     display: flex;
     justify-content: space-between;
+
+    & div {
+        margin: 0 4px 0 4px;
+    }
 `;
 
 const Body = styled.div`
