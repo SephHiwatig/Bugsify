@@ -7,7 +7,7 @@ const SuccessButton = ({ title, click, type, children }) => {
 
 const Btn = styled.button`
     color: #004085;
-    border: 2px solid #004085;
+    border: 2px solid #b8daff;
     border-radius: 4px;
     padding: 8px 16px;
     background-color: #cce5ff;

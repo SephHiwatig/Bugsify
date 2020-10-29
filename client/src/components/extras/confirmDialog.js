@@ -5,12 +5,12 @@ import Button from './button';
 import SecondaryButton from './secondaryButton';
 import { BsXSquare } from "react-icons/bs";
 
-const ConfirmDialog = ({header, cancel}) => {
+const ConfirmDialog = ({status, title, cancel, ok}) => {
     return <Wrapper>
         <Dialog>
             <Header>
                 <div>
-                    {header}
+                    {(status ? "Disable " : "Enable ") + title + "?"}
                 </div>
                 <div>
                     <ButtonWrapper type="button" click={cancel} ><BsXSquare/> </ButtonWrapper>
@@ -18,7 +18,7 @@ const ConfirmDialog = ({header, cancel}) => {
             </Header>
             <Body>
                 <Button title="Cancel" click={cancel}></Button>
-                <SecondaryButton title="Disable"></SecondaryButton>
+                <SecondaryButton title={(status ? "Disable" : "Enable")} click={ok}></SecondaryButton>
             </Body>
         </Dialog>
     </Wrapper>

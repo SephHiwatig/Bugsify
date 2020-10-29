@@ -62,7 +62,8 @@ const AdminPanel = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [kataToDisable, setKataToDisable] = useState({
         _id: "",
-        title: ""
+        title: "",
+        enabled: true
     });
 
 
@@ -326,9 +327,40 @@ const AdminPanel = () => {
     function cancelDisableKata() {
         setKataToDisable({
             _id: "",
-            title: ""
+            title: "",
+            enabled: true
         })
         setOpenDialog(false);
+    }
+
+    async function toggleKata() {
+        const data = await fetch(
+            baseApi + 'admin/toggle-kata',
+            {
+                method: "PUT",
+                body: JSON.stringify({ _id: kataToDisable._id, enabled: kataToDisable.enabled }),
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + accessToken
+                }
+            }
+        )
+
+        if(data.ok) {
+            const index = kataList.findIndex(item => item._id === kataToDisable._id);
+            const newList = produce(kataList, draftState => {
+                draftState[index].enabled = !draftState[index].enabled;
+            })
+
+            setKataList(newList);
+            setKataToDisable({
+                _id: "",
+                title: "",
+                enabled: true
+            })
+            setOpenDialog(false);
+        }
     }
 
     useEffect(() => {
@@ -409,11 +441,14 @@ const AdminPanel = () => {
                                 <td className="table-col">{k.title}</td>
                                 <td>
                                     <InfoButton type="button" click={editKata.bind(null, k)}><BsPencil /></InfoButton>
-                                    {k.enabled && <WarningButton type="button" click={() => { 
+                                    {!k.enabled && <WarningButton type="button" click={() => { 
                                         setOpenDialog(true);
-                                        setKataToDisable({ _id: k._id, title: k.title});
+                                        setKataToDisable({ _id: k._id, title: k.title, enabled: k.enabled });
                                     }}><BsToggleOff /></WarningButton>}
-                                    {!k.enabled && <SuccessButton type="button" click={() => {}}><BsToggleOn /></SuccessButton>}
+                                    {k.enabled && <SuccessButton type="button" click={() => {
+                                        setOpenDialog(true);
+                                        setKataToDisable({ _id: k._id, title: k.title, enabled: k.enabled });
+                                    }}><BsToggleOn /></SuccessButton>}
                                 </td>
                             </tr>
                         })}
@@ -424,7 +459,7 @@ const AdminPanel = () => {
                 <Paginator paging={pagingInfo} onpage={getPagedKatas}/>
             </PagingWrapper>
         </RightWrapper>
-        {openDialog && <ConfirmDialog header={"Disable " + kataToDisable.title + "?"} cancel={cancelDisableKata}/> }
+        {openDialog && <ConfirmDialog status={kataToDisable.enabled} title={kataToDisable.title} cancel={cancelDisableKata} ok={toggleKata}/> }
     </Wrapper>;
 }
 
