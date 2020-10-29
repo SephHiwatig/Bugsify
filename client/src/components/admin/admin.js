@@ -14,7 +14,9 @@ import {
     BsFonts,
     BsFillExclamationTriangleFill,
     BsPencilSquare,
-    BsArrow90DegLeft
+    BsArrow90DegLeft,
+    BsToggleOff,
+    BsToggleOn
 } from "react-icons/bs";
 import Button from '../extras/button';
 import SecondaryButton from '../extras/secondaryButton';
@@ -23,6 +25,7 @@ import TextArea from '../extras/textArea';
 import CheckBox from '../extras/checkbox';
 import ButtonWrapper from '../extras/buttonWrapper';
 import InfoButton from '../extras/infoButton';
+import SuccessButton from '../extras/successButton';
 import WarningButton from '../extras/warningButton';
 import Paginator from './paginator';
 import { produce } from 'immer';
@@ -43,7 +46,8 @@ const AdminPanel = () => {
         isSampleKata: false,
         title: "",
         solutionTemplate: "",
-        editorState: EditorState.createEmpty()
+        editorState: EditorState.createEmpty(),
+        enabled: true
     });
     const [formInvalid, setFormInvalid] = useState(false);
     const [kataList, setKataList] = useState([]);
@@ -190,7 +194,8 @@ const AdminPanel = () => {
                     isSampleKata: false,
                     title: "",
                     solutionTemplate: "",
-                    editorState: EditorState.createEmpty()
+                    editorState: EditorState.createEmpty(),
+                    enabled: true
                 });
                 setEditMode(false);
             }
@@ -245,7 +250,8 @@ const AdminPanel = () => {
             isSampleKata: false,
             title: "",
             solutionTemplate: "",
-            editorState: EditorState.createEmpty()
+            editorState: EditorState.createEmpty(),
+            enabled: true
         });
         setEditMode(false);
     }
@@ -268,6 +274,7 @@ const AdminPanel = () => {
             const response = await data.json();
             setKataList(response.katas);
             setPagingInfo(response.pagingInfo);
+            console.log(response.katas);
         }
     }
 
@@ -309,7 +316,8 @@ const AdminPanel = () => {
             draftState.isSampleKata = k.isSampleKata;
             draftState.title = k.title;
             draftState.solutionTemplate = k.solutionTemplate;
-            draftState.editorState = EditorState.createWithContent(convertFromRaw(k.editorState))
+            draftState.editorState = EditorState.createWithContent(convertFromRaw(k.editorState));
+            draftState.enabled = k.enabled;
         }));
         setEditMode(true);
         setFormInvalid(false);
@@ -401,10 +409,11 @@ const AdminPanel = () => {
                                 <td className="table-col">{k.title}</td>
                                 <td>
                                     <InfoButton type="button" click={editKata.bind(null, k)}><BsPencil /></InfoButton>
-                                    <WarningButton type="button" click={() => { 
+                                    {k.enabled && <WarningButton type="button" click={() => { 
                                         setOpenDialog(true);
                                         setKataToDisable({ _id: k._id, title: k.title});
-                                    }}><BsFillTrashFill /></WarningButton>
+                                    }}><BsToggleOff /></WarningButton>}
+                                    {!k.enabled && <SuccessButton type="button" click={() => {}}><BsToggleOn /></SuccessButton>}
                                 </td>
                             </tr>
                         })}

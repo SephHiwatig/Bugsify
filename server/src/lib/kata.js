@@ -10,7 +10,6 @@ const addNewKata = async (kata) => {
         kata.answers = [];
         kata.likes = [];
         kata.solutions = [];
-        kata.enabled = true;
 
         // Connect to database and insert the new Kata,
         // Verify that new kata is added with assert
@@ -78,7 +77,6 @@ const searchKatas = async (keyWord, pageSize) => {
 
         return {succeeded: true, katas: newSet, totalCount: filteredCount};
     } catch (err) {
-        console.log(err)
         return { succeeded: false, katas: [], totalCount: 0 };
     }
 }
