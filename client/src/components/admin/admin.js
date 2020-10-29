@@ -30,6 +30,7 @@ import { baseApi } from '../../environment';
 import { useSelector } from "react-redux";
 import {convertFromRaw, convertToRaw} from 'draft-js';
 import { throttle } from 'lodash';
+import ConfirmDialog from '../extras/confirmDialog';
 
 const AdminPanel = () => {
     const accessToken = useSelector(state => state.auth.accessToken);
@@ -398,6 +399,7 @@ const AdminPanel = () => {
                 <Paginator paging={pagingInfo} onpage={getPagedKatas}/>
             </PagingWrapper>
         </RightWrapper>
+        <ConfirmDialog/>
     </Wrapper>;
 }
 
