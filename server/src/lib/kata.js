@@ -62,8 +62,6 @@ const getPagedKatas = async (pagingInfo) => {
 
 const searchKatas = async (keyWord, pageSize) => {
     try {
-        // Connect to database and insert the new Kata,
-        // Verify that new kata is added with assert
         const connection = await initDbConnection();
         let allKatas = await connection.findAll('katas');
         connection.closeConnection();
@@ -82,6 +80,19 @@ const searchKatas = async (keyWord, pageSize) => {
     } catch (err) {
         console.log(err)
         return { succeeded: false, katas: [], totalCount: 0 };
+    }
+}
+
+const updateKata = async (kata) => {
+    try {
+        const connection = await initDbConnection();
+        let modify = await connection.update('katas', kata);
+        connection.closeConnection();
+
+        assert(1, modify.modifiedCount );
+        return { succeeded: true }
+    } catch (err) {
+        return { succeeded: false }
     }
 }
 
@@ -117,6 +128,7 @@ module.exports = {
     addNewKata,
     getPagedKatas,
     searchKatas,
+    updateKata,
     test,
     parseKataTestOutput
 }

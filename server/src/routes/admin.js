@@ -63,6 +63,21 @@ router.get("/api/admin/search", authenticateToken, async (req, res) => {
     }
 });
 
+router.put("/api/admin/update", authenticateToken, async (req, res) => {
+
+    // Verify that user is admin
+    if(req.user.role !== 'admin')
+        return res.status(401).send('Unauthorized');
+
+    var result = await kataHandler.updateKata(req.body);
+
+    if(result.succeeded) {
+        res.status(204).send("OK");
+    } else {
+        res.status(500).send("Error");
+    }
+});
+
 router.get("/api/admin/test", async (req, res) => {
 
     const result = await kataHandler.test();

@@ -122,30 +122,7 @@ const AdminPanel = () => {
             draftState.editorState = convertToRaw(kata.editorState.getCurrentContent());
         })
 
-        // Validate that all fields are filled
-        const stateKeys = Object.keys(newKata);
-        let testError = false;
-        let editorError = true;
-        let generalError = false;
-
-        stateKeys.forEach(key => {
-            if(key === "tests") {
-                newKata[key].forEach(testInfo => {
-                    if(!testInfo[2]) testError = true;
-                })
-            } else if (key === "editorState") {
-                newKata[key].blocks.forEach(block => {
-                    if(block.text !== "")
-                        editorError = false;
-                })
-            } else {
-
-                if(!newKata[key] && key !== "_id" && key != "isSampleKata")
-                    generalError = true;
-            }
-        });
-
-        if(testError || editorError || generalError) {
+        if(_validateForm(newKata)) {
             setFormInvalid(true);
         } 
         else {
@@ -169,8 +146,77 @@ const AdminPanel = () => {
         }
     }
 
-    function updateKata() {
-        console.log(kata);
+    async function updateKata() {
+        // Convert editorstate to raw before storing to db
+        const newKata = produce(kata, draftState => {
+            draftState.editorState = convertToRaw(kata.editorState.getCurrentContent());
+        })
+
+        if(_validateForm(newKata)) {
+            setFormInvalid(true);
+        } else {
+            setFormInvalid(false);
+            const data = await fetch(
+                baseApi + "admin/update",
+                {
+                    method: "PUT",
+                    body: JSON.stringify(newKata),
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + accessToken
+                    }
+                }
+            );
+
+            if(data.ok) {
+                const index = kataList.findIndex(item => item._id === newKata._id);
+                const newList = produce(kataList, draftState => {
+                    draftState[index] = newKata;
+                })
+
+                setKataList(newList);
+
+                setKata({
+                    _id: null,
+                    difficulty: "",
+                    description: "",
+                    tests: [["", "", ""], ["", "", ""], ["", "", ""]],
+                    isSampleKata: false,
+                    title: "",
+                    solutionTemplate: "",
+                    editorState: EditorState.createEmpty()
+                });
+                
+            }
+        }
+    }
+
+    function _validateForm(tempKata) {
+        // Validate that all fields are filled
+        const stateKeys = Object.keys(tempKata);
+        let testError = false;
+        let editorError = true;
+        let generalError = false;
+    
+        stateKeys.forEach(key => {
+            if(key === "tests") {
+                tempKata[key].forEach(testInfo => {
+                    if(!testInfo[2]) testError = true;
+                })
+            } else if (key === "editorState") {
+                tempKata[key].blocks.forEach(block => {
+                    if(block.text !== "")
+                        editorError = false;
+                })
+            } else {
+    
+                if(!tempKata[key] && key !== "_id" && key != "isSampleKata")
+                    generalError = true;
+            }
+        });
+
+        return testError || editorError || generalError;
     }
 
     function updateKataState(eventValue, state, field, setter) {
