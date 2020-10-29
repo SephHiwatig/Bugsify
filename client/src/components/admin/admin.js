@@ -152,7 +152,19 @@ const AdminPanel = () => {
             );
 
             if(data.ok) {
-                const res = await data.json();
+                setKata({
+                    _id: null,
+                    difficulty: "",
+                    description: "",
+                    tests: [["", "", ""], ["", "", ""], ["", "", ""]],
+                    isSampleKata: false,
+                    title: "",
+                    solutionTemplate: "",
+                    editorState: EditorState.createEmpty(),
+                    enabled: true
+                });
+
+                // TODO: Push newly added kata to the list
             }
         }
     }
@@ -294,7 +306,6 @@ const AdminPanel = () => {
 
         if(data.ok) {
             const response = await data.json();
-            console.log(response);
             setKataList(response.katas);
             setPagingInfo({
                 pageNumber: 1,
