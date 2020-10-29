@@ -287,7 +287,6 @@ const AdminPanel = () => {
             const response = await data.json();
             setKataList(response.katas);
             setPagingInfo(response.pagingInfo);
-            console.log(response.katas);
         }
     }
 
