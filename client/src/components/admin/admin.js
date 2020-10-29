@@ -176,7 +176,6 @@ const AdminPanel = () => {
                 })
 
                 setKataList(newList);
-
                 setKata({
                     _id: null,
                     difficulty: "",
@@ -187,7 +186,7 @@ const AdminPanel = () => {
                     solutionTemplate: "",
                     editorState: EditorState.createEmpty()
                 });
-                
+                setEditMode(false);
             }
         }
     }
