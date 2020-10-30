@@ -17,7 +17,7 @@ const Kata = () => {
     const _id = useSelector((state) => state.auth.user._id);
     const kata = useSelector((state) => state.kata);
     const [solution, setSolution] = useState("");
-    const [console, setConsole] = useState({
+    const [consoleView, setConsole] = useState({
         passed: false,
         consoleList: []
     })
@@ -78,7 +78,11 @@ const Kata = () => {
     
             if(data.ok) {
                 const res = await data.json();
-                setConsole(res);
+                const newState = produce(consoleView, draftState => {
+                    draftState.consoleList.push(...res.consoleList);
+                    draftState.passed = res.passed;
+                })
+                setConsole(newState);
             }
         } else {
 
@@ -102,7 +106,7 @@ const Kata = () => {
                 </EditorWrapper>
                 <ConsoleWrapper>
                     <EditorTitle>Output</EditorTitle>
-                    <Console isAuth={isAuth} skip={getKata} submit={answerKata} consoleState={console}/>
+                    <Console isAuth={isAuth} skip={getKata} submit={answerKata} consoleState={consoleView}/>
                 </ConsoleWrapper>
             </SolutionWrapper>
         </Wrapper>);
