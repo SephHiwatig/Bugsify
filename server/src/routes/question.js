@@ -19,7 +19,7 @@ router.get("/api/kata/sample", async (req, res) => {
 
 router.get("/api/kata/question", authenticateToken,async (req, res) => {
 
-    const result = await kataHandler.getKataToAnswer(req.body._id);
+    const result = await kataHandler.getKataToAnswer(req.query._id);
 
     if(result.succeeded) {
         res.status(200).json(result.kata);

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SecondaryButton from '../extras/secondaryButton';
 import Button from '../extras/button';
 
-const Console = () => {
+const Console = ({isAuth, consoleItems}) => {
     return <Wrapper>
         <Terminal>
             <OutputList>
@@ -17,7 +17,7 @@ const Console = () => {
             </OutputList>
         </Terminal>
         <ButtonWrapper>
-            <div><Button title="Skip" /></div>
+            { isAuth && <div><Button title="Skip" /></div>}
             <div>
                 <SecondaryButton title="Clear" />
                 <SecondaryButton title="Submit" />
