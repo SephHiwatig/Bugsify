@@ -60,22 +60,22 @@ const Kata = () => {
 
     async function answerKata() {
         if(!isAuth) {
-            // const data = await fetch(
-            //     baseApi + "kata/sample",
-            //     {
-            //         method: "PUT",
-            //         body: JSON.stringify({ solution: ""}),
-            //         headers: {
-            //             Accept: "application/json",
-            //             "Content-Type": "application/json"
-            //         }
-            //     }
-            // );
+            const data = await fetch(
+                baseApi + "kata/answer/sample",
+                {
+                    method: "PUT",
+                    body: JSON.stringify({ _id: kata._id, solution: solution}),
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
     
-            // if(data.ok) {
-            //     const res = await data.json();
-            //     dispatch(fetchedKata(res));
-            // }
+            if(data.ok) {
+                const res = await data.json();
+                console.log(res);
+            }
         } else {
 
         }

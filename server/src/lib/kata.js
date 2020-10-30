@@ -3,6 +3,8 @@
  */
 const assert = require("assert");
 const initDbConnection = require('../utils/mongoConnection');
+var babel = require("babel-core");
+var loopcontrol = require("../utils/ast");
 
 const addNewKata = async (kata) => {
     try {
@@ -155,6 +157,28 @@ const getKataToAnswer = async (userId) => {
     }
 };
 
+const initTest = async (kataId, solution) => {
+
+    try {
+        const connection = await initDbConnection();
+        let kata = await connection.findByField('katas', "_id", kataId);
+        connection.closeConnection();
+
+        if(!kata) {
+            return { succeeded: false, message: "Not found"}
+        }
+
+        var out = babel.transform(solution, {
+            plugins: [loopcontrol]
+        });
+        
+        return { succeeded: true, message: out.code };
+
+    } catch (err) {
+        return { succeeded: false, message: "Server error"}
+    }
+};
+
 module.exports = {
     addNewKata,
     getPagedKatas,
@@ -162,5 +186,6 @@ module.exports = {
     updateKata,
     getSampleKata,
     getKataToAnswer,
+    initTest,
     parseKataTestOutput
 }

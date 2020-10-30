@@ -45,7 +45,11 @@ const _findAll = (db) => {
 const _findByField = (db) => {
     return async function(collection, field, value) {
         const query = {};
-        query[field] = value;
+        if(field === "_id") {
+            query[field] = ObjectID(value);
+        } else {
+            query[field] = value;
+        }
         const userFromDb = await db.collection(collection).findOne(query);
         return userFromDb;
     }

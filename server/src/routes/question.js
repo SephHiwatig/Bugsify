@@ -30,9 +30,19 @@ router.get("/api/kata/question", authenticateToken,async (req, res) => {
 });
 
 router.put("/api/kata/answer/sample", async (req, res) => {
-    console.log(req.body.solution);
 
-    res.status(200);
+    if(!req.body.solution) {
+        return res.status(400).json({ message: "Please provide a valid solution."})
+    }
+
+    const result = await kataHandler.initTest(req.body._id, req.body.solution);
+
+    if(result.succeeded) {
+        console.log(result.message);
+        res.status(200).send("OK");
+    } else {
+        res.status(500).send("Error");
+    }
 });
 
 
