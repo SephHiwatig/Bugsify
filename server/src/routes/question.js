@@ -29,6 +29,12 @@ router.get("/api/kata/question", authenticateToken,async (req, res) => {
 
 });
 
+router.put("/api/kata/answer/sample", async (req, res) => {
+    console.log(req.body.solution);
+
+    res.status(200);
+});
+
 
 
 module.exports = router;

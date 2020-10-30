@@ -5,7 +5,7 @@ import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-monokai";
  
 function onChange(newValue) {
-  console.log("change", newValue);
+  
 }
 
 const style = {
@@ -13,11 +13,13 @@ const style = {
     height: '100%'
 }
 
-const CodeEditor = ({template}) => {
+const CodeEditor = ({template, solution}) => {
     return <AceEditor
     mode="javascript"
     theme="monokai"
-    onChange={onChange}
+    onChange={(newValue) => {
+      solution(newValue);
+    }}
     name="UNIQUE_ID_OF_DIV"
     editorProps={{ $blockScrolling: true }}
     fontSize={14}

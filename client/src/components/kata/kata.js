@@ -16,6 +16,7 @@ const Kata = () => {
     const accessToken = useSelector(state => state.auth.accessToken);
     const _id = useSelector((state) => state.auth.user._id);
     const kata = useSelector((state) => state.kata);
+    const [solution, setSolution] = useState("");
 
     async function getKata() {
         if(!isAuth) {
@@ -33,6 +34,7 @@ const Kata = () => {
             if(data.ok) {
                 const res = await data.json();
                 dispatch(fetchedKata(res));
+                setSolution(res.solutionTemplate)
             } 
         } else {
             const data = await fetch(
@@ -51,7 +53,31 @@ const Kata = () => {
             if(data.ok) {
                 const res = await data.json();
                 dispatch(fetchedKata(res));
+                setSolution(res.solutionTemplate)
             } 
+        }
+    }
+
+    async function answerKata() {
+        if(!isAuth) {
+            // const data = await fetch(
+            //     baseApi + "kata/sample",
+            //     {
+            //         method: "PUT",
+            //         body: JSON.stringify({ solution: ""}),
+            //         headers: {
+            //             Accept: "application/json",
+            //             "Content-Type": "application/json"
+            //         }
+            //     }
+            // );
+    
+            // if(data.ok) {
+            //     const res = await data.json();
+            //     dispatch(fetchedKata(res));
+            // }
+        } else {
+
         }
     }
 
@@ -68,11 +94,11 @@ const Kata = () => {
             <SolutionWrapper>
                 <EditorWrapper>
                     <EditorTitle>Solution</EditorTitle>
-                    <CodeEditor template={kata.solutionTemplate}/>
+                    <CodeEditor template={solution} solution={setSolution}/>
                 </EditorWrapper>
                 <ConsoleWrapper>
                     <EditorTitle>Output</EditorTitle>
-                    <Console isAuth={isAuth} skip={getKata}/>
+                    <Console isAuth={isAuth} skip={getKata} submit={answerKata}/>
                 </ConsoleWrapper>
             </SolutionWrapper>
         </Wrapper>);
