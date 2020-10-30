@@ -72,7 +72,7 @@ const Kata = () => {
                 </EditorWrapper>
                 <ConsoleWrapper>
                     <EditorTitle>Output</EditorTitle>
-                    <Console isAuth={isAuth}/>
+                    <Console isAuth={isAuth} skip={getKata}/>
                 </ConsoleWrapper>
             </SolutionWrapper>
         </Wrapper>);

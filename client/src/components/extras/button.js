@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Button = ({ title, click, type, children }) => {
-    return <Btn onClick={click} type={type}>{title}{children ? " " : null}{children}</Btn>
+    return <Btn onClick={click} type={type}>{title}{children}</Btn>
 };
 
 const Btn = styled.button`
@@ -14,6 +14,8 @@ const Btn = styled.button`
     cursor: pointer;
     transition: background-color 0.15s ease-in-out;
     margin: 0px 4px;
+    display: flex;
+    align-items: center;
 
     &:hover {
         background-color: transparent;
