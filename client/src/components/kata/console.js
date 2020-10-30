@@ -2,13 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import SecondaryButton from '../extras/secondaryButton';
 import Button from '../extras/button';
+import { AiFillCloseCircle, AiFillCheckCircle } from "react-icons/ai";
 
 const Console = ({isAuth, skip, submit, consoleState}) => {
     return <Wrapper>
         <Terminal>
             <OutputList>
                 {consoleState.consoleList.map(item => {
-                    return <OutputItem>
+                    const style = {
+                        color: item.passedTest ? "green" : "#ff2626"
+                    };
+                    return <OutputItem style={style}>
+                        {item.passedTest && <AiFillCheckCircle />}
+                        {!item.passedTest && <AiFillCloseCircle/>}
                         {item.message}
                     </OutputItem>
                 })}
@@ -62,6 +68,12 @@ const OutputList = styled.ul`
 
 const OutputItem = styled.li`
     margin-left: 16px;
+    display: flex;
+    align-items: center;
+
+    & svg {
+        margin-right: 4px;
+    }
 `;
 
 export default Console;
