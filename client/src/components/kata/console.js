@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import SecondaryButton from '../extras/secondaryButton';
 import Button from '../extras/button';
-import { BsFillSkipForwardFill } from "react-icons/bs";
 
 const Console = ({isAuth, skip}) => {
     return <Wrapper>
@@ -18,7 +17,7 @@ const Console = ({isAuth, skip}) => {
             </OutputList>
         </Terminal>
         <ButtonWrapper>
-            { isAuth && <div><Button title="Skip" click={skip}><BsFillSkipForwardFill style={{marginLeft: "4px"}}/></Button></div>}
+            { isAuth && <div><Button title="Skip" click={skip}></Button></div>}
             <div>
                 <SecondaryButton title="Clear" />
                 <SecondaryButton title="Submit" />
