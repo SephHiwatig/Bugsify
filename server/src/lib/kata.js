@@ -115,14 +115,43 @@ const parseKataTestOutput = (kata) => {
 }
 
 const getSampleKata = async () => {
-    const connection = await initDbConnection();
-    const kata = await connection.findByField('katas', 'isSampleKata', true);
-    connection.closeConnection();
-
-    if(kata) {
-        return { succeeded: true, kata}
-    } else {
+    try {
+        const connection = await initDbConnection();
+        const kata = await connection.findByField('katas', 'isSampleKata', true);
+        connection.closeConnection();
+    
+        if(kata) {
+            return { succeeded: true, kata}
+        } else {
+            return { succeeded: false, kata: null}
+        }
+    } catch (err) {
         return { succeeded: false, kata: null}
+    }
+};
+
+const getKataToAnswer = async (userId) => {
+    try {
+        // Would be better to make a query to 
+        // filter the katas instead of using array functions
+        const connection = await initDbConnection();
+        let katas = await connection.findAll('katas');
+        connection.closeConnection();
+
+        const filteredKatas = katas.filter(kata => !kata.isSampleKata && !kata.solutions.includes(userId));
+
+        // Kata length > 0 means user has not yet answered all the katas
+        if(filteredKatas.length > 0) {
+            const randomIndex = Math.floor(Math.random() * Math.floor(filteredKatas.length));
+            return { succeeded: true, kata: filteredKatas[randomIndex]};
+        } else {
+            katas = katas.filter(kata => !kata.isSampleKata);
+            const randomIndex = Math.floor(Math.random() * Math.floor(katas.length));
+            return { succeeded: true, kata: katas[randomIndex]};
+        }
+
+    } catch (err) {
+        return { succeeded: false, kata: null};
     }
 };
 
@@ -132,5 +161,6 @@ module.exports = {
     searchKatas,
     updateKata,
     getSampleKata,
+    getKataToAnswer,
     parseKataTestOutput
 }

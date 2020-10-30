@@ -6,9 +6,14 @@ import Console from './console';
 import { produce } from 'immer';
 import { baseApi } from '../../environment';
 import { EditorState } from 'draft-js';
-import {convertFromRaw} from 'draft-js';
+import { convertFromRaw } from 'draft-js';
+import { useDispatch, useSelector } from "react-redux";
 
 const Kata = () => {
+    const isAuth = useSelector((state) => state.auth.isAuthenticated);
+    const accessToken = useSelector(state => state.auth.accessToken);
+    const _id = useSelector((state) => state.auth.user._id);
+
     const [kata, setKata] = useState({
         _id: null,
         difficulty: "",
@@ -19,35 +24,61 @@ const Kata = () => {
     })
 
     async function getKata() {
-
-        const data = await fetch(
-            baseApi + "kata/sample",
-            {
-                method: "GET",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
+        if(!isAuth) {
+            const data = await fetch(
+                baseApi + "kata/sample",
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json"
+                    }
                 }
-            }
-        );
-
-        if(data.ok) {
-            const res = await data.json();
-            setKata(produce(kata, draftState => {
-                draftState._id = res._id;
-                draftState.difficulty = res.difficulty;
-                draftState.description = res.description;
-                draftState.title = res.title;
-                draftState.solutionTemplate = res.solutionTemplate;
-                draftState.editorState = EditorState.createWithContent(convertFromRaw(res.editorState));
-            }));
-        } 
+            );
+    
+            if(data.ok) {
+                const res = await data.json();
+                setKata(produce(kata, draftState => {
+                    draftState._id = res._id;
+                    draftState.difficulty = res.difficulty;
+                    draftState.description = res.description;
+                    draftState.title = res.title;
+                    draftState.solutionTemplate = res.solutionTemplate;
+                    draftState.editorState = EditorState.createWithContent(convertFromRaw(res.editorState));
+                }));
+            } 
+        } else {
+            const data = await fetch(
+                baseApi + "kata/question",
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + accessToken,
+                        "Cache-control": "no-cache"
+                    }
+                }
+            );
+    
+            if(data.ok) {
+                const res = await data.json();
+                setKata(produce(kata, draftState => {
+                    draftState._id = res._id;
+                    draftState.difficulty = res.difficulty;
+                    draftState.description = res.description;
+                    draftState.title = res.title;
+                    draftState.solutionTemplate = res.solutionTemplate;
+                    draftState.editorState = EditorState.createWithContent(convertFromRaw(res.editorState));
+                }));
+            } 
+        }
     }
 
 
     useEffect(() => {
         getKata();
-    }, [])
+    }, [isAuth])
 
     return (
         <Wrapper>
