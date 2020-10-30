@@ -5,7 +5,7 @@ import Button from '../extras/button';
 import { AiFillCloseCircle, AiFillCheckCircle } from "react-icons/ai";
 import { animateScroll } from "react-scroll";
 
-const Console = ({isAuth, skip, submit, consoleState}) => {
+const Console = ({isAuth, skip, submit, consoleState, clear}) => {
 
     useEffect(() => {
         animateScroll.scrollToBottom({
@@ -30,7 +30,7 @@ const Console = ({isAuth, skip, submit, consoleState}) => {
         <ButtonWrapper>
             { isAuth && <div><Button title="Skip" click={skip}></Button></div>}
             <div>
-                <SecondaryButton title="Clear" />
+                <SecondaryButton title="Clear" click={clear}/>
                 <SecondaryButton title="Submit" click={submit}/>
             </div>
         </ButtonWrapper>

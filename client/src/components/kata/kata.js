@@ -89,6 +89,12 @@ const Kata = () => {
         }
     }
 
+    function clearConsole() {
+        setConsole({
+            passed: false,
+            consoleList: []
+        })
+    }
 
     useEffect(() => {
         getKata();
@@ -106,7 +112,7 @@ const Kata = () => {
                 </EditorWrapper>
                 <ConsoleWrapper>
                     <EditorTitle>Output</EditorTitle>
-                    <Console isAuth={isAuth} skip={getKata} submit={answerKata} consoleState={consoleView}/>
+                    <Console isAuth={isAuth} skip={getKata} submit={answerKata} clear={clearConsole} consoleState={consoleView}/>
                 </ConsoleWrapper>
             </SolutionWrapper>
         </Wrapper>);
