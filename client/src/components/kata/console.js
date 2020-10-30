@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import SecondaryButton from '../extras/secondaryButton';
 import Button from '../extras/button';
 import { AiFillCloseCircle, AiFillCheckCircle } from "react-icons/ai";
+import { animateScroll } from "react-scroll";
 
 const Console = ({isAuth, skip, submit, consoleState}) => {
+
+    useEffect(() => {
+        animateScroll.scrollToBottom({
+            containerId: "terminal"
+          });
+    }, [consoleState])
     return <Wrapper>
-        <Terminal>
+        <Terminal id="terminal">
             <OutputList>
                 {consoleState.consoleList.map(item => {
                     const style = {
