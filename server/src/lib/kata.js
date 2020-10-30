@@ -114,19 +114,23 @@ const parseKataTestOutput = (kata) => {
     return kata;
 }
 
-const test = async () => {
+const getSampleKata = async () => {
     const connection = await initDbConnection();
-    const katas = await connection.findAll('katas');
+    const kata = await connection.findByField('katas', 'isSampleKata', true);
     connection.closeConnection();
 
-    return katas;
-}
+    if(kata) {
+        return { succeeded: true, kata}
+    } else {
+        return { succeeded: false, kata: null}
+    }
+};
 
 module.exports = {
     addNewKata,
     getPagedKatas,
     searchKatas,
     updateKata,
-    test,
+    getSampleKata,
     parseKataTestOutput
 }

@@ -20,6 +20,7 @@ app.use(function (req, res, next) {
 .use(cors())
 .use(require("./routes/auth"))
 .use(require("./routes/admin"))
+.use(require("./routes/question"))
 
 .listen(4200, () => {
     console.log('Server is now listening on port 4200.')

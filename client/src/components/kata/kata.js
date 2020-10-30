@@ -18,10 +18,10 @@ const Kata = () => {
         editorState: EditorState.createEmpty()
     })
 
-    async function test() {
-        console.log('INSIDE TEST')
+    async function getKata() {
+
         const data = await fetch(
-            baseApi + "admin/test",
+            baseApi + "kata/sample",
             {
                 method: "GET",
                 headers: {
@@ -33,7 +33,6 @@ const Kata = () => {
 
         if(data.ok) {
             const res = await data.json();
-            console.log(res.editorState);
             setKata(produce(kata, draftState => {
                 draftState._id = res._id;
                 draftState.difficulty = res.difficulty;
@@ -42,14 +41,12 @@ const Kata = () => {
                 draftState.solutionTemplate = res.solutionTemplate;
                 draftState.editorState = EditorState.createWithContent(convertFromRaw(res.editorState));
             }));
-        } else {
-            console.log("Error");
-        }
+        } 
     }
 
 
     useEffect(() => {
-        test();
+        getKata();
     }, [])
 
     return (
