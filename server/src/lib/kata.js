@@ -3,8 +3,10 @@
  */
 const assert = require("assert");
 const initDbConnection = require('../utils/mongoConnection');
-var babel = require("babel-core");
-var loopcontrol = require("../utils/ast");
+const babel = require("babel-core");
+const loopcontrol = require("../utils/ast");
+const { parseInputs } = require("../utils/kataHelpers");
+
 
 const addNewKata = async (kata) => {
     try {
@@ -171,11 +173,46 @@ const initTest = async (kataId, solution) => {
         var out = babel.transform(solution, {
             plugins: [loopcontrol]
         });
+
+        const funcSolution = new Function("return " + out.code)();
+
+        const consoleList = [];
+        let passed = true;
+
+        try {
+
+            for(let i = 0; i < kata.tests.length; i++) {
+                const inputs = parseInputs(kata.tests[i][0]);
+
+                const output = funcSolution(...inputs);
+
+                if(output === kata.tests[i][1]) {
+                    consoleList.push({ passedTest: true, message: "Passed"});
+                } else {
+                    passed = false;
+                    consoleList.push({ passedTest: false, message: "Failed: Expected " + kata.tests[i][1] + " but got " + output});
+                }
+            }
+
+        } catch (err) {
+            if(err === "Execution Timedout") {
+                consoleList.push({ passedTest: false, message: err});
+            } else {
+                consoleList.push({ passedTest: false, message: err.message});
+            }
+        }
         
-        return { succeeded: true, message: out.code };
+        const result = {
+            passed,
+            consoleList
+        }
+
+        // TODO: If user is authenticated, modify the kata to add solution
+
+        return { succeeded: true, result, };
 
     } catch (err) {
-        return { succeeded: false, message: "Server error"}
+        return { succeeded: false, result: null}
     }
 };
 

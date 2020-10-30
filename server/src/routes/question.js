@@ -38,7 +38,7 @@ router.put("/api/kata/answer/sample", async (req, res) => {
     const result = await kataHandler.initTest(req.body._id, req.body.solution);
 
     if(result.succeeded) {
-        console.log(result.message);
+        console.log(result.result);
         res.status(200).send("OK");
     } else {
         res.status(500).send("Error");

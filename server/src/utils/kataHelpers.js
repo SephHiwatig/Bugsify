@@ -27,5 +27,8 @@ function parseInputs(args, inputSeparator = ",", typeSeparator = ":") {
    });
 
    return inputs;
-
 }
+
+module.exports = {
+    parseInputs
+};
