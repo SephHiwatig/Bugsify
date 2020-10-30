@@ -3,17 +3,15 @@ import styled from 'styled-components';
 import SecondaryButton from '../extras/secondaryButton';
 import Button from '../extras/button';
 
-const Console = ({isAuth, skip, submit}) => {
+const Console = ({isAuth, skip, submit, consoleState}) => {
     return <Wrapper>
         <Terminal>
             <OutputList>
-                <OutputItem>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et tristique tellus, ut egestas nibh. Duis consectetur purus tellus, vitae fermentum magna faucibus a. Praesent hendrerit, arcu at accumsan auctor, mi nunc faucibus quam, feugiat posuere tortor ante et mi. Aliquam varius porttitor aliquet. Sed blandit nunc quis dolor vulputate tempus. In tristique tellus eu orci ultrices, quis iaculis neque vestibulum. Aliquam id malesuada est. Aenean porttitor nulla a turpis posuere tempor ac id nibh. Phasellus in ex faucibus, efficitur dui a, commodo nibh. Vestibulum gravida luctus accumsan. Morbi malesua</OutputItem>
-                <OutputItem>Success</OutputItem>
-                <OutputItem>Success</OutputItem>
-                <OutputItem>Success</OutputItem>
-                <OutputItem>Success</OutputItem>
-                <OutputItem>Success</OutputItem>
-                <OutputItem>Success</OutputItem>
+                {consoleState.consoleList.map(item => {
+                    return <OutputItem>
+                        {item.message}
+                    </OutputItem>
+                })}
             </OutputList>
         </Terminal>
         <ButtonWrapper>

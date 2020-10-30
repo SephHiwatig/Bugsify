@@ -43,7 +43,7 @@ function _addTimeOut(path, varName, t, counter) {
             "body",
             t.ifStatement(
                 t.binaryExpression(">", t.callExpression(t.memberExpression(t.identifier("Date"), t.identifier("now")), []), lhs),
-                t.throwStatement(t.stringLiteral("Execution Timedout")),
+                t.throwStatement(t.stringLiteral("Execution Timeout")),
                 null
             )
         );

@@ -195,8 +195,8 @@ const initTest = async (kataId, solution) => {
             }
 
         } catch (err) {
-            if(err === "Execution Timedout") {
-                consoleList.push({ passedTest: false, message: err});
+            if(err === "Execution Timeout") {
+                consoleList.push({ passedTest: false, message: err + ": Consider refactoring your code for better performance"});
             } else {
                 consoleList.push({ passedTest: false, message: err.message});
             }

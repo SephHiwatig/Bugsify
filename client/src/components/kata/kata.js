@@ -17,6 +17,10 @@ const Kata = () => {
     const _id = useSelector((state) => state.auth.user._id);
     const kata = useSelector((state) => state.kata);
     const [solution, setSolution] = useState("");
+    const [console, setConsole] = useState({
+        passed: false,
+        consoleList: []
+    })
 
     async function getKata() {
         if(!isAuth) {
@@ -74,7 +78,7 @@ const Kata = () => {
     
             if(data.ok) {
                 const res = await data.json();
-                console.log(res);
+                setConsole(res);
             }
         } else {
 
@@ -98,7 +102,7 @@ const Kata = () => {
                 </EditorWrapper>
                 <ConsoleWrapper>
                     <EditorTitle>Output</EditorTitle>
-                    <Console isAuth={isAuth} skip={getKata} submit={answerKata}/>
+                    <Console isAuth={isAuth} skip={getKata} submit={answerKata} consoleState={console}/>
                 </ConsoleWrapper>
             </SolutionWrapper>
         </Wrapper>);
