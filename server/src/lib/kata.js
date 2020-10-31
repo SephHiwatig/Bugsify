@@ -6,12 +6,12 @@ const initDbConnection = require('../utils/mongoConnection');
 const babel = require("babel-core");
 const loopcontrol = require("../utils/ast");
 const { parseInputs } = require("../utils/kataHelpers");
+const { addNewSolution } = require('../lib/solution');
 
 
 const addNewKata = async (kata) => {
     try {
         // Add extra fields to kata
-        kata.answers = [];
         kata.likes = [];
         kata.solutions = [];
 
@@ -164,7 +164,6 @@ const initTest = async (kataId, solution, userId = null) => {
     try {
         const connection = await initDbConnection();
         let kata = await connection.findByField('katas', "_id", kataId);
-        connection.closeConnection();
 
         if(!kata) {
             return { succeeded: false, message: "Not found"}
@@ -195,6 +194,7 @@ const initTest = async (kataId, solution, userId = null) => {
             }
 
         } catch (err) {
+            passed = false;
             if(err === "Execution Timeout") {
                 consoleList.push({ passedTest: false, message: err + ": Consider refactoring your code for better performance"});
             } else {
@@ -208,7 +208,13 @@ const initTest = async (kataId, solution, userId = null) => {
         }
 
         // TODO: If user is authenticated, modify the kata to add solution
+        if(result.passed && userId) {
+            const newSolutionId = await addNewSolution(solution, userId);
+            kata.solutions.push(newSolutionId);
+            await connection.update('katas', kata);
+        }
 
+        connection.closeConnection();
         return { succeeded: true, result, };
 
     } catch (err) {
