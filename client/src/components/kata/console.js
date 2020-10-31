@@ -28,7 +28,7 @@ const Console = ({isAuth, skip, submit, consoleState, clear}) => {
             </OutputList>
         </Terminal>
         <ButtonWrapper>
-            { isAuth && <div><Button title="Skip" click={skip}></Button></div>}
+            { isAuth && <div><Button title="Next" click={skip}></Button></div>}
             <div>
                 <SecondaryButton title="Clear" click={clear}/>
                 <SecondaryButton title="Submit" click={submit}/>

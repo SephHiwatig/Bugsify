@@ -87,12 +87,42 @@ const Kata = () => {
                             message: "Thank you for trying Bugsify! Please login to answer more questions."
                         });
                     }
-                    
+
                     draftState.passed = res.passed;
                 })
                 setConsole(newState);
             }
         } else {
+
+            const data = await fetch(
+                baseApi + "kata/answer",
+                {
+                    method: "PUT",
+                    body: JSON.stringify({ _id: kata._id, solution: solution}),
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + accessToken,
+                    }
+                }
+            );
+
+            if(data.ok) {
+                const res = await data.json();
+                const newState = produce(consoleView, draftState => {
+                    draftState.consoleList.push(...res.consoleList);
+
+                    if(res.passed) {
+                        draftState.consoleList.push({
+                            passedTest: true,
+                            message: "Kata cleared! Click next to train more. Goodluck!"
+                        });
+                    }
+
+                    draftState.passed = res.passed;
+                })
+                setConsole(newState);
+            }
 
         }
     }

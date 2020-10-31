@@ -159,7 +159,7 @@ const getKataToAnswer = async (userId) => {
     }
 };
 
-const initTest = async (kataId, solution) => {
+const initTest = async (kataId, solution, userId = null) => {
 
     try {
         const connection = await initDbConnection();
