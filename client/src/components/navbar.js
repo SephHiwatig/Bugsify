@@ -57,6 +57,9 @@ const NavBar = () => {
                 <Avatar src={userPlaceholder} alt="user picture" />
                 <MenuDropDown>
                     <li><ButtonWrapper type="button" title="View profile" /></li>
+                    { userInfo.user.role === 'admin' && 
+                        <li><ButtonWrapper type="button" title="Admin panel" /></li>
+                    }
                     <li><ButtonWrapper type="button" title="Log out" click={logOut}/></li>
                 </MenuDropDown>
             </InfoWrapper>
@@ -158,7 +161,7 @@ const MenuDropDown = styled.ul`
     list-style-type: none;
     padding: 0;
     margin: 0;
-    bottom: -65px;
+    top: 65px;
     z-index: 100;
     display: none;
     & li {
