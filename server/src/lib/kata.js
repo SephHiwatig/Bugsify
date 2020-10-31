@@ -209,15 +209,34 @@ const initTest = async (kataId, solution, userId = null) => {
 
         // TODO: If user is authenticated, modify the kata to add solution
         if(result.passed && userId) {
-            const newSolutionId = await addNewSolution(solution, userId);
-            kata.solutions.push(newSolutionId);
-            await connection.update('katas', kata);
+            let wasAnswered = false;
+            let existingAnswer;
+            for(let i = 0; i < kata.solutions.length; i++) {
+                const existingSolution = await connection.findByField('solutions', '_id', kata.solutions[i]);
+                if(existingSolution.answeredById === userId) {
+                    wasAnswered = true;
+                    existingAnswer = existingSolution;
+                }
+            }
+
+            // If the kata has already been answered by the user update their answer
+            // if not, create a new answer/solution
+            if(wasAnswered) {
+                existingAnswer.dateAnswered = new Date();
+                existingAnswer.solution = solution;
+                await connection.update('solutions', existingAnswer);
+            } else {
+                const newSolutionId = await addNewSolution(solution, userId);
+                kata.solutions.push(newSolutionId);
+                await connection.update('katas', kata);
+            }
         }
 
         connection.closeConnection();
         return { succeeded: true, result, };
 
     } catch (err) {
+        console.log(err)
         return { succeeded: false, result: null}
     }
 };
