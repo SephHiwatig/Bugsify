@@ -46,13 +46,14 @@ const authReducer = (state = initialState, action) => {
             }
         }
         case GAINED_EXP: {
-            return {
+            const newState = {
                 ...state,
-                user: {
-                    ...state.user,
-                    exp: state.user.exp + 200
-                }
+                user: action.payload.user
             }
+
+            localStorage.setItem('user', JSON.stringify(newState.user));
+
+            return newState;
         }
         default: return state;
     }

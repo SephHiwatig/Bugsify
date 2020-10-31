@@ -15,11 +15,11 @@ const Console = ({isAuth, skip, submit, consoleState, clear}) => {
     return <Wrapper>
         <Terminal id="terminal">
             <OutputList>
-                {consoleState.consoleList.map(item => {
+                {consoleState.consoleList.map((item, index) => {
                     const style = {
                         color: item.passedTest ? "green" : "#ff2626"
                     };
-                    return <OutputItem style={style}>
+                    return <OutputItem style={style} key={index}>
                         {item.passedTest && <AiFillCheckCircle />}
                         {!item.passedTest && <AiFillCloseCircle/>}
                         {item.message}

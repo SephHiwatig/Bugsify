@@ -118,7 +118,7 @@ const Kata = () => {
                         });
 
                         // Update user exp
-                        dispatch(gainExp());
+                        dispatch(gainExp(res.user));
                     }
 
                     draftState.passed = res.passed;

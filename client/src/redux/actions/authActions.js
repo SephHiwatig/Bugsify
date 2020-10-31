@@ -13,6 +13,9 @@ export const userLoggedOut = () => ({
   type: LOGGED_OUT
 });
 
-export const gainExp = (kata) => ({
+export const gainExp = (user) => ({
   type: GAINED_EXP,
+  payload: {
+    user
+  }
 });

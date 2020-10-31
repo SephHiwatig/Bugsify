@@ -147,8 +147,9 @@ const getKataToAnswer = async (userId) => {
 
         // Kata length > 0 means user has not yet answered all the katas
         if(filteredKatas.length > 0) {
-            const randomIndex = Math.floor(Math.random() * Math.floor(filteredKatas.length));
-            return { succeeded: true, kata: filteredKatas[randomIndex]};
+            // const randomIndex = Math.floor(Math.random() * Math.floor(filteredKatas.length));
+            // return { succeeded: true, kata: filteredKatas[randomIndex]};
+            return { succeeded: true, kata: filteredKatas[13]};
         } else {
             katas = katas.filter(kata => !kata.isSampleKata);
             const randomIndex = Math.floor(Math.random() * Math.floor(katas.length));
@@ -205,7 +206,8 @@ const initTest = async (kataId, solution, userId = null) => {
         
         const result = {
             passed,
-            consoleList
+            consoleList,
+            user: null
         }
 
         // If user is authenticated, modify the kata to add or update solution
@@ -230,8 +232,8 @@ const initTest = async (kataId, solution, userId = null) => {
                 const newSolutionId = await addNewSolution(solution, userId);
                 kata.solutions.push(newSolutionId);
                 await connection.update('katas', kata);
-                const user = await connection.findByField('users', '_id', userId);
-                addUserExp(user);
+                let user = await connection.findByField('users', '_id', userId);
+                result.user = await addUserExp(user);
             }
         }
 

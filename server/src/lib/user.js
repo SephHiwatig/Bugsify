@@ -44,7 +44,6 @@ const createNewUser = async (userInfo) => {
 
         return { succeeded: true, message: "Ok"};
     } catch (error) {
-        console.log(error);
         return { succeeded: false, message: "Failed to create user."};
     }
 };
@@ -68,9 +67,27 @@ const getUserByUsername = async (username) => {
 
 const addUserExp = async (user) => {
     const connection = await initDbConnection();
-    user.exp += 200;
+
+    if(user.exp === 800) {
+        user.exp = 0;
+        user.level += 1;
+    } else {
+        user.exp += 200;
+    }
+
     await connection.update('users', user);
     connection.closeConnection();
+
+    const userToReturn = {
+        _id: user._id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        level: user.level,
+        exp: user.exp,
+        role: user.role
+    };
+
+    return userToReturn;
 }
 
 module.exports = {
