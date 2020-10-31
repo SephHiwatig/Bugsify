@@ -72,7 +72,7 @@ const AdminPanel = () => {
         return <Tests key={index}>
             <IconInput type="text" placeholder="Input" value={kata.tests[index][0]} change={(e) => {
                 const newTests = kata.tests.map((items, innerIndex) => {
-                    if (innerIndex == index) {
+                    if (innerIndex === index) {
                         return [e.target.value, items[1], items[2]];
                     }
                     return [...items];
@@ -84,7 +84,7 @@ const AdminPanel = () => {
             }}><BsArrowLeftRight /></IconInput>
             <IconInput type="text" placeholder="Output" value={kata.tests[index][1]} change={(e) => {
                 const newTests = kata.tests.map((items, innerIndex) => {
-                    if (innerIndex == index) {
+                    if (innerIndex === index) {
                         return [items[0], e.target.value, items[2]];
                     }
                     return [...items];
@@ -97,7 +97,7 @@ const AdminPanel = () => {
             <DropDown options={["string", "number", "boolean"]} value={kata.tests[index][2]} placeholder="Output Type"
                 select={(e) => {
                     const newTests = kata.tests.map((items, innerIndex) => {
-                        if (innerIndex == index) {
+                        if (innerIndex === index) {
                             return [items[0], items[1], e];
                         }
                         return [...items];
@@ -123,7 +123,7 @@ const AdminPanel = () => {
     function deleteTest(index) {
         setKata(current => ({
             ...current,
-            tests: current.tests.filter(item => current.tests.indexOf(item) != index)
+            tests: current.tests.filter(item => current.tests.indexOf(item) !== index)
         }))
     }
 
@@ -234,7 +234,7 @@ const AdminPanel = () => {
                 })
             } else {
     
-                if(!tempKata[key] && key !== "_id" && key != "isSampleKata")
+                if(!tempKata[key] && key !== "_id" && key !== "isSampleKata")
                     generalError = true;
             }
         });

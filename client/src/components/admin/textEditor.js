@@ -1,5 +1,5 @@
 import React from 'react';
-import { Editor, EditorState, RichUtils, getDefaultKeyBinding } from 'draft-js';
+import { Editor, RichUtils, getDefaultKeyBinding } from 'draft-js';
 import '../../../node_modules/draft-js/dist/Draft.css';
 import { stateToHTML } from 'draft-js-export-html';
 

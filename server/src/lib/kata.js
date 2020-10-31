@@ -147,9 +147,9 @@ const getKataToAnswer = async (userId) => {
 
         // Kata length > 0 means user has not yet answered all the katas
         if(filteredKatas.length > 0) {
-            // const randomIndex = Math.floor(Math.random() * Math.floor(filteredKatas.length));
-            // return { succeeded: true, kata: filteredKatas[randomIndex]};
-            return { succeeded: true, kata: filteredKatas[13]};
+            const randomIndex = Math.floor(Math.random() * Math.floor(filteredKatas.length));
+            return { succeeded: true, kata: filteredKatas[randomIndex]};
+            // return { succeeded: true, kata: filteredKatas[13]};
         } else {
             katas = katas.filter(kata => !kata.isSampleKata);
             const randomIndex = Math.floor(Math.random() * Math.floor(katas.length));

@@ -3,10 +3,7 @@ import AceEditor from "react-ace";
  
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-monokai";
- 
-function onChange(newValue) {
-  
-}
+import "ace-builds/src-noconflict/ext-language_tools";
 
 const style = {
     width: '100%',

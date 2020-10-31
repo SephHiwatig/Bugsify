@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
 import Kata from './components/kata/kata';
@@ -62,7 +62,7 @@ function App() {
     if (accessToken) {
       verifyToken(accessToken);
     }
-  }, [])
+  })
 
 
 

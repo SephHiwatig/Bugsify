@@ -1,4 +1,4 @@
-import { FETCHED, GAINED_EXP } from '../actions/actionTypes';
+import { FETCHED } from '../actions/actionTypes';
 
 export const fetchedKata = (kata) => ({
     type: FETCHED,
