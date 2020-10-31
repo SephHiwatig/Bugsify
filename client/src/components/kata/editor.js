@@ -3,9 +3,6 @@ import { Editor } from 'draft-js';
 import '../../../node_modules/draft-js/dist/Draft.css';
 
 class ReadOnlyEditor extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     const editorState = this.props.editorState;

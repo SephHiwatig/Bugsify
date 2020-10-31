@@ -7,7 +7,6 @@ class TextEditor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.focus = () => this.refs.editor.focus();
     this.onChange = (editorState) => {
       const valueToHtml = stateToHTML(editorState.getCurrentContent());
       this.props.change({
@@ -96,7 +95,6 @@ class TextEditor extends React.Component {
             handleKeyCommand={this.handleKeyCommand}
             keyBindingFn={this.mapKeyToEditorCommand}
             onChange={this.onChange}
-            ref="editor"
             spellCheck={true}
           />
         </div>
