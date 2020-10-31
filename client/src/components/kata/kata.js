@@ -80,6 +80,14 @@ const Kata = () => {
                 const res = await data.json();
                 const newState = produce(consoleView, draftState => {
                     draftState.consoleList.push(...res.consoleList);
+
+                    if(res.passed) {
+                        draftState.consoleList.push({
+                            passedTest: true,
+                            message: "Thank you for trying Bugsify! Please login to answer more questions."
+                        });
+                    }
+                    
                     draftState.passed = res.passed;
                 })
                 setConsole(newState);
