@@ -7,6 +7,7 @@ const babel = require("babel-core");
 const loopcontrol = require("../utils/ast");
 const { parseInputs } = require("../utils/kataHelpers");
 const { addNewSolution } = require('../lib/solution');
+const { addUserExp } = require('../lib/user');
 
 
 const addNewKata = async (kata) => {
@@ -207,7 +208,7 @@ const initTest = async (kataId, solution, userId = null) => {
             consoleList
         }
 
-        // TODO: If user is authenticated, modify the kata to add solution
+        // If user is authenticated, modify the kata to add or update solution
         if(result.passed && userId) {
             let wasAnswered = false;
             let existingAnswer;
@@ -229,6 +230,8 @@ const initTest = async (kataId, solution, userId = null) => {
                 const newSolutionId = await addNewSolution(solution, userId);
                 kata.solutions.push(newSolutionId);
                 await connection.update('katas', kata);
+                const user = await connection.findByField('users', '_id', userId);
+                addUserExp(user);
             }
         }
 

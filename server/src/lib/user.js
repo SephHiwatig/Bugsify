@@ -66,7 +66,15 @@ const getUserByUsername = async (username) => {
     }
 }
 
+const addUserExp = async (user) => {
+    const connection = await initDbConnection();
+    user.exp += 200;
+    await connection.update('users', user);
+    connection.closeConnection();
+}
+
 module.exports = {
     createNewUser,
     getUserByUsername,
+    addUserExp
 }
