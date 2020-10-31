@@ -1,4 +1,4 @@
-import { LOGGED_IN, LOGGED_OUT } from '../actions/actionTypes';
+import { LOGGED_IN, LOGGED_OUT, GAINED_EXP } from '../actions/actionTypes';
 
 const initialState = {
     accessToken: "",
@@ -42,6 +42,15 @@ const authReducer = (state = initialState, action) => {
                     level: null,
                     exp: null,
                     role: ""
+                }
+            }
+        }
+        case GAINED_EXP: {
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    exp: state.user.exp + 200
                 }
             }
         }

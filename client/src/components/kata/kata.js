@@ -5,10 +5,9 @@ import CodeEditor from './codeEditor';
 import Console from './console';
 import { produce } from 'immer';
 import { baseApi } from '../../environment';
-import { EditorState } from 'draft-js';
-import { convertFromRaw } from 'draft-js';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchedKata } from '../../redux/actions/kataActions';
+import { gainExp } from '../../redux/actions/authActions';
 
 const Kata = () => {
     const dispatch = useDispatch();
@@ -117,6 +116,9 @@ const Kata = () => {
                             passedTest: true,
                             message: "Kata cleared! Click next to train more. Goodluck!"
                         });
+
+                        // Update user exp
+                        dispatch(gainExp());
                     }
 
                     draftState.passed = res.passed;

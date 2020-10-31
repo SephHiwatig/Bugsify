@@ -4,3 +4,4 @@ export const LOGGED_OUT = "LOGGED_OUT";
 
 // Kata Actions
 export const FETCHED = "FETCHED";
+export const GAINED_EXP = "GAINED_EXP";
