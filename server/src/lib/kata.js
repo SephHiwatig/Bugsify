@@ -224,15 +224,25 @@ const initTest = async (kataId, solution, userId = null) => {
 
             // If the kata has already been answered by the user update their answer
             // if not, create a new answer/solution
+            let user = await connection.findByField('users', '_id', userId);
+
             if(wasAnswered) {
                 existingAnswer.dateAnswered = new Date();
                 existingAnswer.solution = solution;
                 await connection.update('solutions', existingAnswer);
+                const userToReturn = {
+                    _id: user._id,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    level: user.level,
+                    exp: user.exp,
+                    role: user.role
+                };
+                result.user = userToReturn;
             } else {
                 const newSolutionId = await addNewSolution(solution, userId);
                 kata.solutions.push(newSolutionId);
                 await connection.update('katas', kata);
-                let user = await connection.findByField('users', '_id', userId);
                 result.user = await addUserExp(user);
             }
         }

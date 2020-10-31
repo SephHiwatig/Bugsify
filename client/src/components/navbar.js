@@ -27,6 +27,13 @@ const NavBar = () => {
         // Make sure to replace UI with Sample Questions
     }
 
+    const progressStyle = {
+        background: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(121,9,9,1) 35%, rgba(255,0,0,1) 100%)",
+        height: "100%",
+        width: ((userInfo.user.exp / 1000) * 100) + "%",
+        borderRadius: "8px"
+    }
+
     return <Wrapper>
         <LogoWrapper>
             <button type="button" onClick={() => { history.push('/') }}>
@@ -54,7 +61,12 @@ const NavBar = () => {
                 </MenuDropDown>
             </InfoWrapper>
             <InfoWrapper>Lvl&nbsp;<span>{userInfo.user.level}</span></InfoWrapper>
-            <InfoWrapper>Exp&nbsp;<span>{userInfo.user.exp}</span></InfoWrapper>
+            <InfoWrapper>
+                Exp
+                <Bar>
+                    <div style={progressStyle}></div>
+                </Bar>
+            </InfoWrapper>
             </>}
         </NavExtras>
 
@@ -115,6 +127,15 @@ const InfoWrapper = styled.div`
       background-color: var(--main-bg-color);
       transition: background-color .2s ease-in-out;
     }
+`;
+
+const Bar = styled.div`
+    width: 80px;
+    height: 10px;
+    border: 2px solid var(--main-font-color);
+    border-radius: 8px;
+    margin-left: 8px;
+    padding: 0;
 `;
 
 const Avatar = styled.img`
