@@ -58,7 +58,7 @@ const NavBar = () => {
                 <MenuDropDown>
                     <li><ButtonWrapper type="button" title="View profile" /></li>
                     { userInfo.user.role === 'admin' && 
-                        <li><ButtonWrapper type="button" title="Admin panel" /></li>
+                        <li><ButtonWrapper type="button" title="Admin panel" click={() => { history.push('/admin')}}/></li>
                     }
                     <li><ButtonWrapper type="button" title="Log out" click={logOut}/></li>
                 </MenuDropDown>
