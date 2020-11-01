@@ -36,8 +36,8 @@ const initDbConnection = async () => {
 
 // Private functions, to be curried to provide interface
 const _findAll = (db) => { 
-    return async function(collection) {
-        const usersFromDb = await db.collection(collection).find().toArray();
+    return async function(collection, query) {
+        const usersFromDb = await db.collection(collection).find(query).toArray();
         return usersFromDb;
     }
 };

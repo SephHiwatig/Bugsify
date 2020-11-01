@@ -8,6 +8,7 @@ const loopcontrol = require("../utils/ast");
 const { parseInputs } = require("../utils/kataHelpers");
 const { addNewSolution } = require('../lib/solution');
 const { addUserExp } = require('../lib/user');
+const { ObjectID } = require("mongodb");
 
 
 const addNewKata = async (kata) => {
@@ -37,7 +38,7 @@ const getPagedKatas = async (pagingInfo) => {
         // Connect to database and insert the new Kata,
         // Verify that new kata is added with assert
         const connection = await initDbConnection();
-        let allKatas = await connection.findAll('katas');
+        let allKatas = await connection.findAll('katas', {});
         connection.closeConnection();
 
         if(pagingInfo.filterState) {
@@ -67,7 +68,7 @@ const getPagedKatas = async (pagingInfo) => {
 const searchKatas = async (keyWord, pageSize) => {
     try {
         const connection = await initDbConnection();
-        let allKatas = await connection.findAll('katas');
+        let allKatas = await connection.findAll('katas', {});
         connection.closeConnection();
 
         if(!keyWord) {
@@ -140,10 +141,13 @@ const getKataToAnswer = async (userId) => {
         // Would be better to make a query to 
         // filter the katas instead of using array functions
         const connection = await initDbConnection();
-        let katas = await connection.findAll('katas');
+        let katas = await connection.findAll('katas', {});
+        let userAnswers = await connection.findAll('solutions', { answeredById: userId });
+        userAnswers = userAnswers.map(solution => solution.kataId);
         connection.closeConnection();
 
-        const filteredKatas = katas.filter(kata => !kata.isSampleKata && !kata.solutions.includes(userId));
+        // DO NOT get a kata that's already been answered by the user
+        const filteredKatas = katas.filter(kata => !kata.isSampleKata && !userAnswers.includes(kata._id.toString()));
 
         // Kata length > 0 means user has not yet answered all the katas
         if(filteredKatas.length > 0) {
@@ -164,25 +168,32 @@ const getKataToAnswer = async (userId) => {
 const initTest = async (kataId, solution, userId = null) => {
 
     try {
+        // Get the kata to test
         const connection = await initDbConnection();
         let kata = await connection.findByField('katas', "_id", kataId);
-
         if(!kata) {
             return { succeeded: false, message: "Not found"}
         }
 
+        // Use AST transform to add checks on user's code
         var out = babel.transform(solution, {
             plugins: [loopcontrol]
         });
 
+        // Create the new function to run
         const funcSolution = new Function("return " + out.code)();
 
+        // Variables to hold output informations
         const consoleList = [];
         let passed = true;
 
         try {
 
+            // Loop through each tests, run the function and compare the
+            // output with the test output
             for(let i = 0; i < kata.tests.length; i++) {
+                // Input is stored as a string with pattern to determine type.
+                // Parse the input before passing it to the new function
                 const inputs = parseInputs(kata.tests[i][0]);
 
                 const output = funcSolution(...inputs);
@@ -196,6 +207,8 @@ const initTest = async (kataId, solution, userId = null) => {
             }
 
         } catch (err) {
+            // Catch the error thrown by the user's code and store it in consoleList
+            // to return to the client
             passed = false;
             if(err === "Execution Timeout") {
                 consoleList.push({ passedTest: false, message: err + ": Consider refactoring your code for better performance"});
@@ -240,7 +253,7 @@ const initTest = async (kataId, solution, userId = null) => {
                 };
                 result.user = userToReturn;
             } else {
-                const newSolutionId = await addNewSolution(solution, userId);
+                const newSolutionId = await addNewSolution(solution, userId, kataId);
                 kata.solutions.push(newSolutionId);
                 await connection.update('katas', kata);
                 result.user = await addUserExp(user);
@@ -251,7 +264,6 @@ const initTest = async (kataId, solution, userId = null) => {
         return { succeeded: true, result, };
 
     } catch (err) {
-        console.log(err)
         return { succeeded: false, result: null}
     }
 };

@@ -4,14 +4,15 @@
 const assert = require("assert");
 const initDbConnection = require('../utils/mongoConnection');
 
-const addNewSolution = async (solution, userId) => {
+const addNewSolution = async (solution, userId, kataId) => {
     try {
         const newSolution = {
             solution,
             answeredById: userId,
             likes: [],
             comments: [],
-            dateAnswered: new Date()
+            dateAnswered: new Date(),
+            kataId
         }
     
         const connection = await initDbConnection();

@@ -12,7 +12,7 @@ const createNewUser = async (userInfo) => {
     try {
         // Initialize db connection
         const connection = await initDbConnection();
-        const usersFromDb = await connection.findAll('users');
+        const usersFromDb = await connection.findAll('users', {});
 
         // Check if username or email is already in use
         const userByUsername = usersFromDb.find(user => user.username === userInfo.username.toLowerCase());
