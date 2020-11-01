@@ -39,6 +39,10 @@ const Kata = () => {
             likes: []
         }));
         setSolution("");
+        setConsole({
+            passed: false,
+            consoleList: []
+        })
 
         if(!isAuth) {
             const data = await fetch(

@@ -2,11 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { AiFillLike } from "react-icons/ai";
 import ReadOnlyEditor from './editor';
+import { Link } from 'react-router-dom';
 
 const Question = ({kata}) => {
     return (<Wrapper>
         <Content>
-            <QuestionTitle>{kata.title}</QuestionTitle>
+            <QuestionTitle>
+                <CustomLink to="/view">
+                    <span>{kata.title}</span>
+                </CustomLink>
+            </QuestionTitle>
             { kata.title && <Info>
                 <InfoItem>Difficulty: {kata.difficulty}</InfoItem>
                 <InfoItem>Answers: {kata.solutions.length}</InfoItem>
@@ -16,6 +21,16 @@ const Question = ({kata}) => {
         </Content>
     </Wrapper>);
 };
+
+const CustomLink = styled(Link) `
+    text-decoration: none;
+    color: var(--main-font-color);
+
+    & span:hover {
+        color: var(--ui-theme-color);
+        transition: color .3s;
+    }
+`;
 
 const Wrapper = styled.div`
     display: flex;
