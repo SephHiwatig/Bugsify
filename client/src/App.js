@@ -6,6 +6,7 @@ import Login from './components/auth/login';
 import Register from './components/auth/register';
 import AdminPanel from './components/admin/admin';
 import Profile from './components/profile/profile';
+import View from './components/kata/view';
 import styled from 'styled-components';
 import { baseApi } from './environment';
 import { useDispatch, useSelector } from "react-redux";
@@ -44,6 +45,7 @@ function App() {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          "Cache-control": "no-cache",
           Authorization: "Bearer " + accessToken
         }
       }
@@ -53,8 +55,10 @@ function App() {
         // dispatch(userLoggedIn(accessToken, user, true));
       })
       .catch(error => {
-        localStorage.clear();
-        dispatch(userLoggedOut());
+        if(error.message !== "Failed to fetch") {
+          localStorage.clear();
+          dispatch(userLoggedOut());
+        }
       });
   };
 
@@ -99,6 +103,17 @@ function App() {
                   <Content>
                     <Navbar></Navbar>
                     <Profile></Profile>
+                  </Content>
+                </ContentWrapper>
+            )}>
+            </Route>
+
+            <Route path="/view" render={(props) => (
+              !isAuth ? <Redirect to="/" /> :
+                <ContentWrapper>
+                  <Content>
+                    <Navbar></Navbar>
+                    <View></View>
                   </Content>
                 </ContentWrapper>
             )}>

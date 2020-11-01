@@ -30,7 +30,7 @@ const kataReducer = (state = initialState, action) => {
                 draftState.solutions = action.payload.kata.solutions;
                 draftState.enabled = action.payload.kata.enabled;
                 draftState.likes = action.payload.kata.likes;
-            })
+            });
             return newState;
         }
         default: return state;

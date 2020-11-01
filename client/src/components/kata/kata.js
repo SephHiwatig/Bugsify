@@ -8,6 +8,8 @@ import { baseApi } from '../../environment';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchedKata } from '../../redux/actions/kataActions';
 import { gainExp } from '../../redux/actions/authActions';
+import { EditorState } from 'draft-js';
+import { convertToRaw } from 'draft-js';
 
 const Kata = () => {
     const dispatch = useDispatch();
@@ -21,7 +23,23 @@ const Kata = () => {
         consoleList: []
     })
 
-    async function getKata() {
+    async function getKata(skip = false) {
+        // Reset state
+        dispatch(fetchedKata({
+            _id: null,
+            difficulty: "",
+            description: "",
+            tests: [["", "", ""], ["", "", ""], ["", "", ""]],
+            isSampleKata: false,
+            title: "",
+            solutionTemplate: "",
+            editorState: convertToRaw(EditorState.createEmpty().getCurrentContent()),
+            enabled: true,
+            solutions: [],
+            likes: []
+        }));
+        setSolution("");
+
         if(!isAuth) {
             const data = await fetch(
                 baseApi + "kata/sample",
@@ -40,6 +58,14 @@ const Kata = () => {
                 setSolution(res.solutionTemplate)
             } 
         } else {
+
+            if(localStorage.getItem('kata') && !skip) {
+                const kataFromStorage = JSON.parse(localStorage.getItem('kata'));
+                dispatch(fetchedKata(kataFromStorage));
+                setSolution(kataFromStorage.solutionTemplate)
+                return;
+            } 
+
             const data = await fetch(
                 baseApi + "kata/question?_id=" + _id,
                 {
@@ -55,6 +81,7 @@ const Kata = () => {
     
             if(data.ok) {
                 const res = await data.json();
+                localStorage.setItem('kata', JSON.stringify(res));
                 dispatch(fetchedKata(res));
                 setSolution(res.solutionTemplate)
             } 
@@ -152,7 +179,7 @@ const Kata = () => {
                 </EditorWrapper>
                 <ConsoleWrapper>
                     <EditorTitle>Output</EditorTitle>
-                    <Console isAuth={isAuth} skip={getKata} submit={answerKata} clear={clearConsole} consoleState={consoleView}/>
+                    <Console isAuth={isAuth} skip={getKata.bind(null, true)} submit={answerKata} clear={clearConsole} consoleState={consoleView}/>
                 </ConsoleWrapper>
             </SolutionWrapper>
         </Wrapper>);

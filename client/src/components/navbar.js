@@ -56,7 +56,7 @@ const NavBar = () => {
                 </NameWrapper>
                 <Avatar src={userPlaceholder} alt="user picture" />
                 <MenuDropDown>
-                    <li><ButtonWrapper type="button" title="View profile" /></li>
+                    <li><ButtonWrapper type="button" title="View profile" click={() => { history.push("/profile") }}/></li>
                     { userInfo.user.role === 'admin' && 
                         <li><ButtonWrapper type="button" title="Admin panel" click={() => { history.push('/admin')}}/></li>
                     }
