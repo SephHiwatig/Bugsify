@@ -5,6 +5,7 @@ import Kata from './components/kata/kata';
 import Login from './components/auth/login';
 import Register from './components/auth/register';
 import AdminPanel from './components/admin/admin';
+import Profile from './components/profile/profile';
 import styled from 'styled-components';
 import { baseApi } from './environment';
 import { useDispatch, useSelector } from "react-redux";
@@ -91,6 +92,18 @@ function App() {
                 </ContentWrapper>
             )}>
             </Route>
+
+            <Route path="/profile" render={(props) => (
+              !isAuth ? <Redirect to="/" /> :
+                <ContentWrapper>
+                  <Content>
+                    <Navbar></Navbar>
+                    <Profile></Profile>
+                  </Content>
+                </ContentWrapper>
+            )}>
+            </Route>
+
             <Route path="/admin" render={(props) => (
               !isAuth || !isAdmin ? <Redirect to="/" /> :
                 <ContentWrapper>
