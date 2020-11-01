@@ -30,7 +30,7 @@ const CustomLink = styled(Link) `
     color: var(--main-font-color);
 
     & span:hover {
-        color: var(--ui-theme-color);
+        color: orange;
         transition: color .3s;
     }
 `;
@@ -49,6 +49,9 @@ const QuestionTitle = styled.h1`
     font-size: 1.5rem;
     padding: 0;
     margin: 0;
+    & span {
+        color: var(--ui-theme-color);
+    }
 `;
 
 const Info = styled.ul`
