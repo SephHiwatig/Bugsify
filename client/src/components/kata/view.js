@@ -16,9 +16,16 @@ const View = () => {
     }, [])
 
     return <Wrapper>
-        <KataWrapper>
             <Question kata={kata} />
-        </KataWrapper>
+            <SolutionsWrapper>
+                <span>By Joseph Hiwatig, October 12, 1993</span>
+                <Solution>
+                    {`function solve(arg) {
+
+                    }`}
+                </Solution>
+                <span>Claps 1</span> <span>Comments 1</span>
+            </SolutionsWrapper>
     </Wrapper>
 };
 
@@ -26,12 +33,23 @@ const Wrapper = styled.div`
     margin: 16px 0;
 
     @media(min-width: 768px) {
-        margin: 16px 20%;
+        margin: 16px 10%;
     }
 `;
 
-const KataWrapper = styled.div`
+const SolutionsWrapper = styled.div`
+    margin-top: 16px;
+    padding: 16px;
+    background-color: #aaa;
+    color: rgba(50,50,50);
+    border-radius: 4px;
+`;
 
+const Solution = styled.div`
+    background-color: var(--secondary-color);
+    padding: 16px;
+    color: var(--main-font-color);
+    margin: 4px 0;
 `;
 
 export default View;
