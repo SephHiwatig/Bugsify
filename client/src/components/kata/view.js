@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Question from './question';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchedKata } from '../../redux/actions/kataActions';
+import ButtonWrapper from '../extras/buttonWrapper';
+import TextArea from '../extras/textArea';
 
 const View = () => {
     const dispatach = useDispatch();
@@ -24,7 +26,14 @@ const View = () => {
 
                     }`}
                 </Solution>
-                <span>Claps 1</span> <span>Comments 1</span>
+                <InfoWrapper>
+                    <span>
+                        <ButtonWrapper>Claps 1</ButtonWrapper>
+                    </span> 
+                    <span>
+                        <ButtonWrapper>Comments 1</ButtonWrapper>
+                    </span>
+                </InfoWrapper>
                 <CommentsWrapper>
                     <Comment>
                         <CommentHeader>Joseph Test October 12, 1993</CommentHeader>
@@ -44,6 +53,7 @@ const View = () => {
                             User's comment here
                         </p>
                     </Comment>
+                    <TextArea placeholder="Comment here" rows="3" change={() => {}} value=""></TextArea>
                 </CommentsWrapper>
             </SolutionsWrapper>
     </Wrapper>
@@ -60,9 +70,13 @@ const Wrapper = styled.div`
 const SolutionsWrapper = styled.div`
     margin-top: 16px;
     padding: 16px;
-    background-color: #aaa;
+    background-color: #eee;
     color: rgba(50,50,50);
     border-radius: 4px;
+
+    & span {
+        display: inline;
+    }
 `;
 
 const Solution = styled.div`
@@ -70,6 +84,14 @@ const Solution = styled.div`
     padding: 16px;
     color: var(--main-font-color);
     margin: 4px 0;
+`;
+
+const InfoWrapper = styled.div`
+    display: flex;
+
+    & span {
+        margin-right: 8px;
+    }
 `;
 
 const CommentsWrapper = styled.div`
