@@ -93,7 +93,7 @@ const updateKata = async (kata) => {
         let modify = await connection.update('katas', kata);
         connection.closeConnection();
 
-        assert(1, modify.modifiedCount );
+        assert.strictEqual(1, modify.modifiedCount );
         return { succeeded: true }
     } catch (err) {
         return { succeeded: false }
@@ -302,6 +302,37 @@ const getSolutions = async (_id, userId) => {
     }
 }
 
+const likeSolution = async (_id, userId) => {
+
+    try {
+        const connection = await initDbConnection();
+        const solution = await connection.findByField('solutions', "_id", _id);
+
+        solution.isLiked = !solution.isLiked;
+
+        if(solution.isLiked) {
+            if(!solution.likes.includes(userId))
+                solution.likes.push(userId)
+        } else {
+            if(solution.likes.includes(userId)) {
+                const index = solution.likes.findIndex(id => id === userId);
+                solution.likes.splice(index, 1);
+            }
+        }
+        console.log(solution.likes);
+        const modify = await connection.update('solutions', solution);
+
+        assert.strictEqual(1, modify.modifiedCount);
+
+        return { succeeded: true }
+
+    } catch (err){
+        console.log(err)
+        return { succeeded: false }
+    }
+
+};
+
 module.exports = {
     addNewKata,
     getPagedKatas,
@@ -311,5 +342,6 @@ module.exports = {
     getKataToAnswer,
     initTest,
     getSolutions,
+    likeSolution,
     parseKataTestOutput
 }

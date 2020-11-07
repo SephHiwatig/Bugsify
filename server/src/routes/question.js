@@ -63,7 +63,7 @@ router.put("/api/kata/answer", authenticateToken, async (req, res) => {
 router.get("/api/kata/solutions", authenticateToken, async (req, res) => {
 
     if(!req.query._id || !req.query.userId) {
-        return res.status(400).json({ message: "Please provide kata nd user id"})
+        return res.status(400).json({ message: "Please provide kata and user id"})
     }
 
     const result = await kataHandler.getSolutions(req.query._id, req.query.userId);
@@ -74,6 +74,21 @@ router.get("/api/kata/solutions", authenticateToken, async (req, res) => {
         return res.status(500).json(result.solutions)
     }
 
+});
+
+router.put("/api/kata/solutions/like", authenticateToken, async (req, res) => {
+
+    if(!req.body._id || !req.body.userId) {
+        return res.status(400).json({ message: "Please provide solution and user id"})
+    }
+
+    const result = await kataHandler.likeSolution(req.body._id, req.body.userId);
+
+    if (result.succeeded) {
+        res.status(200).send("OK");
+    } else {
+        res.status(500).send("Error");
+    }
 });
 
 router.get("/api/kata/solutions/comments", authenticateToken, async (req, res) => {

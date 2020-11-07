@@ -5,13 +5,50 @@ import ButtonWrapper from '../extras/buttonWrapper';
 import Button from '../extras/button';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import  anOldHope  from 'react-syntax-highlighter/dist/esm/styles/hljs/an-old-hope';
+import { useSelector } from "react-redux";
+import { produce } from 'immer';
+import { baseApi } from '../../environment';
 
-const ViewSolutions = ({solution}) => {
+
+const ViewSolutions = ({solution, setSolutions}) => {
+    const userId = useSelector((state) => state.auth.user._id);
+    const accessToken = useSelector(state => state.auth.accessToken);
     const [comment, setComments] = useState([]);
     const [showComments, setShowComments] = useState(false)
 
     const likedStyle = {
-        color: "blue !important"
+        color: "blue"
+    }
+
+    async function toggleLike() {
+        const data = await fetch(
+            baseApi + "kata/solutions/like",
+            {
+                method: "PUT",
+                body: JSON.stringify({ _id: solution._id, userId}),
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + accessToken,
+                    "Cache-control": "no-cache"
+                }
+            }
+        );
+
+        if(data.ok) {
+            setSolutions(current => {
+                const newState = produce(current, draftState => {
+                    let temp = draftState.find(sol => sol._id === solution._id);
+                    temp.isLiked = !solution.isLiked;
+                    if(temp.isLiked) {
+                        temp.likes += 1;
+                    } else {
+                        temp.likes -= 1;
+                    }
+                })
+                return newState;
+            })
+        }
     }
 
     return <SolutionsWrapper>
@@ -20,8 +57,8 @@ const ViewSolutions = ({solution}) => {
                         {solution.solution}
                     </SyntaxHighlighter>
                 <InfoWrapper>
-                    <span style={likedStyle}>
-                        <ButtonWrapper>Claps {solution.likes}</ButtonWrapper>
+                    <span style={solution.isLiked ? likedStyle : {}}>
+                        <ButtonWrapper click={toggleLike}>Claps {solution.likes}</ButtonWrapper>
                     </span> 
                     <span>
                         <ButtonWrapper click={() => {
