@@ -295,7 +295,26 @@ const getSolutions = async (_id, userId) => {
                 dateAnswered: solution.dateAnswered
             })
         }
-        
+
+        // Selection sort: sort by the number of likes      
+        const n = solutions.length; 
+  
+        // One by one move boundary of unsorted subarray 
+        for (let i = 0; i < n-1; i++) 
+        { 
+            // Find the maximum element in unsorted array 
+            let max_idx = i; 
+            for (let j = i+1; j < n; j++) 
+                if (solutions[j].likes > solutions[max_idx].likes) 
+                    max_idx = j; 
+  
+            // Swap the found minimum element with the first 
+            // element 
+            let temp = solutions[max_idx]; 
+            solutions[max_idx] = solutions[i]; 
+            solutions[i] = temp; 
+        } 
+
         return { succeeded: true, solutions }
     } catch (err) {
         return { succeeded: false, solutions: [] }
@@ -319,7 +338,7 @@ const likeSolution = async (_id, userId) => {
                 solution.likes.splice(index, 1);
             }
         }
-        console.log(solution.likes);
+
         const modify = await connection.update('solutions', solution);
 
         assert.strictEqual(1, modify.modifiedCount);
@@ -327,7 +346,7 @@ const likeSolution = async (_id, userId) => {
         return { succeeded: true }
 
     } catch (err){
-        console.log(err)
+
         return { succeeded: false }
     }
 
