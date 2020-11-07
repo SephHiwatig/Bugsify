@@ -250,7 +250,8 @@ const initTest = async (kataId, solution, userId = null) => {
                     lastname: user.lastname,
                     level: user.level,
                     exp: user.exp,
-                    role: user.role
+                    role: user.role,
+                    username: user.username
                 };
                 result.user = userToReturn;
             } else {
@@ -265,6 +266,7 @@ const initTest = async (kataId, solution, userId = null) => {
         return { succeeded: true, result, };
 
     } catch (err) {
+        console.log(err)
         return { succeeded: false, result: null}
     }
 };

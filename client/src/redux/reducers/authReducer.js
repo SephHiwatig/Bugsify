@@ -27,7 +27,8 @@ const authReducer = (state = initialState, action) => {
                     lastname: action.payLoad.user.lastname,
                     level: action.payLoad.user.level,
                     exp: action.payLoad.user.exp,
-                    role: action.payLoad.user.role
+                    role: action.payLoad.user.role,
+                    username: action.payLoad.user.username
                 }
             }
         }

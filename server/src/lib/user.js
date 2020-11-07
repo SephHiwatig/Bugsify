@@ -84,7 +84,8 @@ const addUserExp = async (user) => {
         lastname: user.lastname,
         level: user.level,
         exp: user.exp,
-        role: user.role
+        role: user.role,
+        username: user.username
     };
 
     return userToReturn;

@@ -12,9 +12,11 @@ import { baseApi } from '../../environment';
 
 const ViewSolutions = ({solution, setSolutions}) => {
     const userId = useSelector((state) => state.auth.user._id);
+    const username = useSelector((state) => state.auth.user.username);
     const accessToken = useSelector(state => state.auth.accessToken);
-    const [comment, setComments] = useState([]);
+    const [comments, setComments] = useState([]);
     const [showComments, setShowComments] = useState(false)
+    const [commentValue, setCommentValue] = useState("");
 
     const likedStyle = {
         color: "blue"
@@ -51,6 +53,43 @@ const ViewSolutions = ({solution, setSolutions}) => {
         }
     }
 
+    async function addComment() {
+
+        const body = {
+            commentById: userId,
+            commentBy: username,
+            commentDate: new Date(),
+            comment: commentValue,
+            solutionId: solution._id
+        }
+
+        const data = await fetch(
+            baseApi + "kata/solutions/comments/add",
+            {
+                method: "POST",
+                body: JSON.stringify(body),
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + accessToken,
+                }
+            }
+        )
+
+        if(data.ok) {
+            const res = await data.json();
+
+            setComments(current => {
+                return produce(current, draftState => {
+                    draftState.push(res);
+                })
+            })
+
+            setCommentValue("");
+        }
+
+    }
+
     return <SolutionsWrapper>
                 <span>{solution.answeredBy}</span>
                     <SyntaxHighlighter language="javascript" style={anOldHope}>
@@ -63,7 +102,7 @@ const ViewSolutions = ({solution, setSolutions}) => {
                     <span>
                         <ButtonWrapper click={() => {
 
-                            if(comment.length === 0) {
+                            if(comments.length === 0) {
                                 // Fetch the comments then show comments
                             }
 
@@ -72,27 +111,19 @@ const ViewSolutions = ({solution, setSolutions}) => {
                     </span>
                 </InfoWrapper>
                 {showComments && <CommentsWrapper>
-                    <Comment>
-                        <CommentHeader>Joseph Test October 12, 1993</CommentHeader>
-                        <p>
-                            User's comment here
-                        </p>
-                    </Comment>
-                    <Comment>
-                        <CommentHeader>Joseph Test October 12, 1993</CommentHeader>
-                        <p>
-                            User's comment here
-                        </p>
-                    </Comment>
-                    <Comment>
-                        <CommentHeader>Joseph Test October 12, 1993</CommentHeader>
-                        <p>
-                            User's comment here
-                        </p>
-                    </Comment>
-                    <TextArea placeholder="Comment here" rows="3" change={() => {}} value=""></TextArea>
+                    {comments.map(comm => {
+                        return  <Comment key={comm._id}>
+                            <CommentHeader>{comm.commentBy}</CommentHeader>
+                            <p>
+                                {comm.comment}
+                            </p>
+                        </Comment>
+                    })}
+                    <TextArea placeholder="Comment here" rows="3" change={(e) => {
+                        setCommentValue(e.target.value);
+                    }} value={commentValue}></TextArea>
                     <CommentButonWrapper>
-                        <Button title="Comment" />
+                        <Button title="Comment" click={addComment} />
                     </CommentButonWrapper>
                 </CommentsWrapper>}
             </SolutionsWrapper>

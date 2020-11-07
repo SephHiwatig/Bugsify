@@ -51,6 +51,9 @@ const getSolutions = async (_id, userId) => {
             })
         }
 
+        connection.closeConnection();
+
+
         // Selection sort: sort by the number of likes      
         const n = solutions.length; 
   
@@ -95,8 +98,9 @@ const likeSolution = async (_id, userId) => {
         }
 
         const modify = await connection.update('solutions', solution);
-
         assert.strictEqual(1, modify.modifiedCount);
+
+        connection.closeConnection();
 
         return { succeeded: true }
 

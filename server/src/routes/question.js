@@ -5,6 +5,7 @@ const router = require("express").Router();
 const { authenticateToken } = require('../utils/jwt'); 
 const kataHandler = require('../lib/kata');
 const solutionHandler = require('../lib/solution')
+const commentHandler = require('../lib/comment')
 
 router.get("/api/kata/sample", async (req, res) => {
 
@@ -93,17 +94,26 @@ router.put("/api/kata/solutions/like", authenticateToken, async (req, res) => {
 });
 
 router.post("/api/kata/solutions/comments/add", authenticateToken, async (req, res) => {
+    if(!req.body)
+        return res.status(400).json({ message: "Invalid request body"})
 
+    const result = await commentHandler.addNewComment(req.body);
+
+    if(result.succeeded) {
+        res.status(201).json(result.comment);
+    } else {
+        res.status(500).json(result.comment);
+    }
 });
 
-// router.get("/api/kata/solutions/comments", authenticateToken, async (req, res) => {
+router.get("/api/kata/solutions/comments", authenticateToken, async (req, res) => {
 
-//     if(!req.query._id) {
-//         return res.status(400).json({ message: "No solution id provided"})
-//     }
+    if(!req.query._id) {
+        return res.status(400).json({ message: "No solution id provided"})
+    }
 
-//     res.send("OK");
-// });
+    res.send("OK");
+});
 
 
 

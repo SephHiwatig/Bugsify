@@ -32,7 +32,8 @@ router.post("/api/login", async (req, res) => {
             lastname: result.user.lastname,
             level: result.user.level,
             exp: result.user.exp,
-            role: result.user.role
+            role: result.user.role,
+            username: result.user.username
         };
         return res.status(200).json({ message: "success", accessToken, user: userToReturn });
     }
@@ -80,7 +81,8 @@ router.get("/api/verify/accesstoken", authenticateToken, async (req, res) => {
         lastname: result.user.lastname,
         level: result.user.level,
         exp: result.user.exp,
-        role: result.user.role
+        role: result.user.role,
+        username: result.user.username
     };
     
     // Get token from header - "Bearer token...."
