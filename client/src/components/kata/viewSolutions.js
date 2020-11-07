@@ -4,20 +4,22 @@ import TextArea from '../extras/textArea';
 import ButtonWrapper from '../extras/buttonWrapper';
 import Button from '../extras/button';
 
-const ViewSolutions = ({_id}) => {
+const ViewSolutions = ({solution}) => {
     const [comment, setComments] = useState([]);
     const [showComments, setShowComments] = useState(false)
 
-    return <SolutionsWrapper>
-                <span>By Joseph Hiwatig, October 12, 1993</span>
-                <Solution>
-                    {`function solve(arg) {
+    const likedStyle = {
+        color: "blue !important"
+    }
 
-                    }`}
+    return <SolutionsWrapper>
+                <span>{solution.answeredBy}</span>
+                <Solution>
+                    {solution.solution}
                 </Solution>
                 <InfoWrapper>
-                    <span>
-                        <ButtonWrapper>Claps 1</ButtonWrapper>
+                    <span style={likedStyle}>
+                        <ButtonWrapper>Claps {solution.likes}</ButtonWrapper>
                     </span> 
                     <span>
                         <ButtonWrapper click={() => {
@@ -27,7 +29,7 @@ const ViewSolutions = ({_id}) => {
                             }
 
                             setShowComments(!showComments) 
-                        }}>Comments 1</ButtonWrapper>
+                        }}>Comments {solution.commentCount}</ButtonWrapper>
                     </span>
                 </InfoWrapper>
                 {showComments && <CommentsWrapper>

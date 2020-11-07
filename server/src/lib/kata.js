@@ -290,6 +290,7 @@ const getSolutions = async (_id, userId) => {
                 answeredBy: user.username,
                 likes: solution.likes.length,
                 isLiked,
+                commentCount: solution.comments.length,
                 dateAnswered: solution.dateAnswered
             })
         }
