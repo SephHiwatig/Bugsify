@@ -1,12 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import userPlaceholder from '../../assets/user.jpg';
+import construction from '../../assets/construction.gif';
+import { useSelector } from "react-redux";
 
 const Profile = () => {
+    const user = useSelector((state) => state.auth.user);
     return <Wrapper>
         <ProfileHeader>
             <img src={userPlaceholder} />
-            <h2>Joseph Hiwatig Lvl 3</h2>
+            <h2>{user.username} Lvl {user.level}</h2>
+        </ProfileHeader>
+        <ProfileHeader>
+            <img src={construction} />
         </ProfileHeader>
     </Wrapper>
 }
