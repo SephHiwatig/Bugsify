@@ -35,6 +35,21 @@ const addNewComment = async (args) => {
     }
 };
 
+const getComments = async (_id) => {
+
+    try {
+        const connection = await initDbConnection();
+        const comments = await connection.findAll('comments', { solutionId: _id });
+        connection.closeConnection();
+
+        return { succeeded: true, comments }
+    } catch (err) {
+        return { succeeded: false, comments: [] }
+    }
+
+};
+
 module.exports = {
-    addNewComment
+    addNewComment,
+    getComments
 }

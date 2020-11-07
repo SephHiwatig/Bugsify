@@ -112,6 +112,14 @@ router.get("/api/kata/solutions/comments", authenticateToken, async (req, res) =
         return res.status(400).json({ message: "No solution id provided"})
     }
 
+    const result = await commentHandler.getComments(req.query._id);
+
+    if(result.succeeded) {
+        res.status(200).json(result.comments);
+    } else {
+        res.status(500).json(result.comments);
+    }
+
     res.send("OK");
 });
 

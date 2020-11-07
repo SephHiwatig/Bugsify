@@ -53,6 +53,32 @@ const ViewSolutions = ({solution, setSolutions}) => {
         }
     }
 
+    async function getComments() {
+
+        if(showComments) {
+            setComments([]);
+            setShowComments(!showComments);
+        } else {
+            const data = await fetch(
+                baseApi + "kata/solutions/comments?_id=" + solution._id,
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + accessToken,
+                    }
+                }
+            );
+    
+            if(data.ok) {
+                const res = await data.json();
+                setComments(res);
+                setShowComments(!showComments);
+            }
+        }
+    }
+
     async function addComment() {
 
         const body = {
@@ -84,8 +110,14 @@ const ViewSolutions = ({solution, setSolutions}) => {
                     draftState.push(res);
                 })
             })
-
             setCommentValue("");
+            setSolutions(current => {
+                const newState = produce(current, draftState => {
+                    let temp = draftState.find(sol => sol._id === solution._id);
+                    temp.commentCount += 1;
+                })
+                return newState;
+            })
         }
 
     }
@@ -100,14 +132,7 @@ const ViewSolutions = ({solution, setSolutions}) => {
                         <ButtonWrapper click={toggleLike}>Claps {solution.likes}</ButtonWrapper>
                     </span> 
                     <span>
-                        <ButtonWrapper click={() => {
-
-                            if(comments.length === 0) {
-                                // Fetch the comments then show comments
-                            }
-
-                            setShowComments(!showComments) 
-                        }}>Comments {solution.commentCount}</ButtonWrapper>
+                        <ButtonWrapper click={getComments}>Comments {solution.commentCount}</ButtonWrapper>
                     </span>
                 </InfoWrapper>
                 {showComments && <CommentsWrapper>
