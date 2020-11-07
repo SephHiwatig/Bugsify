@@ -286,6 +286,7 @@ const getSolutions = async (_id, userId) => {
             const isLiked = solution.likes.includes(userId);
             const user =  await connection.findByField('users', "_id", solution.answeredById);
             solutions.push({
+                _id: solution._id,
                 solution: solution.solution, // Need better naming
                 answeredBy: user.username,
                 likes: solution.likes.length,

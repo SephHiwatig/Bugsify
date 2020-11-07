@@ -45,7 +45,7 @@ const View = () => {
             <Question kata={kata} />
 
             {solutions.map(solution => {
-                return <ViewSolutions solution={solution} />
+                return <ViewSolutions solution={solution} key={solution._id}/>
             })}
     </Wrapper>
 };
