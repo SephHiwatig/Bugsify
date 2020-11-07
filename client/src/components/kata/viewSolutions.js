@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import TextArea from '../extras/textArea';
 import ButtonWrapper from '../extras/buttonWrapper';
 import Button from '../extras/button';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import  anOldHope  from 'react-syntax-highlighter/dist/esm/styles/hljs/an-old-hope';
 
 const ViewSolutions = ({solution}) => {
     const [comment, setComments] = useState([]);
@@ -14,9 +16,9 @@ const ViewSolutions = ({solution}) => {
 
     return <SolutionsWrapper>
                 <span>{solution.answeredBy}</span>
-                <Solution>
-                    {solution.solution}
-                </Solution>
+                    <SyntaxHighlighter language="javascript" style={anOldHope}>
+                        {solution.solution}
+                    </SyntaxHighlighter>
                 <InfoWrapper>
                     <span style={likedStyle}>
                         <ButtonWrapper>Claps {solution.likes}</ButtonWrapper>
@@ -69,13 +71,6 @@ const SolutionsWrapper = styled.div`
     & span {
         display: inline;
     }
-`;
-
-const Solution = styled.div`
-    background-color: var(--secondary-color);
-    padding: 16px;
-    color: var(--main-font-color);
-    margin: 4px 0;
 `;
 
 const InfoWrapper = styled.div`
