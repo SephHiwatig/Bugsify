@@ -2,6 +2,7 @@ import React, { useState} from 'react';
 import styled from 'styled-components';
 import TextArea from '../extras/textArea';
 import ButtonWrapper from '../extras/buttonWrapper';
+import Button from '../extras/button';
 
 const ViewSolutions = ({_id}) => {
     const [comment, setComments] = useState([]);
@@ -49,6 +50,9 @@ const ViewSolutions = ({_id}) => {
                         </p>
                     </Comment>
                     <TextArea placeholder="Comment here" rows="3" change={() => {}} value=""></TextArea>
+                    <CommentButonWrapper>
+                        <Button title="Comment" />
+                    </CommentButonWrapper>
                 </CommentsWrapper>}
             </SolutionsWrapper>
 };
@@ -95,6 +99,16 @@ const Comment = styled.div`
 const CommentHeader = styled.span`
     margin: 0;
     font-size: 12px;
+`;
+
+const CommentButonWrapper = styled.div`
+    margin-top: 8px;
+    padding: 0;
+    border-radius: 4px;
+    & button {
+        margin: 0 !important;
+        background-color: var(--secondary-color);
+    }
 `;
 
 

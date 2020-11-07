@@ -147,13 +147,14 @@ const getKataToAnswer = async (userId) => {
         connection.closeConnection();
 
         // DO NOT get a kata that's already been answered by the user
-        const filteredKatas = katas.filter(kata => !kata.isSampleKata && !userAnswers.includes(kata._id.toString()));
+        // const filteredKatas = katas.filter(kata => !kata.isSampleKata && !userAnswers.includes(kata._id.toString()));
+        const filteredKatas = katas.filter(kata => !kata.isSampleKata);
 
         // Kata length > 0 means user has not yet answered all the katas
         if(filteredKatas.length > 0) {
-            const randomIndex = Math.floor(Math.random() * Math.floor(filteredKatas.length));
-            return { succeeded: true, kata: filteredKatas[randomIndex]};
-            // return { succeeded: true, kata: filteredKatas[13]};
+            // const randomIndex = Math.floor(Math.random() * Math.floor(filteredKatas.length));
+            // return { succeeded: true, kata: filteredKatas[randomIndex]};
+            return { succeeded: true, kata: filteredKatas[13]};
         } else {
             katas = katas.filter(kata => !kata.isSampleKata);
             const randomIndex = Math.floor(Math.random() * Math.floor(katas.length));
@@ -268,6 +269,37 @@ const initTest = async (kataId, solution, userId = null) => {
     }
 };
 
+const getSolutions = async (_id, userId) => {
+   
+    try {
+        // Get the kata
+        const connection = await initDbConnection();
+        const kata = await connection.findByField('katas', "_id", _id);
+
+        // Solutions to be returned
+        const solutions = [];
+
+        // Loop through each solutions id and create the solution object
+        // then push to the solutions array
+        for(let i = 0; i < kata.solutions.length; i++) {
+            const solution =  await connection.findByField('solutions', "_id", kata.solutions[i]);
+            const isLiked = solution.likes.includes(userId);
+            const user =  await connection.findByField('users', "_id", solution.answeredById);
+            solutions.push({
+                solution: solution.solution, // Need better naming
+                answeredBy: user.username,
+                likes: solution.likes.length,
+                isLiked,
+                dateAnswered: solution.dateAnswered
+            })
+        }
+        
+        return { succeeded: true, solutions }
+    } catch (err) {
+        return { succeeded: false, solutions: [] }
+    }
+}
+
 module.exports = {
     addNewKata,
     getPagedKatas,
@@ -276,5 +308,6 @@ module.exports = {
     getSampleKata,
     getKataToAnswer,
     initTest,
+    getSolutions,
     parseKataTestOutput
 }
