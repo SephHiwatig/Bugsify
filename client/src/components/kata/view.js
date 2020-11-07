@@ -25,6 +25,26 @@ const View = () => {
                     }`}
                 </Solution>
                 <span>Claps 1</span> <span>Comments 1</span>
+                <CommentsWrapper>
+                    <Comment>
+                        <CommentHeader>Joseph Test October 12, 1993</CommentHeader>
+                        <p>
+                            User's comment here
+                        </p>
+                    </Comment>
+                    <Comment>
+                        <CommentHeader>Joseph Test October 12, 1993</CommentHeader>
+                        <p>
+                            User's comment here
+                        </p>
+                    </Comment>
+                    <Comment>
+                        <CommentHeader>Joseph Test October 12, 1993</CommentHeader>
+                        <p>
+                            User's comment here
+                        </p>
+                    </Comment>
+                </CommentsWrapper>
             </SolutionsWrapper>
     </Wrapper>
 };
@@ -52,4 +72,20 @@ const Solution = styled.div`
     margin: 4px 0;
 `;
 
+const CommentsWrapper = styled.div`
+    margin: 8px 0 0 5%;
+`;
+
+const Comment = styled.div`
+    margin-bottom: 4px;
+    border-left: 4px solid var(--ui-theme-color);
+    padding: 8px;
+    background-color: var(--main-bg-color);
+    color: var(--main-font-color);
+`;
+
+const CommentHeader = styled.span`
+    margin: 0;
+    font-size: 12px;
+`;
 export default View;
