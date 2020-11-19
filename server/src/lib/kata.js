@@ -147,14 +147,14 @@ const getKataToAnswer = async (userId) => {
         connection.closeConnection();
 
         // DO NOT get a kata that's already been answered by the user
-        // const filteredKatas = katas.filter(kata => !kata.isSampleKata && !userAnswers.includes(kata._id.toString()));
-        const filteredKatas = katas.filter(kata => !kata.isSampleKata);
+        const filteredKatas = katas.filter(kata => !kata.isSampleKata && !userAnswers.includes(kata._id.toString()));
+        // const filteredKatas = katas.filter(kata => !kata.isSampleKata);
 
         // Kata length > 0 means user has not yet answered all the katas
         if(filteredKatas.length > 0) {
-            // const randomIndex = Math.floor(Math.random() * Math.floor(filteredKatas.length));
-            // return { succeeded: true, kata: filteredKatas[randomIndex]};
-            return { succeeded: true, kata: filteredKatas[13]};
+            const randomIndex = Math.floor(Math.random() * Math.floor(filteredKatas.length));
+            return { succeeded: true, kata: filteredKatas[randomIndex]};
+            // return { succeeded: true, kata: filteredKatas[13]};
         } else {
             katas = katas.filter(kata => !kata.isSampleKata);
             const randomIndex = Math.floor(Math.random() * Math.floor(katas.length));

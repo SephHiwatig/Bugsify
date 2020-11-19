@@ -18,7 +18,6 @@ const Question = ({kata}) => {
             { kata.title && <Info>
                 <InfoItem>Difficulty: {kata.difficulty}</InfoItem>
                 <InfoItem>Answers: {kata.solutions.length}</InfoItem>
-                <InfoItem><AiFillLike />: {kata.likes.length}</InfoItem>
             </Info>}
             <ReadOnlyEditor editorState={kata.editorState}/>
         </Content>
